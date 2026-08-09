@@ -1,3 +1,5 @@
+import { siteConfig } from '../../data/site'
+
 export default defineEventHandler((event) => {
   const slug = getRouterParam(event, 'slug') ?? ''
   const detail = buildToolDetail(slug)
@@ -15,5 +17,6 @@ export default defineEventHandler((event) => {
       canonical: `/tool/${detail.slug}`,
     },
     detail,
+    ratingOptions: siteConfig.ratingOptions,
   })
 })

@@ -57,6 +57,29 @@ export const siteConfig: SiteConfig = {
     { label: 'AI 办公', value: 'AI办公' },
     { label: '开发技术', value: '开发技术' },
   ],
+  sideNav: {
+    home: { id: 'side-home', label: '发现首页', icon: 'house', to: '/', kind: 'page' },
+    ranking: { id: 'side-ranking', label: '热门榜单', icon: 'flame', to: '/ranking', kind: 'page' },
+    secondary: [
+      { id: 'side-favorites', label: '我的收藏', icon: 'star', to: '/profile/favorites', kind: 'page' },
+      { id: 'side-history', label: '最近使用', icon: 'clock-3', to: '/profile/history', kind: 'page' },
+      { id: 'side-submit', label: '提交网站', icon: 'square-pen', to: '/submit', kind: 'page' },
+    ],
+    feedback: { id: 'side-feedback', label: '建议反馈', icon: 'message-square-more', to: '/feedback', kind: 'page' },
+  },
+  errorQuickLinks: [
+    { id: 'error-home', to: '/', label: '返回首页', icon: 'house', kind: 'page' },
+    { id: 'error-ai', to: '/category/ai', label: 'AI 导航', icon: 'sparkles', kind: 'category' },
+    { id: 'error-ranking', to: '/ranking', label: '排行榜', icon: 'flame', kind: 'page' },
+    { id: 'error-topic', to: '/topic', label: '精选专题', icon: 'layers-3', kind: 'topic' },
+  ],
+  ratingOptions: [
+    { value: 1, icon: 'angry', label: '很不满意' },
+    { value: 2, icon: 'frown', label: '不满意' },
+    { value: 3, icon: 'meh', label: '一般' },
+    { value: 4, icon: 'smile', label: '满意' },
+    { value: 5, icon: 'laugh', label: '非常满意' },
+  ],
 }
 
 /** Four promoted media cards below the hero. */

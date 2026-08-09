@@ -5,6 +5,7 @@ import { submissionStatusLabels } from '../../data/account'
 import { categoryBySlug } from '../../data/taxonomy'
 
 export default defineEventHandler(async (event) => {
+  const account = requireAccount(event)
   const body = await readBody<Partial<SubmissionForm>>(event)
   const errors = validateSubmission(body ?? {})
 
@@ -35,5 +36,6 @@ export default defineEventHandler(async (event) => {
     updatedAt: now,
   }
 
+  saveSubmissionRecord(account, submission)
   return ok(submission, '提交成功，我们会在 1-3 个工作日内完成审核')
 })

@@ -1,7 +1,9 @@
 <script setup lang="ts">
 import type { NuxtError } from '#app'
+import { useSiteStore } from '~/stores/site'
 
 const props = defineProps<{ error: NuxtError }>()
+const site = useSiteStore()
 
 const isNotFound = computed(() => props.error.statusCode === 404)
 const title = computed(() => (isNotFound.value ? '页面不存在' : '页面出错了'))
@@ -15,12 +17,7 @@ useSeoMeta({
   robots: 'noindex, nofollow',
 })
 
-const quickLinks = [
-  { to: '/', label: '返回首页', icon: 'house' },
-  { to: '/category/all', label: 'AI 导航', icon: 'sparkles' },
-  { to: '/ranking', label: '排行榜', icon: 'flame' },
-  { to: '/topic', label: '精选专题', icon: 'layers-3' },
-]
+const quickLinks = computed(() => site.site?.errorQuickLinks ?? [])
 
 const keyword = ref('')
 
@@ -61,7 +58,7 @@ function search() {
           class="flex items-center gap-1.5 rounded-lg bg-canvas px-3.5 py-2 text-[12px] font-semibold text-copy transition hover:bg-brand-soft hover:text-brand"
           @click="clearError()"
         >
-          <AppIcon :name="link.icon" class="size-3.5" />{{ link.label }}
+          <AppIcon :name="link.icon ?? 'link'" class="size-3.5" />{{ link.label }}
         </NuxtLink>
       </div>
     </section>

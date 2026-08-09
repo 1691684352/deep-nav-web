@@ -1,12 +1,9 @@
-import type { RankingPeriod } from '#shared/types'
 import { seoPresets } from '../data/site'
 
 export default defineEventHandler((event) => {
   const query = getQuery(event)
-  const period = toStringParam(query.period, '周榜') as RankingPeriod
-  const category = toStringParam(query.category, '全部')
-  const safePeriod = rankingPeriods.includes(period) ? period : '周榜'
-  const safeCategory = rankingCategories.includes(category) ? category : '全部'
+  const safePeriod = toEnumParam(query.period, rankingPeriods, '周榜')
+  const safeCategory = toEnumParam(query.category, rankingCategories, '全部')
 
   return ok({
     seo: {
@@ -17,6 +14,7 @@ export default defineEventHandler((event) => {
       canonical: '/ranking',
     },
     periods: rankingPeriods,
+    periodOptions: rankingPeriods.map(value => ({ value, label: rankingPeriodLabel(value) })),
     categories: rankingCategories,
     ranking: buildRanking(safePeriod, safeCategory),
     categoryRanking: categoryRanking(),

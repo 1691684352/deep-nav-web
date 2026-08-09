@@ -1,16 +1,10 @@
 <script setup lang="ts">
-import type { FavoriteItem, SeoMeta } from '#shared/types'
+import type { ProfileOverviewPayload } from '#shared/types'
 import { useAccountStore } from '~/stores/account'
-
-interface ProfilePayload {
-  seo: SeoMeta
-  navItems: Array<{ key: string, label: string, icon: string, to: string }>
-  favorites: FavoriteItem[]
-}
 
 const account = useAccountStore()
 const toast = useToast()
-const { data } = await useAsyncData('profile-favorites', () => $api<ProfilePayload>('/api/account/overview'))
+const { data } = await useAsyncData('profile-favorites', () => $api<ProfileOverviewPayload>('/api/account/overview'))
 
 useSeoMeta({
   title: '我的收藏 - 个人中心 - 深度指引',
@@ -22,7 +16,7 @@ const keyword = ref('')
 const page = ref(1)
 const pageSize = 12
 
-const source = computed(() => (account.favorites.length ? account.favorites : data.value?.favorites ?? []))
+const source = computed(() => account.favorites)
 const filtered = computed(() => {
   const needle = keyword.value.trim().toLowerCase()
   if (!needle) return source.value
@@ -33,15 +27,25 @@ const paged = computed(() => filtered.value.slice((page.value - 1) * pageSize, p
 
 watch([keyword, () => source.value.length], () => (page.value = 1))
 
-function remove(slug: string) {
-  account.removeFavorite(slug)
-  toast.success('已取消收藏')
+async function remove(slug: string) {
+  try {
+    await account.removeFavorite(slug)
+    toast.success('已取消收藏')
+  }
+  catch (error) {
+    toast.error(apiErrorMessage(error))
+  }
 }
 
-function clearAll() {
+async function clearAll() {
   if (!account.favorites.length) return
-  account.clearFavorites()
-  toast.success('已清空收藏夹')
+  try {
+    await account.clearFavorites()
+    toast.success('已清空收藏夹')
+  }
+  catch (error) {
+    toast.error(apiErrorMessage(error))
+  }
 }
 </script>
 

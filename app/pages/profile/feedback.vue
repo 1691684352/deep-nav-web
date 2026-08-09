@@ -1,19 +1,14 @@
 <script setup lang="ts">
-import type { SeoMeta } from '#shared/types'
+import type { ProfileOverviewPayload } from '#shared/types'
 import { relativeTime } from '#shared/utils'
 import { useAccountStore } from '~/stores/account'
 
-interface ProfilePayload {
-  seo: SeoMeta
-  navItems: Array<{ key: string, label: string, icon: string, to: string }>
-}
-
 const account = useAccountStore()
-const { data } = await useAsyncData('profile-feedback', () => $api<ProfilePayload>('/api/account/overview'))
+const { data } = await useAsyncData('profile-feedback', () => $api<ProfileOverviewPayload>('/api/account/overview'))
 
 useSeoMeta({
-  title: '我的反馈 - 个人中心 - 深度指引',
-  description: '查看你在深度指引发表过的工具点评与反馈。',
+  title: '我的点评 - 个人中心 - 深度指引',
+  description: '查看你在深度指引发表过的工具点评。',
   robots: 'noindex, nofollow',
 })
 </script>
@@ -23,10 +18,10 @@ useSeoMeta({
     <section class="panel rounded-xl p-5" aria-labelledby="feedback-title">
       <div class="profile-section-header">
         <div>
-          <h2 id="feedback-title">我的反馈</h2>
+        <h2 id="feedback-title">我的点评</h2>
           <p class="mt-1 text-[12px] text-muted">共发表 {{ account.myReviews.length }} 条点评</p>
         </div>
-        <NuxtLink to="/submit#feedback">提交建议 <AppIcon name="arrow-right" class="size-3.5" /></NuxtLink>
+        <NuxtLink to="/feedback">提交建议 <AppIcon name="arrow-right" class="size-3.5" /></NuxtLink>
       </div>
 
       <div v-if="account.myReviews.length" class="mt-4 space-y-3">

@@ -1,17 +1,11 @@
 <script setup lang="ts">
-import type { HistoryItem, SeoMeta } from '#shared/types'
+import type { ProfileOverviewPayload } from '#shared/types'
 import { relativeTime } from '#shared/utils'
 import { useAccountStore } from '~/stores/account'
 
-interface ProfilePayload {
-  seo: SeoMeta
-  navItems: Array<{ key: string, label: string, icon: string, to: string }>
-  history: HistoryItem[]
-}
-
 const account = useAccountStore()
 const toast = useToast()
-const { data } = await useAsyncData('profile-history', () => $api<ProfilePayload>('/api/account/overview'))
+const { data } = await useAsyncData('profile-history', () => $api<ProfileOverviewPayload>('/api/account/overview'))
 
 useSeoMeta({
   title: '最近使用 - 个人中心 - 深度指引',
@@ -23,7 +17,7 @@ const keyword = ref('')
 const page = ref(1)
 const pageSize = 12
 
-const source = computed(() => (account.history.length ? account.history : data.value?.history ?? []))
+const source = computed(() => account.history)
 const filtered = computed(() => {
   const needle = keyword.value.trim().toLowerCase()
   if (!needle) return source.value
@@ -34,15 +28,25 @@ const paged = computed(() => filtered.value.slice((page.value - 1) * pageSize, p
 
 watch([keyword, () => source.value.length], () => (page.value = 1))
 
-function remove(slug: string) {
-  account.removeHistory(slug)
-  toast.success('已从历史记录中移除')
+async function remove(slug: string) {
+  try {
+    await account.removeHistory(slug)
+    toast.success('已从历史记录中移除')
+  }
+  catch (error) {
+    toast.error(apiErrorMessage(error))
+  }
 }
 
-function clearAll() {
+async function clearAll() {
   if (!account.history.length) return
-  account.clearHistory()
-  toast.success('已清空浏览历史')
+  try {
+    await account.clearHistory()
+    toast.success('已清空浏览历史')
+  }
+  catch (error) {
+    toast.error(apiErrorMessage(error))
+  }
 }
 </script>
 

@@ -13,6 +13,7 @@ import { faviconUrl, initialOf } from '#shared/utils'
 interface RankingPayload {
   seo: SeoMeta
   periods: RankingPeriod[]
+  periodOptions: Array<{ value: RankingPeriod, label: string }>
   categories: string[]
   ranking: RankingResult
   categoryRanking: CategoryRankingItem[]
@@ -35,7 +36,6 @@ const { data } = await useAsyncData(
 
 useSeoFromApi(() => data.value?.seo)
 
-const periodLabels: Record<string, string> = { 日榜: '今日', 周榜: '本周', 月榜: '本月', 年度: '今年' }
 const ranking = computed(() => data.value?.ranking)
 
 /** The podium renders 2nd, 1st, 3rd so the winner sits in the middle. */
@@ -86,13 +86,13 @@ function updateQuery(patch: Record<string, string | undefined>) {
         <div class="flex flex-wrap items-center justify-between gap-3 px-5 py-3">
           <div class="flex items-center gap-1 rounded-lg bg-canvas p-1" aria-label="统计周期">
             <button
-              v-for="item in data?.periods ?? []"
-              :key="item"
+              v-for="item in data?.periodOptions ?? []"
+              :key="item.value"
               class="ranking-period"
-              :class="{ 'is-active': period === item }"
+              :class="{ 'is-active': period === item.value }"
               type="button"
-              @click="updateQuery({ period: item === '周榜' ? undefined : item })"
-            >{{ periodLabels[item] }}</button>
+              @click="updateQuery({ period: item.value === '周榜' ? undefined : item.value })"
+            >{{ item.label }}</button>
           </div>
           <p class="flex items-center gap-1.5 text-[11px] text-muted">
             <AppIcon name="clock-3" class="size-3.5" /><span>数据更新于 {{ ranking?.updatedAt }}</span>

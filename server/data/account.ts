@@ -1,4 +1,4 @@
-import type { FavoriteItem, HistoryItem, Submission, User } from '#shared/types'
+import type { FavoriteItem, HistoryItem, ProfileNavItem, SelectOption, Submission, SubmissionStatus, User } from '#shared/types'
 import { toolBySlug } from './tools'
 
 export const demoUser: User = {
@@ -124,20 +124,19 @@ export const submissionStatusLabels: Record<Submission['status'], string> = {
   rejected: '已拒绝',
 }
 
-/** Counters shown on the personal-center dashboard. */
-export const profileBaseCounts = {
-  favorites: 128,
-  history: 24,
-  submissions: 8,
-  feedback: 5,
-}
-
-export const profileNavItems = [
+export const profileNavItems: ProfileNavItem[] = [
   { key: 'overview', label: '个人中心', icon: 'house', to: '/profile' },
   { key: 'favorites', label: '我的收藏', icon: 'star', to: '/profile/favorites' },
   { key: 'history', label: '最近使用', icon: 'history', to: '/profile/history' },
   { key: 'submissions', label: '我的投稿', icon: 'inbox', to: '/profile/submissions' },
-  { key: 'feedback', label: '我的反馈', icon: 'message-square-text', to: '/profile/feedback' },
+  { key: 'feedback', label: '我的点评', icon: 'message-square-text', to: '/profile/feedback' },
   { key: 'messages', label: '消息通知', icon: 'bell', to: '/profile/messages' },
   { key: 'settings', label: '账号设置', icon: 'settings-2', to: '/profile/settings' },
+]
+
+export const submissionStatusFilters: SelectOption<'all' | SubmissionStatus>[] = [
+  { value: 'all', label: '全部' },
+  { value: 'review', label: '审核中' },
+  { value: 'approved', label: '已通过' },
+  { value: 'rejected', label: '已拒绝' },
 ]

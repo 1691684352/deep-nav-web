@@ -7,6 +7,7 @@ interface ReviewBody {
 }
 
 export default defineEventHandler(async (event) => {
+  const account = requireAccount(event)
   const slug = getRouterParam(event, 'slug') ?? ''
   if (!findTool(slug)) {
     throw createError({ statusCode: 404, statusMessage: '工具不存在' })
@@ -23,7 +24,7 @@ export default defineEventHandler(async (event) => {
     throw createError({ statusCode: 422, statusMessage: '评价内容至少需要 5 个字' })
   }
 
-  const author = (body?.author ?? '深度用户').trim() || '深度用户'
+  const author = account.user.nickname
   const review: Review = {
     id: `review-${Date.now()}`,
     toolSlug: slug,
@@ -35,5 +36,7 @@ export default defineEventHandler(async (event) => {
     likes: 0,
   }
 
+  publishReview(review)
+  saveReviewRecord(account, review)
   return ok(review, '评价发布成功')
 })

@@ -1,6 +1,6 @@
 /** Favicon endpoint used across cards, rows and search results. */
 export function faviconUrl(domain: string, size = 128): string {
-  return `https://www.google.com/s2/favicons?domain=${encodeURIComponent(domain)}&sz=${size}`
+  return `/api/assets/favicon?domain=${encodeURIComponent(domain)}&size=${size}`
 }
 
 /** First character used as a logo fallback when the favicon fails to load. */

@@ -1,14 +1,7 @@
 <script setup lang="ts">
-import type { AuthSession, FavoriteItem, HistoryItem, Submission } from '#shared/types'
+import type { LoginPayload } from '#shared/types'
 import { useAccountStore } from '~/stores/account'
 import { useUiStore } from '~/stores/ui'
-
-interface LoginResponse {
-  session: AuthSession
-  favorites: FavoriteItem[]
-  history: HistoryItem[]
-  submissions: Submission[]
-}
 
 const ui = useUiStore()
 const account = useAccountStore()
@@ -69,7 +62,7 @@ async function submit() {
   error.value = ''
   submitting.value = true
   try {
-    const payload = await $api<LoginResponse>('/api/auth/login', {
+    const payload = await $api<LoginPayload>('/api/auth/login', {
       method: 'POST',
       body: { phone: phone.value, code: code.value },
     })

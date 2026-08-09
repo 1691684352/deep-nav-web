@@ -126,9 +126,19 @@ function onIconChange(event: Event) {
   reader.readAsDataURL(file)
 }
 
-function saveDraft() {
-  account.saveDraft({ ...form, step: step.value, savedAt: formatDateTime(new Date()) })
-  toast.success('草稿已保存在当前浏览器')
+async function saveDraft() {
+  if (!account.isLoggedIn) {
+    ui.openLogin()
+    toast.info('登录后可跨设备保存草稿')
+    return
+  }
+  try {
+    await account.saveDraft({ ...form, step: step.value, savedAt: formatDateTime(new Date()) })
+    toast.success('草稿已同步到账号')
+  }
+  catch (error) {
+    toast.error(apiErrorMessage(error, '草稿保存失败'))
+  }
 }
 
 function goStep(target: number) {
@@ -177,7 +187,7 @@ async function handleNext() {
   try {
     const submission = await $api<Submission>('/api/submissions', { method: 'POST', body: { ...form } })
     account.addSubmission(submission)
-    account.clearDraft()
+    await account.clearDraft()
     toast.success('提交成功，审核结果将通过站内消息通知你')
     navigateTo('/profile/submissions')
   }

@@ -1,17 +1,11 @@
 <script setup lang="ts">
-import type { SeoMeta, User } from '#shared/types'
+import type { ProfileOverviewPayload } from '#shared/types'
 import { useAccountStore } from '~/stores/account'
-
-interface ProfilePayload {
-  seo: SeoMeta
-  navItems: Array<{ key: string, label: string, icon: string, to: string }>
-  user: User
-}
 
 const account = useAccountStore()
 const toast = useToast()
 const { isDark, toggle } = useTheme()
-const { data } = await useAsyncData('profile-settings', () => $api<ProfilePayload>('/api/account/overview'))
+const { data } = await useAsyncData('profile-settings', () => $api<ProfileOverviewPayload>('/api/account/overview'))
 
 useSeoMeta({
   title: '账号设置 - 个人中心 - 深度指引',
@@ -22,27 +16,35 @@ useSeoMeta({
 const profile = reactive({ nickname: '', bio: '', location: '' })
 
 watchEffect(() => {
-  const user = account.user ?? data.value?.user
+  const user = account.user
   if (!user) return
   profile.nickname = user.nickname
   profile.bio = user.bio
   profile.location = user.location
 })
 
-function save() {
+async function save() {
   if (!account.user) {
     toast.error('请先登录后再修改资料')
     return
   }
-  account.user = { ...account.user, ...profile }
-  toast.success('资料已更新')
+  try {
+    await account.updateProfile(profile)
+    toast.success('资料已更新')
+  }
+  catch (error) {
+    toast.error(apiErrorMessage(error, '资料更新失败'))
+  }
 }
 
-function clearLocalData() {
-  account.clearFavorites()
-  account.clearHistory()
-  account.clearDraft()
-  toast.success('本机的收藏、历史与草稿已清空')
+async function clearLocalData() {
+  try {
+    await account.clearActivityData()
+    toast.success('收藏、历史与草稿已清空')
+  }
+  catch (error) {
+    toast.error(apiErrorMessage(error, '数据清理失败'))
+  }
 }
 </script>
 

@@ -1,9 +1,16 @@
 import type { ApiResult } from '#shared/types'
 import type { NitroFetchOptions } from 'nitropack'
 
-/** Unwraps the `{ code, message, data }` envelope returned by every mock endpoint. */
+/** Unwraps the `{ code, message, data }` envelope returned by every endpoint. */
 export async function $api<T>(request: string, options: NitroFetchOptions<string> = {}): Promise<T> {
-  const response = await $fetch<ApiResult<T>>(request, options as never)
+  const config = useRuntimeConfig()
+  const requestHeaders = import.meta.server ? useRequestHeaders(['cookie']) : undefined
+  const response = await $fetch<ApiResult<T>>(request, {
+    baseURL: config.public.apiBase || undefined,
+    credentials: 'include',
+    headers: requestHeaders,
+    ...options,
+  } as never)
   return response.data
 }
 

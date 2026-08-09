@@ -1,1 +1,4 @@
-export default defineEventHandler(() => ok({ success: true }, '已退出登录'))
+export default defineEventHandler((event) => {
+  destroySession(event)
+  return ok({ success: true }, '已退出登录')
+})

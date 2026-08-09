@@ -31,11 +31,9 @@ export default defineNuxtConfig({
     name: '深度指引',
   },
 
-  // The personal centre renders entirely from localStorage, so server rendering
-  // it would only produce a hydration mismatch against the signed-out snapshot.
   routeRules: {
-    '/profile/**': { ssr: false, robots: false },
-    '/profile': { ssr: false, robots: false },
+    '/profile/**': { robots: false },
+    '/profile': { robots: false },
   },
 
   sitemap: {

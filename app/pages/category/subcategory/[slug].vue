@@ -5,6 +5,7 @@ interface SubcategoryPayload {
   seo: SeoMeta
   nav: NavCategory
   filters: string[]
+  sortOptions: ReadonlyArray<{ value: SearchSort, label: string }>
   filter: string
   sort: SearchSort
   result: PageResult<Tool>

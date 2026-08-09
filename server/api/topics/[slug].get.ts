@@ -1,4 +1,4 @@
-import type { SearchSort } from '#shared/types'
+import { searchSortOptions, searchSortValues } from '../../data/search'
 import { subcategoryFilters } from '../../data/subcategory-tools'
 
 export default defineEventHandler((event) => {
@@ -9,8 +9,8 @@ export default defineEventHandler((event) => {
   }
 
   const query = getQuery(event)
-  const filter = toStringParam(query.filter, '全部')
-  const sort = toStringParam(query.sort, 'heat') as SearchSort
+  const filter = toEnumParam(query.filter, subcategoryFilters, '全部')
+  const sort = toEnumParam(query.sort, searchSortValues, 'heat')
   const page = toNumber(query.page, 1)
   const pageSize = toNumber(query.pageSize, 24)
 
@@ -24,6 +24,7 @@ export default defineEventHandler((event) => {
     },
     topic: detail,
     filters: subcategoryFilters,
+    sortOptions: searchSortOptions,
     filter,
     sort,
     result: paginate(sortTools(filterByTag(detail.tools, filter), sort), page, pageSize),

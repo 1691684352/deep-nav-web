@@ -1,5 +1,5 @@
-import type { SearchSort } from '#shared/types'
 import { seoPresets } from '../../data/site'
+import { searchSortOptions, searchSortValues } from '../../data/search'
 import { subcategoryFilters } from '../../data/subcategory-tools'
 import { navCategoryBySlug } from '../../data/taxonomy'
 
@@ -11,8 +11,8 @@ export default defineEventHandler((event) => {
   }
 
   const query = getQuery(event)
-  const filter = toStringParam(query.filter, '全部')
-  const sort = toStringParam(query.sort, 'heat') as SearchSort
+  const filter = toEnumParam(query.filter, subcategoryFilters, '全部')
+  const sort = toEnumParam(query.sort, searchSortValues, 'heat')
   const page = toNumber(query.page, 1)
   const pageSize = toNumber(query.pageSize, 24)
 
@@ -28,6 +28,7 @@ export default defineEventHandler((event) => {
     },
     nav: { ...nav, toolCount: pool.length },
     filters: subcategoryFilters,
+    sortOptions: searchSortOptions,
     filter,
     sort,
     result: paginate(filtered, page, pageSize),

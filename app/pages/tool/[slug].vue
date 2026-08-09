@@ -7,6 +7,7 @@ import { renderMarkdown, splitOverview } from '~/utils/markdown'
 interface DetailPayload {
   seo: SeoMeta
   detail: ToolDetail
+  ratingOptions: Array<{ value: number, icon: string, label: string }>
 }
 
 const route = useRoute()
@@ -60,20 +61,12 @@ const ratingRows = computed(() => {
   }))
 })
 
-const moods = [
-  { value: 1, icon: 'angry', label: '很不满意' },
-  { value: 2, icon: 'frown', label: '不满意' },
-  { value: 3, icon: 'meh', label: '一般' },
-  { value: 4, icon: 'smile', label: '满意' },
-  { value: 5, icon: 'laugh', label: '非常满意' },
-]
+const moods = computed(() => data.value?.ratingOptions ?? [])
 
-// Runs after hydration so the localStorage-backed account store is settled and
-// the client render still matches what the server produced.
 onMounted(() => {
-  watch(() => detail.value.slug, (value) => {
-    localReviews.value = account.reviewsFor(value)
-    account.recordHistory(detail.value)
+  watch(() => detail.value.slug, () => {
+    localReviews.value = []
+    void account.recordHistory(detail.value)
   }, { immediate: true })
 })
 
@@ -86,7 +79,7 @@ async function onShare() {
 }
 
 function onFeedback() {
-  navigateTo('/submit#feedback')
+  navigateTo('/feedback')
 }
 
 function pickMood(value: number) {
@@ -97,7 +90,22 @@ function pickMood(value: number) {
   }
   moodPicked.value = value
   reviewRating.value = value
-  toast.success(`感谢反馈，已记录 ${value} 星评价`)
+  reviewOpen.value = true
+}
+
+async function like(review: Review) {
+  if (!account.isLoggedIn) {
+    ui.openLogin()
+    toast.info('登录后即可点赞评价')
+    return
+  }
+  try {
+    const payload = await $api<{ likes: number }>(`/api/tools/${detail.value.slug}/reviews/${review.id}/like`, { method: 'POST' })
+    review.likes = payload.likes
+  }
+  catch (error) {
+    toast.error(apiErrorMessage(error, '点赞失败'))
+  }
 }
 
 function openReview() {
@@ -320,7 +328,7 @@ async function submitReview() {
               <div class="mt-2 flex items-center justify-between">
                 <span class="review-meta">{{ review.createdAt }}</span>
                 <div class="flex gap-3 text-[11px] text-muted">
-                  <button class="hover:text-brand" type="button" @click="review.likes += 1">
+                  <button class="hover:text-brand" type="button" @click="like(review)">
                     <AppIcon name="thumbs-up" class="mr-1 inline size-3" />{{ review.likes }}
                   </button>
                   <button class="hover:text-brand" type="button" @click="openReview">

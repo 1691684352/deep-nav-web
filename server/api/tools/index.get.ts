@@ -1,4 +1,4 @@
-import type { SearchSort } from '#shared/types'
+import { searchSortValues } from '../../data/search'
 
 export default defineEventHandler((event) => {
   const query = getQuery(event)
@@ -6,7 +6,7 @@ export default defineEventHandler((event) => {
   const navSlug = toStringParam(query.nav)
   const tag = toStringParam(query.tag, '全部')
   const keyword = toStringParam(query.keyword)
-  const sort = toStringParam(query.sort, 'heat') as SearchSort
+  const sort = toEnumParam(query.sort, searchSortValues, 'heat')
   const page = toNumber(query.page, 1)
   const pageSize = toNumber(query.pageSize, 24)
 

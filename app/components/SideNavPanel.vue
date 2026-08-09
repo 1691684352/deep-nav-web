@@ -9,7 +9,6 @@ const props = defineProps<{
 
 const site = useSiteStore()
 const ui = useUiStore()
-const toast = useToast()
 const route = useRoute()
 
 /** Falls back to the current route so every page highlights the right entry. */
@@ -21,6 +20,7 @@ const currentCategory = computed(() => {
 
 const categoryLinks = computed(() => site.categories.filter(category => category.slug !== 'all'))
 const isHome = computed(() => route.path === '/')
+const sideNav = computed(() => site.site?.sideNav)
 
 const currentAction = computed(() => {
   if (props.activeAction !== undefined) return props.activeAction
@@ -31,30 +31,20 @@ const currentAction = computed(() => {
   return ''
 })
 
-const secondaryLinks = [
-  { key: 'favorites', label: '我的收藏', icon: 'star', to: '/profile/favorites' },
-  { key: 'history', label: '最近使用', icon: 'clock-3', to: '/profile/history' },
-  { key: 'submit', label: '提交网站', icon: 'square-pen', to: '/submit' },
-]
-
-function openFeedback() {
-  ui.toggleDrawer(false)
-  toast.info('反馈通道已开启，欢迎在投稿页留言')
-  navigateTo('/submit#feedback')
-}
+const secondaryLinks = computed(() => sideNav.value?.secondary ?? [])
 </script>
 
 <template>
   <div class="panel rounded-xl p-2.5">
     <nav class="space-y-1">
       <NuxtLink
-        to="/"
+        :to="sideNav?.home.to ?? '/'"
         class="side-nav-btn flex w-full items-center gap-3 rounded-lg px-3.5 text-[13px]"
         :class="{ active: isHome }"
         @click="ui.toggleDrawer(false)"
       >
-        <AppIcon name="house" class="size-[16px]" />
-        发现首页
+        <AppIcon :name="sideNav?.home.icon ?? 'house'" class="size-[16px]" />
+        {{ sideNav?.home.label ?? '发现首页' }}
       </NuxtLink>
       <NuxtLink
         v-for="category in categoryLinks"
@@ -68,33 +58,34 @@ function openFeedback() {
         {{ category.label }}
       </NuxtLink>
       <NuxtLink
-        to="/ranking"
+        :to="sideNav?.ranking.to ?? '/ranking'"
         class="side-nav-btn flex w-full items-center gap-3 rounded-lg px-3.5 text-[13px]"
         :class="{ active: currentAction === 'ranking' }"
         @click="ui.toggleDrawer(false)"
       >
-        <AppIcon name="flame" class="size-[16px]" />热门榜单
+        <AppIcon :name="sideNav?.ranking.icon ?? 'flame'" class="size-[16px]" />{{ sideNav?.ranking.label ?? '热门榜单' }}
       </NuxtLink>
     </nav>
     <div class="my-2 border-t border-line" />
     <nav class="space-y-1 text-[#66718b]">
       <NuxtLink
         v-for="link in secondaryLinks"
-        :key="link.key"
+        :key="link.id"
         :to="link.to"
         class="side-nav-btn flex w-full items-center gap-3 rounded-lg px-3.5 text-[12px] font-medium"
-        :class="{ active: currentAction === link.key }"
+        :class="{ active: currentAction === link.id.replace('side-', '') }"
         @click="ui.toggleDrawer(false)"
       >
-        <AppIcon :name="link.icon" class="size-4" />{{ link.label }}
+        <AppIcon :name="link.icon ?? 'link'" class="size-4" />{{ link.label }}
       </NuxtLink>
-      <button
+      <NuxtLink
+        v-if="sideNav?.feedback"
+        :to="sideNav.feedback.to"
         class="side-nav-btn flex w-full items-center gap-3 rounded-lg px-3.5 text-[12px] font-medium"
-        type="button"
-        @click="openFeedback"
+        @click="ui.toggleDrawer(false)"
       >
-        <AppIcon name="message-square-more" class="size-4" />建议反馈
-      </button>
+        <AppIcon :name="sideNav.feedback.icon ?? 'message-square-more'" class="size-4" />{{ sideNav.feedback.label }}
+      </NuxtLink>
     </nav>
   </div>
 </template>

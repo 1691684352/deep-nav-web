@@ -1,12 +1,12 @@
-import type { SearchResult, SearchSort } from '#shared/types'
+import type { SearchResult } from '#shared/types'
 import { seoPresets } from '../../data/site'
-import { searchSortOptions, searchSuggestions } from '../../data/search'
+import { searchSortOptions, searchSortValues, searchSuggestions } from '../../data/search'
 
 export default defineEventHandler((event) => {
   const query = getQuery(event)
   const keyword = toStringParam(query.keyword ?? query.q)
   const categorySlug = toStringParam(query.category, 'all')
-  const sort = toStringParam(query.sort, 'heat') as SearchSort
+  const sort = toEnumParam(query.sort, searchSortValues, 'heat')
   const page = toNumber(query.page, 1)
   const pageSize = toNumber(query.pageSize, 10)
 

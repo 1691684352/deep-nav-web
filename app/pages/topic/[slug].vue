@@ -6,6 +6,7 @@ interface TopicDetailPayload {
   seo: SeoMeta
   topic: TopicDetail
   filters: string[]
+  sortOptions: ReadonlyArray<{ value: SearchSort, label: string }>
   filter: string
   sort: SearchSort
   result: PageResult<Tool>
@@ -34,12 +35,6 @@ useSeoFromApi(() => data.value?.seo)
 
 const topic = computed(() => data.value?.topic)
 const result = computed(() => data.value?.result)
-
-const sortOptions = [
-  { value: 'heat', label: '按热度排序' },
-  { value: 'newest', label: '按最新排序' },
-  { value: 'name', label: '按名称排序' },
-]
 
 function updateQuery(patch: Record<string, string | number | undefined>) {
   router.push({ query: { ...route.query, ...patch } })
@@ -117,7 +112,7 @@ function setPage(value: number) {
               :value="sort"
               @change="updateQuery({ sort: ($event.target as HTMLSelectElement).value, page: undefined })"
             >
-              <option v-for="option in sortOptions" :key="option.value" :value="option.value">{{ option.label }}</option>
+              <option v-for="option in data?.sortOptions ?? []" :key="option.value" :value="option.value">{{ option.label }}</option>
             </select>
           </label>
         </div>

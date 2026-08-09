@@ -1,28 +1,16 @@
 <script setup lang="ts">
-import type { FavoriteItem, HistoryItem, SeoMeta, Submission, User } from '#shared/types'
+import type { ProfileOverviewPayload } from '#shared/types'
 import { relativeTime } from '#shared/utils'
 import { useAccountStore } from '~/stores/account'
 
-interface ProfilePayload {
-  seo: SeoMeta
-  user: User
-  navItems: Array<{ key: string, label: string, icon: string, to: string }>
-  baseCounts: { favorites: number, history: number, submissions: number, feedback: number }
-  favorites: FavoriteItem[]
-  history: HistoryItem[]
-  submissions: Submission[]
-}
-
 const account = useAccountStore()
-const { data } = await useAsyncData('profile-overview', () => $api<ProfilePayload>('/api/account/overview'))
+const { data } = await useAsyncData('profile-overview', () => $api<ProfileOverviewPayload>('/api/account/overview'))
 useSeoFromApi(() => data.value?.seo)
 
-const user = computed(() => account.user ?? data.value?.user)
-
-/** Local activity wins over seed data once the visitor has their own records. */
-const favorites = computed(() => (account.favorites.length ? account.favorites : data.value?.favorites ?? []))
-const history = computed(() => (account.history.length ? account.history : data.value?.history ?? []))
-const submissions = computed(() => (account.submissions.length ? account.submissions : data.value?.submissions ?? []))
+const user = computed(() => account.user)
+const favorites = computed(() => account.favorites)
+const history = computed(() => account.history)
+const submissions = computed(() => account.submissions)
 
 const joinedDays = computed(() => {
   const joined = user.value?.joinedAt
@@ -31,10 +19,10 @@ const joinedDays = computed(() => {
 })
 
 const stats = computed(() => [
-  { key: 'favorites', label: '收藏工具', value: favorites.value.length, icon: 'star', to: '/profile/favorites', fill: true },
-  { key: 'history', label: '最近使用', value: history.value.length, icon: 'clock-3', to: '/profile/history', fill: false },
-  { key: 'submissions', label: '投稿收录', value: submissions.value.length, icon: 'cloud-upload', to: '/profile/submissions', fill: false },
-  { key: 'feedback', label: '我的反馈', value: account.myReviews.length, icon: 'message-square', to: '/profile/feedback', fill: false },
+  { key: 'favorites', label: '收藏工具', value: account.favorites.length, icon: 'star', to: '/profile/favorites', fill: true },
+  { key: 'history', label: '最近使用', value: account.history.length, icon: 'clock-3', to: '/profile/history', fill: false },
+  { key: 'submissions', label: '投稿收录', value: account.submissions.length, icon: 'cloud-upload', to: '/profile/submissions', fill: false },
+  { key: 'feedback', label: '我的点评', value: account.myReviews.length, icon: 'message-square', to: '/profile/feedback', fill: false },
 ])
 </script>
 

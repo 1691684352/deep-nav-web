@@ -284,8 +284,27 @@ export interface User {
 }
 
 export interface AuthSession {
-  token: string
   user: User
+  expiresAt: string
+}
+
+export interface AccountSnapshot {
+  user: User
+  favorites: FavoriteItem[]
+  history: HistoryItem[]
+  submissions: Submission[]
+  draft: SubmissionDraft | null
+  reviews: Review[]
+}
+
+export interface LoginPayload {
+  session: AuthSession
+  account: AccountSnapshot
+}
+
+export interface SessionPayload {
+  authenticated: boolean
+  account: AccountSnapshot | null
 }
 
 export interface FavoriteItem {
@@ -355,6 +374,55 @@ export interface ProfileOverview {
   favorites: FavoriteItem[]
   history: HistoryItem[]
   submissions: Submission[]
+}
+
+export interface ProfileNavItem {
+  key: string
+  label: string
+  icon: string
+  to: string
+}
+
+export interface SelectOption<T extends string = string> {
+  value: T
+  label: string
+}
+
+export interface ProfileMessage {
+  id: string
+  icon: string
+  status: SubmissionStatus
+  title: string
+  body: string
+  time: string
+}
+
+export interface ProfileOverviewPayload extends AccountSnapshot {
+  seo: SeoMeta
+  navItems: ProfileNavItem[]
+  statusFilters: SelectOption<'all' | SubmissionStatus>[]
+  messages: ProfileMessage[]
+}
+
+export interface FeedbackForm {
+  type: 'suggestion' | 'bug' | 'content' | 'other'
+  content: string
+  contact: string
+}
+
+export interface FeedbackRecord extends FeedbackForm {
+  id: string
+  status: 'received'
+  statusLabel: string
+  submittedAt: string
+}
+
+export interface FeedbackOptionsPayload {
+  seo: SeoMeta
+  types: SelectOption<FeedbackForm['type']>[]
+  contactPlaceholder: string
+  contentPlaceholder: string
+  notices: string[]
 }
 
 /* -------------------------------------------------------------------------- */
@@ -456,6 +524,14 @@ export interface SiteConfig {
   rail: SiteRail
   hotKeywords: string[]
   globalSearchKeywords: Array<{ label: string, value: string }>
+  sideNav: {
+    home: NavLink
+    ranking: NavLink
+    secondary: NavLink[]
+    feedback: NavLink
+  }
+  errorQuickLinks: NavLink[]
+  ratingOptions: Array<{ value: number, icon: string, label: string }>
 }
 
 export interface HomeGreeting {

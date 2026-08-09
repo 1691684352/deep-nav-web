@@ -1,16 +1,10 @@
 <script setup lang="ts">
-import type { SeoMeta, Submission } from '#shared/types'
+import type { ProfileOverviewPayload, Submission } from '#shared/types'
 import { useAccountStore } from '~/stores/account'
-
-interface ProfilePayload {
-  seo: SeoMeta
-  navItems: Array<{ key: string, label: string, icon: string, to: string }>
-  submissions: Submission[]
-}
 
 const account = useAccountStore()
 const toast = useToast()
-const { data } = await useAsyncData('profile-submissions', () => $api<ProfilePayload>('/api/account/overview'))
+const { data } = await useAsyncData('profile-submissions', () => $api<ProfileOverviewPayload>('/api/account/overview'))
 
 useSeoMeta({
   title: '我的投稿 - 个人中心 - 深度指引',
@@ -18,17 +12,12 @@ useSeoMeta({
   robots: 'noindex, nofollow',
 })
 
-const statusFilters = [
-  { value: 'all', label: '全部' },
-  { value: 'review', label: '审核中' },
-  { value: 'approved', label: '已通过' },
-  { value: 'rejected', label: '已拒绝' },
-]
+const statusFilters = computed(() => data.value?.statusFilters ?? [])
 
 const status = ref('all')
 const active = ref<Submission | null>(null)
 
-const source = computed(() => (account.submissions.length ? account.submissions : data.value?.submissions ?? []))
+const source = computed(() => account.submissions)
 const filtered = computed(() =>
   status.value === 'all' ? source.value : source.value.filter(item => item.status === status.value))
 
@@ -36,10 +25,15 @@ function countOf(value: string) {
   return value === 'all' ? source.value.length : source.value.filter(item => item.status === value).length
 }
 
-function withdraw(item: Submission) {
-  account.removeSubmission(item.id)
-  active.value = null
-  toast.success(`已撤回「${item.name}」的投稿`)
+async function withdraw(item: Submission) {
+  try {
+    await account.removeSubmission(item.id)
+    active.value = null
+    toast.success(`已撤回「${item.name}」的投稿`)
+  }
+  catch (error) {
+    toast.error(apiErrorMessage(error))
+  }
 }
 </script>
 

@@ -27,4 +27,6 @@ export const searchSortOptions = [
   { value: 'name', label: '按名称排序' },
 ] as const
 
+export const searchSortValues = searchSortOptions.map(item => item.value)
+
 export const searchSuggestions = ['ChatGPT', 'AI 绘画', 'Notion', '开发技术', 'AI 视频', '数据分析']

@@ -1,16 +1,7 @@
 <script setup lang="ts">
-import type { SeoMeta, Submission } from '#shared/types'
+import type { ProfileOverviewPayload } from '#shared/types'
 import { relativeTime } from '#shared/utils'
-import { useAccountStore } from '~/stores/account'
-
-interface ProfilePayload {
-  seo: SeoMeta
-  navItems: Array<{ key: string, label: string, icon: string, to: string }>
-  submissions: Submission[]
-}
-
-const account = useAccountStore()
-const { data } = await useAsyncData('profile-messages', () => $api<ProfilePayload>('/api/account/overview'))
+const { data } = await useAsyncData('profile-messages', () => $api<ProfileOverviewPayload>('/api/account/overview'))
 
 useSeoMeta({
   title: '消息通知 - 个人中心 - 深度指引',
@@ -18,32 +9,7 @@ useSeoMeta({
   robots: 'noindex, nofollow',
 })
 
-const statusIcon: Record<Submission['status'], string> = {
-  review: 'clock-3',
-  approved: 'circle-check',
-  rejected: 'circle-x',
-}
-
-/** Notifications are derived from submission status changes. */
-const messages = computed(() => {
-  const submissions = account.submissions.length ? account.submissions : data.value?.submissions ?? []
-  return submissions.map(item => ({
-    id: item.id,
-    icon: statusIcon[item.status],
-    status: item.status,
-    title: item.status === 'review'
-      ? `「${item.name}」已进入审核队列`
-      : item.status === 'approved'
-        ? `「${item.name}」已通过审核`
-        : `「${item.name}」未通过审核`,
-    body: item.status === 'approved'
-      ? '网站已展示在对应分类中，感谢你的贡献。'
-      : item.status === 'rejected'
-        ? '内容与现有收录重复或信息不完整，欢迎补充后再次提交。'
-        : '我们会在 1-3 个工作日内完成审核，结果将通过邮件通知。',
-    time: item.updatedAt,
-  }))
-})
+const messages = computed(() => data.value?.messages ?? [])
 </script>
 
 <template>

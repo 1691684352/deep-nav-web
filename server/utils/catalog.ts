@@ -6,7 +6,6 @@ import type {
   RankingEntry,
   RankingPeriod,
   RankingResult,
-  Review,
   RisingRankingItem,
   SearchFacet,
   SearchItem,
@@ -16,12 +15,13 @@ import type {
   Topic,
   TopicDetail,
 } from '#shared/types'
-import { defaultFeatures, reviews, toolDetailOverrides } from '../data/tool-details'
+import { defaultFeatures, toolDetailOverrides } from '../data/tool-details'
 import { categories, categoryBySlug, categoryGroupOrder, navCategories, navCategoryBySlug } from '../data/taxonomy'
 import { searchMetaOverrides } from '../data/search'
 import { subcategoryCatalog } from '../data/subcategory-tools'
 import { homeTopicSlugs, topicBySlug, topicIntros, topics } from '../data/topics'
 import { allTools, rankingExtras, toolBySlug, tools } from '../data/tools'
+import { publishedReviewsForTool, reviewsForTool } from './reviews'
 
 /** Every addressable record, de-duplicated by slug. */
 export const catalog: Tool[] = (() => {
@@ -119,6 +119,10 @@ const periodLabels: Record<RankingPeriod, string> = {
   年度: '今年',
 }
 
+export function rankingPeriodLabel(period: RankingPeriod) {
+  return periodLabels[period]
+}
+
 export const rankingPeriods: RankingPeriod[] = ['日榜', '周榜', '月榜', '年度']
 
 export function buildRanking(period: RankingPeriod, categoryName = '全部', size = 13): RankingResult {
@@ -185,10 +189,6 @@ export function risingRanking(size = 6): RisingRankingItem[] {
     .map((item, index) => ({ rank: index + 1, tool: item.tool, growth: item.growth }))
 }
 
-export function reviewsFor(slug: string): Review[] {
-  return reviews.filter(review => review.toolSlug === slug)
-}
-
 function buildRatingBuckets(rating: number, count: number) {
   const five = Math.round(count * (rating >= 4.6 ? 0.72 : 0.55))
   const four = Math.round(count * 0.2)
@@ -206,8 +206,16 @@ export function buildToolDetail(slug: string): ToolDetail | null {
   const tool = findTool(slug)
   if (!tool) return null
   const override = toolDetailOverrides[slug] ?? {}
-  const rating = override.rating ?? Number.parseFloat((4.2 + hashRatio(`rating:${slug}`) * 0.7).toFixed(1))
-  const ratingCount = override.ratingCount ?? Math.round(24 + hashRatio(`count:${slug}`) * 160)
+  const baseRating = override.rating ?? Number.parseFloat((4.2 + hashRatio(`rating:${slug}`) * 0.7).toFixed(1))
+  const baseRatingCount = override.ratingCount ?? Math.round(24 + hashRatio(`count:${slug}`) * 160)
+  const publishedReviews = publishedReviewsForTool(slug)
+  const ratingCount = baseRatingCount + publishedReviews.length
+  const rating = Number.parseFloat(((baseRating * baseRatingCount + publishedReviews.reduce((sum, review) => sum + review.rating, 0)) / ratingCount).toFixed(1))
+  const ratingBuckets = (override.ratingBuckets ?? buildRatingBuckets(baseRating, baseRatingCount)).map(bucket => ({ ...bucket }))
+  for (const review of publishedReviews) {
+    const bucket = ratingBuckets.find(item => item.score === review.rating)
+    if (bucket) bucket.count += 1
+  }
   const related = catalog
     .filter(item => item.slug !== tool.slug && (item.navCategorySlug === tool.navCategorySlug || item.categorySlug === tool.categorySlug))
     .sort((a, b) => b.heatValue - a.heatValue)
@@ -226,8 +234,8 @@ export function buildToolDetail(slug: string): ToolDetail | null {
     ],
     rating,
     ratingCount,
-    ratingBuckets: override.ratingBuckets ?? buildRatingBuckets(rating, ratingCount),
-    reviews: reviewsFor(slug),
+    ratingBuckets,
+    reviews: reviewsForTool(slug),
     news: override.news ?? [],
     related,
     breadcrumbs: [

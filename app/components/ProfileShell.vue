@@ -18,10 +18,15 @@ const activeKey = computed(() => {
   return match?.key ?? 'overview'
 })
 
-function logout() {
-  account.logout()
-  toast.success('已退出登录')
-  navigateTo('/')
+async function logout() {
+  try {
+    await account.logout()
+    toast.success('已退出登录')
+    await navigateTo('/')
+  }
+  catch (error) {
+    toast.error(apiErrorMessage(error, '退出登录失败'))
+  }
 }
 
 function requireLogin() {

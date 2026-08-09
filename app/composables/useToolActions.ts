@@ -15,18 +15,27 @@ export function useToolActions() {
     return account.isFavorite(slug)
   }
 
-  function toggleFavorite(tool: Tool) {
+  async function toggleFavorite(tool: Tool) {
     if (!account.isLoggedIn) {
       ui.openLogin()
       toast.info('登录后即可收藏工具')
       return
     }
-    const added = account.toggleFavorite(tool)
-    toast.success(added ? `已收藏 ${tool.name}` : `已取消收藏 ${tool.name}`)
+    try {
+      const added = await account.toggleFavorite(tool)
+      toast.success(added ? `已收藏 ${tool.name}` : `已取消收藏 ${tool.name}`)
+    }
+    catch (error) {
+      toast.error(apiErrorMessage(error, '收藏操作失败'))
+    }
   }
 
-  function visit(tool: Tool) {
-    account.recordHistory(tool)
+  async function visit(tool: Tool) {
+    try {
+      await account.recordHistory(tool)
+    }
+    catch {
+    }
   }
 
   async function copyLink(tool: Tool) {
