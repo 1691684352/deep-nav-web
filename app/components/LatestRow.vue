@@ -14,8 +14,8 @@ const props = defineProps<{ tool: LatestTool }>()
     <strong class="truncate text-[13px] font-medium text-foreground">{{ props.tool.name }}</strong>
     <span class="truncate"><span class="mr-2 text-foreground/70">{{ props.tool.category }}</span>{{ props.tool.desc }}</span>
     <span class="text-right">{{ props.tool.time }}</span>
-    <span class="number-font flex items-center justify-end gap-0.5 font-semibold text-muted-foreground">
-      <AppIcon name="flame" class="size-3.5" />{{ props.tool.gain }}
+    <span class="number-font flex items-center justify-end gap-0.5 font-semibold text-foreground">
+      <AppIcon name="flame" class="size-3.5 text-muted-foreground" />{{ props.tool.gain }}
     </span>
   </NuxtLink>
 </template>
