@@ -35,7 +35,7 @@ watch(() => props.domain, () => {
     <span
       v-if="failed"
       :class="fallbackClass"
-      class="grid place-items-center bg-brand-soft text-[14px] font-bold text-brand"
+      class="grid place-items-center bg-secondary text-[14px] font-bold text-secondary-foreground"
       aria-hidden="true"
     >{{ initialOf(name) }}</span>
   </span>

@@ -43,7 +43,7 @@ onBeforeUnmount(() => {
     >
       <div class="mobile-drawer__header">
         <span class="logo-mark" aria-hidden="true" />
-        <strong id="mobileDrawerTitle" class="font-display text-[17px] font-bold text-ink">深度指引</strong>
+        <strong id="mobileDrawerTitle" class="font-display text-[17px] font-bold text-foreground">深度指引</strong>
         <button class="mobile-drawer__close" type="button" aria-label="关闭分类菜单" @click="ui.toggleDrawer(false)">
           <AppIcon name="x" class="size-5" />
         </button>

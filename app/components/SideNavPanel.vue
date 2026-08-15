@@ -66,8 +66,8 @@ const secondaryLinks = computed(() => sideNav.value?.secondary ?? [])
         <AppIcon :name="sideNav?.ranking.icon ?? 'flame'" class="size-[16px]" />{{ sideNav?.ranking.label ?? '热门榜单' }}
       </NuxtLink>
     </nav>
-    <div class="my-2 border-t border-line" />
-    <nav class="space-y-1 text-[#66718b]">
+    <div class="my-2 border-t" />
+    <nav class="space-y-1 text-muted-foreground">
       <NuxtLink
         v-for="link in secondaryLinks"
         :key="link.id"

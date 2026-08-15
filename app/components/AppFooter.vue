@@ -7,19 +7,19 @@ const brokenQrCodes = ref(new Set<string>())
 </script>
 
 <template>
-  <footer v-if="site.site" class="mt-4 border-t border-[#e9edf4] bg-white/55">
+  <footer v-if="site.site" class="mt-4 border-t bg-muted/30">
     <div class="page-shell grid gap-10 py-10 lg:grid-cols-[1.4fr_2fr_1fr]">
       <div>
         <NuxtLink to="/" class="inline-flex items-center gap-3">
           <span class="logo-mark scale-75" aria-hidden="true" />
-          <span class="font-display text-[18px] font-extrabold">{{ site.site.name }}</span>
+          <span class="font-display text-[18px] font-bold text-foreground">{{ site.site.name }}</span>
         </NuxtLink>
-        <p class="mt-3 max-w-[300px] text-[13px] leading-6 text-muted">{{ site.site.slogan }}</p>
+        <p class="mt-3 max-w-[300px] text-[13px] leading-6 text-muted-foreground">{{ site.site.slogan }}</p>
         <div v-if="site.site.footerSocials.length" class="mt-4 flex gap-2">
           <template v-for="social in site.site.footerSocials" :key="social.id">
             <a
               v-if="social.kind === 'external'"
-              class="grid size-9 place-items-center rounded-full border border-line text-muted hover:border-brand/30 hover:text-brand"
+              class="grid size-9 place-items-center rounded-full border text-muted-foreground transition-colors hover:border-foreground/20 hover:bg-accent hover:text-foreground"
               :href="social.to"
               :target="social.target"
               :rel="social.rel"
@@ -29,7 +29,7 @@ const brokenQrCodes = ref(new Set<string>())
             </a>
             <NuxtLink
               v-else
-              class="grid size-9 place-items-center rounded-full border border-line text-muted hover:border-brand/30 hover:text-brand"
+              class="grid size-9 place-items-center rounded-full border text-muted-foreground transition-colors hover:border-foreground/20 hover:bg-accent hover:text-foreground"
               :to="social.to"
               :aria-label="social.label"
             >
@@ -39,29 +39,29 @@ const brokenQrCodes = ref(new Set<string>())
         </div>
       </div>
 
-      <div class="grid grid-cols-3 gap-6 text-[13px] leading-6 text-muted">
+      <div class="grid grid-cols-3 gap-6 text-[13px] leading-6 text-muted-foreground">
         <div v-for="column in site.site.footerColumns" :key="column.title">
-          <p class="mb-3 text-[14px] font-bold text-ink">{{ column.title }}</p>
+          <p class="mb-3 text-[14px] font-semibold text-foreground">{{ column.title }}</p>
           <template v-for="link in column.links" :key="link.id">
             <a
               v-if="link.kind === 'external'"
-              class="mb-1.5 block hover:text-brand"
+              class="mb-1.5 block transition-colors hover:text-foreground"
               :href="link.to"
               :target="link.target"
               :rel="link.rel"
             >{{ link.label }}</a>
-            <NuxtLink v-else class="mb-1.5 block hover:text-brand" :to="link.to">{{ link.label }}</NuxtLink>
+            <NuxtLink v-else class="mb-1.5 block transition-colors hover:text-foreground" :to="link.to">{{ link.label }}</NuxtLink>
           </template>
         </div>
       </div>
 
       <div v-if="site.site.footerFollow.qrCodes.length">
-        <p class="text-[14px] font-bold">{{ site.site.footerFollow.title }}</p>
+        <p class="text-[14px] font-semibold text-foreground">{{ site.site.footerFollow.title }}</p>
         <div class="mt-3 flex gap-4">
           <div
             v-for="qr in site.site.footerFollow.qrCodes"
             :key="qr.id"
-            class="grid size-[78px] place-items-center overflow-hidden rounded-lg border border-line bg-white"
+            class="grid size-[78px] place-items-center overflow-hidden rounded-lg border bg-card"
           >
             <img
               v-if="!brokenQrCodes.has(qr.id)"
@@ -73,15 +73,15 @@ const brokenQrCodes = ref(new Set<string>())
               :alt="`${qr.label}二维码`"
               @error="brokenQrCodes.add(qr.id)"
             >
-            <AppIcon v-else name="qr-code" class="size-12 text-ink" />
+            <AppIcon v-else name="qr-code" class="size-12 text-foreground" />
           </div>
         </div>
-        <div class="mt-2 flex gap-8 text-[12px] text-muted">
+        <div class="mt-2 flex gap-8 text-[12px] text-muted-foreground">
           <span v-for="qr in site.site.footerFollow.qrCodes" :key="qr.id">{{ qr.label }}</span>
         </div>
       </div>
 
-      <p class="text-[11px] text-muted lg:col-span-3 lg:text-center">{{ site.site.copyright }}</p>
+      <p class="text-[11px] text-muted-foreground lg:col-span-3 lg:text-center">{{ site.site.copyright }}</p>
     </div>
   </footer>
 </template>
