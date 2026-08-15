@@ -69,16 +69,16 @@ function openTool(item: SearchItem) {
           <h1 id="search-results-title" class="font-display font-bold">搜索结果</h1>
           <p>
             <template v-if="keyword">
-              为您找到与“{{ keyword }}”相关的网站 <strong class="number-font text-ink">{{ result?.total ?? 0 }}</strong> 个
+              为您找到与“{{ keyword }}”相关的网站 <strong class="number-font text-foreground">{{ result?.total ?? 0 }}</strong> 个
             </template>
             <template v-else>
-              当前收录 <strong class="number-font text-ink">{{ result?.total ?? 0 }}</strong> 个优质网站，输入关键词开始检索
+              当前收录 <strong class="number-font text-foreground">{{ result?.total ?? 0 }}</strong> 个优质网站，输入关键词开始检索
             </template>
           </p>
         </div>
 
         <form class="result-search-form" role="search" @submit.prevent="submitSearch">
-          <AppIcon name="search" class="size-4 shrink-0 text-[#8792aa]" />
+          <AppIcon name="search" class="size-4 shrink-0 text-muted-foreground" />
           <label class="sr-only" for="resultSearchInput">搜索工具、网站或资源</label>
           <input
             id="resultSearchInput"
@@ -151,9 +151,9 @@ function openTool(item: SearchItem) {
         </div>
 
         <div class="search-empty" :class="{ 'is-visible': !result?.list.length }">
-          <AppIcon name="search-x" class="mx-auto size-7 text-[#a5aec0]" />
+          <AppIcon name="search-x" class="mx-auto size-7 text-muted-foreground" />
           <p class="mt-3 text-[13px] font-semibold">没有找到匹配的网站</p>
-          <button class="mt-2 text-[12px] font-semibold text-brand" type="button" @click="clearSearch">清除搜索条件</button>
+          <button class="mt-2 text-[12px] font-semibold text-primary" type="button" @click="clearSearch">清除搜索条件</button>
         </div>
 
         <nav v-if="result && result.totalPages > 1" class="result-pagination" aria-label="结果分页">
@@ -194,12 +194,12 @@ function openTool(item: SearchItem) {
       </section>
 
       <section v-if="!keyword" class="panel rounded-xl p-5" aria-labelledby="search-suggest-title">
-        <h2 id="search-suggest-title" class="font-display text-[16px] font-bold text-ink">大家都在搜</h2>
+        <h2 id="search-suggest-title" class="font-display text-[16px] font-bold text-foreground">大家都在搜</h2>
         <div class="mt-3 flex flex-wrap gap-2">
           <button
             v-for="item in data?.suggestions ?? []"
             :key="item"
-            class="rounded-lg bg-canvas px-3 py-1.5 text-[12px] font-semibold text-copy transition hover:bg-brand-soft hover:text-brand"
+            class="rounded-lg bg-muted px-3 py-1.5 text-[12px] font-semibold text-muted-foreground transition hover:bg-accent hover:text-foreground"
             type="button"
             @click="updateQuery({ keyword: item, page: undefined })"
           >{{ item }}</button>

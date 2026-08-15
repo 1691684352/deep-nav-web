@@ -26,7 +26,7 @@ defineEmits<{ remove: [slug: string] }>()
       <time v-if="props.time">{{ props.time }}</time>
       <button
         v-if="props.removable"
-        class="text-[10px] font-semibold text-muted transition hover:text-[#e25760]"
+        class="text-[10px] font-semibold text-muted-foreground transition hover:text-destructive"
         type="button"
         :aria-label="`移除 ${props.item.name}`"
         @click="$emit('remove', props.item.toolSlug)"

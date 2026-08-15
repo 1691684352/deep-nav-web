@@ -82,69 +82,57 @@ async function submit() {
 </script>
 
 <template>
-  <BaseDialog
-    :open="ui.loginOpen"
-    dialog-class="m-auto w-[min(420px,calc(100%-32px))] rounded-2xl border-0 bg-white p-0 shadow-2xl"
-    @close="ui.closeLogin()"
-  >
-    <form class="p-6" @submit.prevent="submit">
-      <div class="flex items-center justify-between">
-        <div>
-          <h2 class="font-display text-[20px] font-bold">欢迎回来</h2>
-          <p class="mt-1 text-[12px] text-muted">登录后同步收藏与浏览记录</p>
+  <Dialog :open="ui.loginOpen" @update:open="(v) => { if (!v) ui.closeLogin() }">
+    <DialogContent class="sm:max-w-[420px]">
+      <DialogHeader>
+        <DialogTitle class="font-display text-[20px]">欢迎回来</DialogTitle>
+        <DialogDescription>登录后同步收藏与浏览记录</DialogDescription>
+      </DialogHeader>
+
+      <form class="grid gap-4" @submit.prevent="submit">
+        <div class="grid gap-2">
+          <Label for="loginPhone">手机号</Label>
+          <Input
+            id="loginPhone"
+            ref="phoneInput"
+            v-model.trim="phone"
+            type="tel"
+            autocomplete="tel"
+            placeholder="请输入手机号"
+            maxlength="11"
+          />
         </div>
-        <button
-          class="grid size-10 place-items-center rounded-full text-muted transition hover:bg-canvas hover:text-ink"
-          type="button"
-          aria-label="关闭登录弹窗"
-          @click="ui.closeLogin()"
-        >
-          <AppIcon name="x" class="size-5" />
-        </button>
-      </div>
 
-      <label for="loginPhone" class="mt-6 block text-[12px] font-semibold">手机号</label>
-      <input
-        id="loginPhone"
-        ref="phoneInput"
-        v-model.trim="phone"
-        class="mt-2 h-11 w-full rounded-lg border border-line px-3 text-[13px] outline-none transition focus:border-brand"
-        type="tel"
-        autocomplete="tel"
-        placeholder="请输入手机号"
-        maxlength="11"
-      >
+        <div class="grid gap-2">
+          <Label for="loginCode">验证码</Label>
+          <div class="flex gap-2">
+            <Input
+              id="loginCode"
+              v-model.trim="code"
+              class="min-w-0 flex-1"
+              inputmode="numeric"
+              maxlength="6"
+              placeholder="6 位验证码"
+            />
+            <Button
+              type="button"
+              variant="secondary"
+              class="shrink-0"
+              :disabled="countdown > 0 || sending"
+              @click="sendCode"
+            >
+              {{ countdown > 0 ? `${countdown}s 后重发` : '获取验证码' }}
+            </Button>
+          </div>
+        </div>
 
-      <label for="loginCode" class="mt-4 block text-[12px] font-semibold">验证码</label>
-      <div class="mt-2 flex gap-2">
-        <input
-          id="loginCode"
-          v-model.trim="code"
-          class="h-11 min-w-0 flex-1 rounded-lg border border-line px-3 text-[13px] outline-none transition focus:border-brand"
-          inputmode="numeric"
-          maxlength="6"
-          placeholder="6 位验证码"
-        >
-        <button
-          class="h-11 shrink-0 rounded-lg bg-brand-soft px-4 text-[12px] font-semibold text-brand disabled:opacity-60"
-          type="button"
-          :disabled="countdown > 0 || sending"
-          @click="sendCode"
-        >
-          {{ countdown > 0 ? `${countdown}s 后重发` : '获取验证码' }}
-        </button>
-      </div>
+        <p v-if="error" class="text-[12px] font-medium text-destructive">{{ error }}</p>
 
-      <p v-if="error" class="mt-3 text-[12px] font-medium text-[#e25760]">{{ error }}</p>
-
-      <button
-        class="mt-6 h-11 w-full rounded-lg bg-brand text-[13px] font-semibold text-white transition hover:bg-brand-deep disabled:opacity-70"
-        type="submit"
-        :disabled="submitting"
-      >
-        {{ submitting ? '登录中…' : '登录 / 注册' }}
-      </button>
-      <p class="mt-4 text-center text-[11px] leading-5 text-muted">继续即表示你同意《用户协议》和《隐私政策》</p>
-    </form>
-  </BaseDialog>
+        <Button type="submit" class="w-full" :disabled="submitting">
+          {{ submitting ? '登录中…' : '登录 / 注册' }}
+        </Button>
+        <p class="text-center text-[11px] leading-5 text-muted-foreground">继续即表示你同意《用户协议》和《隐私政策》</p>
+      </form>
+    </DialogContent>
+  </Dialog>
 </template>

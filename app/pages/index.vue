@@ -81,46 +81,46 @@ function pickKeyword(value: string) {
     <LeftRail active-category="" active-action="" />
 
     <div class="min-w-0 space-y-4">
-      <section class="hero-panel rounded-xl border border-[#e6ecf8] p-7 sm:p-8" aria-labelledby="hero-title">
+      <section class="hero-panel rounded-xl border border-border p-7 sm:p-8" aria-labelledby="hero-title">
         <div class="hero-copy relative z-10 max-w-[66%]">
-          <div class="flex items-center gap-2 text-[12px] font-semibold text-brand">
-            <span class="h-px w-5 bg-brand" />{{ data?.greeting.eyebrow }}
+          <div class="flex items-center gap-2 text-[12px] font-semibold text-primary">
+            <span class="h-px w-5 bg-primary" />{{ data?.greeting.eyebrow }}
           </div>
-          <h1 id="hero-title" class="mt-2.5 font-display text-[32px] font-extrabold leading-tight text-[#121827]">
+          <h1 id="hero-title" class="mt-2.5 font-display text-[32px] font-extrabold leading-tight text-foreground">
             {{ data?.greeting.title }}
           </h1>
-          <p class="mt-2 text-[14px] font-medium leading-6 text-copy">{{ data?.greeting.subtitle }}</p>
+          <p class="mt-2 text-[14px] font-medium leading-6 text-muted-foreground">{{ data?.greeting.subtitle }}</p>
 
           <form
             id="searchForm"
-            class="search-wrap mt-5 flex h-[58px] items-center rounded-full border border-white/90 bg-white/95 p-1.5"
+            class="search-wrap mt-5 flex h-[58px] items-center rounded-full border border-border bg-card p-1.5"
             role="search"
             @submit.prevent="submitSearch"
           >
             <label for="toolSearch" class="sr-only">搜索工具、网站或资源</label>
-            <AppIcon name="search" class="ml-3 size-[18px] shrink-0 text-[#8792aa]" />
+            <AppIcon name="search" class="ml-3 size-[18px] shrink-0 text-muted-foreground" />
             <input
               id="toolSearch"
               v-model="keyword"
-              class="min-w-0 flex-1 border-0 bg-transparent px-3 text-[13px] text-ink outline-none placeholder:text-[#9aa5b9]"
+              class="min-w-0 flex-1 border-0 bg-transparent px-3 text-[13px] text-foreground outline-none placeholder:text-muted-foreground"
               type="search"
               placeholder="输入关键词，搜索工具、网站或资源..."
               autocomplete="off"
             >
             <button
-              class="flex h-[46px] shrink-0 items-center gap-2 rounded-full bg-brand px-7 text-[13px] font-semibold text-white shadow-[0_7px_15px_rgba(36,87,245,.20)] transition hover:bg-brand-deep active:scale-[.98]"
+              class="flex h-[46px] shrink-0 items-center gap-2 rounded-full bg-primary px-7 text-[13px] font-semibold text-primary-foreground shadow-[0_7px_15px_rgba(36,87,245,.20)] transition hover:bg-primary/90 active:scale-[.98]"
               type="submit"
             >
               <AppIcon name="search" class="size-4" />搜索
             </button>
           </form>
 
-          <div class="mt-3.5 flex flex-wrap items-center gap-x-4 gap-y-2 text-[12px] text-[#72809a]">
-            <span class="text-[#99a3b6]">热门搜索：</span>
+          <div class="mt-3.5 flex flex-wrap items-center gap-x-4 gap-y-2 text-[12px] text-muted-foreground">
+            <span class="text-muted-foreground">热门搜索：</span>
             <button
               v-for="item in data?.site.hotKeywords ?? []"
               :key="item"
-              class="hot-key hover:text-brand"
+              class="hot-key hover:text-foreground"
               type="button"
               @click="pickKeyword(item)"
             >{{ item }}</button>
@@ -143,7 +143,7 @@ function pickKeyword(value: string) {
         <h2 id="popular-title" class="sr-only">网址导航</h2>
         <div
           id="categoryTabs"
-          class="flex gap-1 overflow-x-auto border-b border-[#e9edf3] text-[13px] font-medium"
+          class="flex gap-1 overflow-x-auto border-b border-border text-[13px] font-medium"
           role="tablist"
           aria-label="网址导航分类"
         >
@@ -164,7 +164,7 @@ function pickKeyword(value: string) {
           <NuxtLink
             v-if="showMoreCard"
             to="/category/all"
-            class="view-more-card tool-card flex min-h-[60px] items-center justify-center gap-2 rounded-xl border border-[#e9edf3] bg-white text-[12px] font-medium text-[#687386] transition hover:text-brand"
+            class="view-more-card tool-card flex min-h-[60px] items-center justify-center gap-2 rounded-xl border border-border bg-card text-[12px] font-medium text-muted-foreground transition hover:text-foreground"
           >
             查看更多 <AppIcon name="chevron-right" class="size-4" />
           </NuxtLink>
@@ -181,7 +181,7 @@ function pickKeyword(value: string) {
       <section id="topics" class="panel rounded-xl p-5" aria-labelledby="topic-title">
         <div class="flex items-center justify-between">
           <h2 id="topic-title" class="font-display text-[17px] font-bold">推荐专题</h2>
-          <NuxtLink to="/topic" class="flex items-center gap-1 text-[12px] font-semibold text-brand">
+          <NuxtLink to="/topic" class="flex items-center gap-1 text-[12px] font-semibold text-primary">
             查看全部 <AppIcon name="arrow-right" class="size-3" />
           </NuxtLink>
         </div>
@@ -198,7 +198,7 @@ function pickKeyword(value: string) {
               <p class="mt-1 text-[12px] text-muted">发现刚刚收录的新鲜工具</p>
             </div>
             <button
-              class="grid size-9 place-items-center rounded-lg text-muted transition hover:bg-canvas hover:text-brand"
+              class="grid size-9 place-items-center rounded-lg text-muted transition hover:bg-accent hover:text-foreground"
               type="button"
               aria-label="刷新最新收录"
               @click="latestReversed = !latestReversed"
@@ -211,7 +211,7 @@ function pickKeyword(value: string) {
           </div>
           <NuxtLink
             to="/category/all"
-            class="mt-3 flex h-10 items-center justify-center gap-1 rounded-lg text-[13px] font-semibold text-brand transition hover:bg-brand-soft"
+            class="mt-3 flex h-10 items-center justify-center gap-1 rounded-lg text-[13px] font-semibold text-primary transition hover:bg-accent"
           >
             查看更多最新收录 <AppIcon name="arrow-right" class="size-3.5" />
           </NuxtLink>
@@ -223,12 +223,12 @@ function pickKeyword(value: string) {
               <h2 class="font-display text-[18px] font-bold">人气榜单</h2>
               <p class="mt-1 text-[12px] text-muted">全站实时热度排行</p>
             </div>
-            <div class="flex rounded-lg bg-canvas p-0.5 text-[12px] font-semibold">
+            <div class="flex rounded-lg bg-muted p-0.5 text-[12px] font-semibold">
               <button
                 v-for="period in rankPeriods"
                 :key="period"
                 class="rank-period rounded-md px-2.5 py-1.5"
-                :class="rankPeriod === period ? 'bg-white text-brand shadow-sm' : 'text-muted'"
+                :class="rankPeriod === period ? 'bg-card text-primary shadow-sm' : 'text-muted'"
                 type="button"
                 @click="rankPeriod = period"
               >{{ period }}</button>
@@ -239,7 +239,7 @@ function pickKeyword(value: string) {
           </ol>
           <NuxtLink
             to="/ranking"
-            class="mt-3 flex h-10 items-center justify-center gap-1 rounded-lg text-[13px] font-semibold text-brand transition hover:bg-brand-soft"
+            class="mt-3 flex h-10 items-center justify-center gap-1 rounded-lg text-[13px] font-semibold text-primary transition hover:bg-accent"
           >
             查看完整榜单 <AppIcon name="arrow-right" class="size-3.5" />
           </NuxtLink>

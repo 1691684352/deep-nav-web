@@ -176,7 +176,7 @@ async function submitReview() {
                 <AppIcon name="check" class="size-3" />
               </span>
             </div>
-            <p class="mt-1.5 text-[13px] font-medium text-copy">{{ detail.slogan }}</p>
+            <p class="mt-1.5 text-[13px] font-medium text-muted-foreground">{{ detail.slogan }}</p>
             <div class="mt-3 flex flex-wrap gap-2" aria-label="站点标签">
               <span v-for="tag in detail.siteTags" :key="tag" class="site-tag">{{ tag }}</span>
             </div>
@@ -292,14 +292,14 @@ async function submitReview() {
                 rel="noopener"
                 class="rank-row flex items-center gap-3 rounded-lg px-2 py-2.5"
               >
-                <AppIcon name="newspaper" class="size-4 shrink-0 text-brand" />
-                <span class="min-w-0 flex-1 truncate text-[13px] font-medium text-ink">{{ item.title }}</span>
+                <AppIcon name="newspaper" class="size-4 shrink-0 text-primary" />
+                <span class="min-w-0 flex-1 truncate text-[13px] font-medium text-foreground">{{ item.title }}</span>
                 <span class="shrink-0 text-[11px] text-muted">{{ item.source }} · {{ item.publishedAt }}</span>
               </a>
             </li>
           </ul>
           <div v-else class="detail-empty-tab">
-            <AppIcon name="newspaper" class="mx-auto size-6 text-[#a5aec0]" />
+            <AppIcon name="newspaper" class="mx-auto size-6 text-muted-foreground" />
             <p class="mt-3 text-[13px] font-semibold">相关快讯正在整理中</p>
           </div>
         </div>
@@ -318,20 +318,20 @@ async function submitReview() {
             <div class="review-avatar">{{ review.avatarText }}</div>
             <div class="min-w-0 flex-1">
               <div class="flex flex-wrap items-center gap-x-2 gap-y-1">
-                <strong class="text-[13px] text-[#20295a]">{{ review.author }}</strong>
+                <strong class="text-[13px] text-foreground">{{ review.author }}</strong>
                 <span class="review-stars" :aria-label="`${review.rating} 星`">
                   <AppIcon v-for="index in review.rating" :key="index" name="star" class="size-3" fill />
                 </span>
                 <span class="review-meta">{{ review.rating.toFixed(1) }}</span>
               </div>
-              <p class="mt-2 text-[13px] leading-6 text-copy">{{ review.content }}</p>
+              <p class="mt-2 text-[13px] leading-6 text-muted-foreground">{{ review.content }}</p>
               <div class="mt-2 flex items-center justify-between">
                 <span class="review-meta">{{ review.createdAt }}</span>
                 <div class="flex gap-3 text-[11px] text-muted">
-                  <button class="hover:text-brand" type="button" @click="like(review)">
+                  <button class="hover:text-foreground" type="button" @click="like(review)">
                     <AppIcon name="thumbs-up" class="mr-1 inline size-3" />{{ review.likes }}
                   </button>
-                  <button class="hover:text-brand" type="button" @click="openReview">
+                  <button class="hover:text-foreground" type="button" @click="openReview">
                     <AppIcon name="message-circle" class="mr-1 inline size-3" />回复
                   </button>
                 </div>
@@ -351,7 +351,7 @@ async function submitReview() {
 
         <button
           v-if="allReviews.length > 3"
-          class="mt-4 flex h-10 w-full items-center justify-center gap-1 rounded-lg text-[12px] font-semibold text-brand transition hover:bg-brand-soft"
+          class="mt-4 flex h-10 w-full items-center justify-center gap-1 rounded-lg text-[12px] font-semibold text-primary transition hover:bg-accent"
           type="button"
           @click="showAllReviews = !showAllReviews"
         >
@@ -362,7 +362,7 @@ async function submitReview() {
       <section v-if="detail.related.length" class="panel rounded-xl p-5" aria-labelledby="related-title">
         <div class="flex items-center justify-between">
           <h2 id="related-title" class="font-display text-[17px] font-bold">相关推荐</h2>
-          <NuxtLink :to="`/category/subcategory/${detail.navCategorySlug}`" class="flex items-center gap-1 text-[12px] font-semibold text-brand">
+          <NuxtLink :to="`/category/subcategory/${detail.navCategorySlug}`" class="flex items-center gap-1 text-[12px] font-semibold text-primary">
             查看更多 <AppIcon name="arrow-right" class="size-3" />
           </NuxtLink>
         </div>
@@ -403,7 +403,7 @@ async function submitReview() {
             </div>
           </div>
           <div class="rating-summary">
-            <AppIcon name="badge-check" class="size-4 text-brand" />
+            <AppIcon name="badge-check" class="size-4 text-primary" />
             <strong>{{ detail.rating }}</strong><span>综合用户反馈</span>
           </div>
         </section>
@@ -412,14 +412,14 @@ async function submitReview() {
 
     <BaseDialog
       :open="galleryOpen"
-      dialog-class="m-auto w-[min(880px,calc(100%-32px))] rounded-2xl border-0 bg-white p-0 shadow-2xl"
+      dialog-class="m-auto w-[min(880px,calc(100%-32px))] rounded-2xl border-0 bg-card p-0 shadow-2xl"
       @close="galleryOpen = false"
     >
       <div class="max-h-[80dvh] overflow-y-auto p-6">
         <div class="flex items-center justify-between">
           <h2 class="font-display text-[18px] font-bold">{{ detail.name }} 截图</h2>
           <button
-            class="grid size-10 place-items-center rounded-full text-muted transition hover:bg-canvas hover:text-ink"
+            class="grid size-10 place-items-center rounded-full text-muted transition hover:bg-accent hover:text-foreground"
             type="button"
             aria-label="关闭截图预览"
             @click="galleryOpen = false"
@@ -435,7 +435,7 @@ async function submitReview() {
             :width="shot.width"
             :height="shot.height"
             :alt="shot.alt"
-            class="w-full rounded-xl border border-line"
+            class="w-full rounded-xl border border-border"
           >
         </div>
       </div>
@@ -443,14 +443,14 @@ async function submitReview() {
 
     <BaseDialog
       :open="reviewOpen"
-      dialog-class="m-auto w-[min(480px,calc(100%-32px))] rounded-2xl border-0 bg-white p-0 shadow-2xl"
+      dialog-class="m-auto w-[min(480px,calc(100%-32px))] rounded-2xl border-0 bg-card p-0 shadow-2xl"
       @close="reviewOpen = false"
     >
       <form class="p-6" @submit.prevent="submitReview">
         <div class="flex items-center justify-between">
           <h2 class="font-display text-[18px] font-bold">写评价</h2>
           <button
-            class="grid size-10 place-items-center rounded-full text-muted transition hover:bg-canvas hover:text-ink"
+            class="grid size-10 place-items-center rounded-full text-muted transition hover:bg-accent hover:text-foreground"
             type="button"
             aria-label="关闭评价弹窗"
             @click="reviewOpen = false"
@@ -465,7 +465,7 @@ async function submitReview() {
             v-for="score in 5"
             :key="score"
             class="grid size-9 place-items-center rounded-lg transition"
-            :class="score <= reviewRating ? 'text-[#ffb020]' : 'text-[#c8cede] hover:text-[#ffb020]'"
+            :class="score <= reviewRating ? 'text-foreground' : 'text-[#c8cede] hover:text-foreground'"
             type="button"
             :aria-label="`${score} 星`"
             @click="reviewRating = score"
@@ -479,22 +479,22 @@ async function submitReview() {
         <textarea
           id="reviewContent"
           v-model="reviewContent"
-          class="mt-2 min-h-28 w-full rounded-lg border border-line p-3 text-[13px] outline-none transition focus:border-brand"
+          class="mt-2 min-h-28 w-full rounded-lg border border-border p-3 text-[13px] outline-none transition focus:border-brand"
           maxlength="500"
           placeholder="说说这个工具好在哪里，或者哪里还可以改进…"
         />
         <p class="mt-1 text-right text-[11px] text-muted">{{ reviewContent.length }} / 500</p>
 
-        <p v-if="reviewError" class="mt-2 text-[12px] font-medium text-[#e25760]">{{ reviewError }}</p>
+        <p v-if="reviewError" class="mt-2 text-[12px] font-medium text-destructive">{{ reviewError }}</p>
 
         <div class="mt-5 flex justify-end gap-2">
           <button
-            class="h-10 rounded-lg border border-line px-4 text-[13px] font-semibold text-copy transition hover:bg-canvas"
+            class="h-10 rounded-lg border border-border px-4 text-[13px] font-semibold text-muted-foreground transition hover:bg-accent"
             type="button"
             @click="reviewOpen = false"
           >取消</button>
           <button
-            class="h-10 rounded-lg bg-brand px-5 text-[13px] font-semibold text-white transition hover:bg-brand-deep disabled:opacity-70"
+            class="h-10 rounded-lg bg-primary px-5 text-[13px] font-semibold text-primary-foreground transition hover:bg-primary/90 disabled:opacity-70"
             type="submit"
             :disabled="submittingReview"
           >{{ submittingReview ? '发布中…' : '发布评价' }}</button>

@@ -51,7 +51,7 @@ function selectFilter(key: string) {
     <LeftRail />
 
     <div class="min-w-0 space-y-6">
-      <section class="hero-panel category-hero rounded-xl border border-[#e6ecf8] p-7 sm:p-8" aria-labelledby="category-title">
+      <section class="hero-panel category-hero rounded-xl border border-border p-7 sm:p-8" aria-labelledby="category-title">
         <div class="hero-copy relative z-10">
           <nav class="category-breadcrumb flex items-center gap-1.5 text-[12px] font-medium" aria-label="面包屑">
             <NuxtLink to="/">工具导航</NuxtLink>
@@ -62,11 +62,11 @@ function selectFilter(key: string) {
             <span class="category-title-icon" aria-hidden="true">
               <AppIcon :name="category?.icon ?? 'sparkles'" class="size-5" />
             </span>
-            <h1 id="category-title" class="font-display text-[32px] font-extrabold leading-tight text-[#121827]">
+            <h1 id="category-title" class="font-display text-[32px] font-extrabold leading-tight text-foreground">
               {{ category?.label }}
             </h1>
           </div>
-          <p class="mt-3 max-w-[620px] text-[14px] font-medium leading-6 text-copy">{{ category?.description }}</p>
+          <p class="mt-3 max-w-[620px] text-[14px] font-medium leading-6 text-muted-foreground">{{ category?.description }}</p>
           <div class="mt-5 flex flex-wrap gap-y-3">
             <div class="category-metric"><strong>{{ data?.total ?? 0 }}</strong><span>已收录工具</span></div>
             <div class="category-metric"><strong>{{ groups.length }}</strong><span>细分方向</span></div>
@@ -83,7 +83,7 @@ function selectFilter(key: string) {
 
       <section class="panel category-filter rounded-xl px-4 py-3 sm:px-5" :aria-label="`${category?.label} 子分类`">
         <span class="category-filter__label">
-          <AppIcon name="sliders-horizontal" class="size-4 text-brand" />子分类
+          <AppIcon name="sliders-horizontal" class="size-4 text-primary" />子分类
         </span>
         <div class="category-filter__tabs" role="tablist" :aria-label="`${category?.label} 子分类`">
           <button

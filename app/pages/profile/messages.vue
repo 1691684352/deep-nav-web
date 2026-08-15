@@ -24,13 +24,13 @@ const messages = computed(() => data.value?.messages ?? [])
       </div>
 
       <div v-if="messages.length" class="mt-4 space-y-2">
-        <article v-for="message in messages" :key="message.id" class="flex gap-3 rounded-lg border border-line p-4">
+        <article v-for="message in messages" :key="message.id" class="flex gap-3 rounded-lg border border-border p-4">
           <span class="profile-stat__icon size-10 shrink-0">
             <AppIcon :name="message.icon" class="size-5" />
           </span>
           <div class="min-w-0">
-            <p class="text-[13px] font-bold text-ink">{{ message.title }}</p>
-            <p class="mt-1 text-[12px] leading-6 text-copy">{{ message.body }}</p>
+            <p class="text-[13px] font-bold text-foreground">{{ message.title }}</p>
+            <p class="mt-1 text-[12px] leading-6 text-muted-foreground">{{ message.body }}</p>
             <p class="mt-1 text-[11px] text-muted">{{ relativeTime(message.time) }}</p>
           </div>
         </article>

@@ -214,7 +214,7 @@ async function handleNext() {
     <div class="submit-layout mt-5">
       <form class="panel submit-form-panel rounded-xl" novalidate @submit.prevent="handleNext">
         <div class="submit-intro">
-          <h1 id="submit-page-title" class="font-display font-extrabold text-ink">提交收录</h1>
+          <h1 id="submit-page-title" class="font-display font-extrabold text-foreground">提交收录</h1>
           <p class="mt-2 text-[13px] text-muted">分享优质网站，让更多人发现它的价值</p>
         </div>
 
@@ -399,7 +399,7 @@ async function handleNext() {
               <button
                 v-for="tag in options?.suggestedTags ?? []"
                 :key="tag"
-                class="rounded-lg bg-canvas px-2 py-1 text-[11px] font-semibold text-copy transition hover:bg-brand-soft hover:text-brand"
+                class="rounded-lg bg-muted px-2 py-1 text-[11px] font-semibold text-muted-foreground transition hover:bg-accent hover:text-foreground"
                 type="button"
                 @click="addTag(tag)"
               >+ {{ tag }}</button>
@@ -452,18 +452,18 @@ async function handleNext() {
 
           <div class="submit-field submit-field--full">
             <span class="submit-field__label">信息确认</span>
-            <dl class="grid gap-2 rounded-lg border border-line p-4 text-[12px] text-copy sm:grid-cols-2">
-              <div class="flex gap-2"><dt class="shrink-0 text-muted">网站名称</dt><dd class="truncate font-semibold text-ink">{{ previewName }}</dd></div>
-              <div class="flex gap-2"><dt class="shrink-0 text-muted">网站地址</dt><dd class="truncate font-semibold text-ink">{{ previewHost }}</dd></div>
-              <div class="flex gap-2"><dt class="shrink-0 text-muted">分类</dt><dd class="truncate font-semibold text-ink">{{ options?.categories.find(item => item.slug === form.categorySlug)?.name ?? '未选择' }}</dd></div>
-              <div class="flex gap-2"><dt class="shrink-0 text-muted">语言</dt><dd class="truncate font-semibold text-ink">{{ form.language }}</dd></div>
-              <div class="flex gap-2 sm:col-span-2"><dt class="shrink-0 text-muted">标签</dt><dd class="truncate font-semibold text-ink">{{ form.tags.join('、') || '未填写' }}</dd></div>
+            <dl class="grid gap-2 rounded-lg border border-border p-4 text-[12px] text-muted-foreground sm:grid-cols-2">
+              <div class="flex gap-2"><dt class="shrink-0 text-muted">网站名称</dt><dd class="truncate font-semibold text-foreground">{{ previewName }}</dd></div>
+              <div class="flex gap-2"><dt class="shrink-0 text-muted">网站地址</dt><dd class="truncate font-semibold text-foreground">{{ previewHost }}</dd></div>
+              <div class="flex gap-2"><dt class="shrink-0 text-muted">分类</dt><dd class="truncate font-semibold text-foreground">{{ options?.categories.find(item => item.slug === form.categorySlug)?.name ?? '未选择' }}</dd></div>
+              <div class="flex gap-2"><dt class="shrink-0 text-muted">语言</dt><dd class="truncate font-semibold text-foreground">{{ form.language }}</dd></div>
+              <div class="flex gap-2 sm:col-span-2"><dt class="shrink-0 text-muted">标签</dt><dd class="truncate font-semibold text-foreground">{{ form.tags.join('、') || '未填写' }}</dd></div>
             </dl>
           </div>
 
           <div class="submit-field submit-field--full">
-            <label class="flex items-start gap-2 text-[12px] font-medium text-copy">
-              <input v-model="form.agreement" class="mt-0.5 size-4 accent-[#2e62ff]" type="checkbox">
+            <label class="flex items-start gap-2 text-[12px] font-medium text-muted-foreground">
+              <input v-model="form.agreement" class="mt-0.5 size-4 accent-primary" type="checkbox">
               <span>我已阅读并同意《收录协议》，确认所提交的信息真实有效。</span>
             </label>
             <p v-if="fieldError('agreement')" class="submit-field__error">{{ fieldError('agreement') }}</p>
@@ -473,7 +473,7 @@ async function handleNext() {
 
       <aside class="submit-aside space-y-4" aria-label="提交帮助与预览">
         <section class="panel rounded-xl p-5">
-          <h2 class="submit-aside-title"><AppIcon name="circle-help" class="size-4 text-brand" />提交须知</h2>
+          <h2 class="submit-aside-title"><AppIcon name="circle-help" class="size-4 text-primary" />提交须知</h2>
           <ul class="submit-notice-list">
             <li v-for="notice in options?.notices ?? []" :key="notice">
               <AppIcon name="badge-check" class="size-4" /><span>{{ notice }}</span>
@@ -482,7 +482,7 @@ async function handleNext() {
         </section>
 
         <section class="panel rounded-xl p-5">
-          <h2 class="submit-aside-title"><AppIcon name="eye" class="size-4 text-brand" />效果预览</h2>
+          <h2 class="submit-aside-title"><AppIcon name="eye" class="size-4 text-primary" />效果预览</h2>
           <article class="submit-preview-card">
             <div class="submit-preview-card__head">
               <div class="submit-preview-card__icon">
@@ -500,18 +500,18 @@ async function handleNext() {
             <p class="submit-preview-card__description">{{ previewDescription }}</p>
             <div class="submit-preview-card__link">
               <span class="truncate">{{ previewHost }}</span>
-              <AppIcon name="external-link" class="size-3.5 text-brand" />
+              <AppIcon name="external-link" class="size-3.5 text-primary" />
             </div>
           </article>
           <div class="submit-preview-dots" aria-hidden="true"><i /><i /><i /><i /><i /></div>
         </section>
 
         <section class="panel rounded-xl p-5">
-          <h2 class="submit-aside-title"><AppIcon name="file-code-2" class="size-4 text-brand" />Markdown 支持</h2>
+          <h2 class="submit-aside-title"><AppIcon name="file-code-2" class="size-4 text-primary" />Markdown 支持</h2>
           <div class="submit-markdown-list">
             <span v-for="hint in options?.markdownHints ?? []" :key="hint"><code>{{ hint }}</code></span>
           </div>
-          <NuxtLink to="/about/help" class="mt-5 flex items-center gap-1 text-[12px] font-semibold text-brand">
+          <NuxtLink to="/about/help" class="mt-5 flex items-center gap-1 text-[12px] font-semibold text-primary">
             查看完整 Markdown 语法 <AppIcon name="arrow-right" class="size-3.5" />
           </NuxtLink>
         </section>

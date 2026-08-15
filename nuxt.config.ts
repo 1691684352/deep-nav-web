@@ -14,10 +14,12 @@ export default defineNuxtConfig({
 
   css: ['~/assets/css/main.css'],
 
-  components: [
-    { path: '~/components/ui', pathPrefix: false, extensions: ['.vue'] },
-    '~/components',
-  ],
+  components: {
+    dirs: [
+      { path: '~/components/ui', pathPrefix: false, extensions: ['vue'] },
+      '~/components',
+    ],
+  },
 
   vite: {
     plugins: [tailwindcss()],

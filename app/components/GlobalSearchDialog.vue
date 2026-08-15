@@ -73,51 +73,50 @@ function openTool(tool: Tool) {
 </script>
 
 <template>
-  <BaseDialog
-    :open="ui.searchOpen"
-    dialog-class="global-search-dialog"
-    aria-labelledby="globalSearchTitle"
-    @close="ui.closeSearch()"
-  >
-    <div class="global-search-panel">
-      <div class="global-search-head">
-        <h2 id="globalSearchTitle" class="font-display">全站搜索</h2>
-        <button class="global-search-close" type="button" aria-label="关闭全站搜索" @click="ui.closeSearch()">
-          <AppIcon name="x" class="size-5" />
-        </button>
-      </div>
+  <Dialog :open="ui.searchOpen" @update:open="(v) => { if (!v) ui.closeSearch() }">
+    <DialogContent class="gap-4 p-5 sm:max-w-[560px]">
+      <DialogHeader>
+        <DialogTitle class="font-display text-[18px]">全站搜索</DialogTitle>
+        <DialogDescription class="sr-only">搜索工具、网站或资源</DialogDescription>
+      </DialogHeader>
 
-      <form class="global-search-form" role="search" @submit.prevent="submit">
-        <img src="/assets/icon-search.png" width="18" height="18" alt="">
-        <input
+      <form class="relative" role="search" @submit.prevent="submit">
+        <AppIcon name="search" class="pointer-events-none absolute left-3 top-1/2 size-4 -translate-y-1/2 text-muted-foreground" />
+        <Input
           ref="input"
           v-model="keyword"
-          class="global-search-input"
+          class="h-11 pl-9 pr-20"
           type="search"
           autocomplete="off"
           aria-label="搜索工具、网站或资源"
           placeholder="搜索工具、网站或资源..."
-        >
-        <button class="global-search-submit" type="submit">搜索</button>
+        />
+        <Button type="submit" size="sm" class="absolute right-1.5 top-1/2 -translate-y-1/2">搜索</Button>
       </form>
 
-      <div class="global-search-hot" aria-label="热门搜索">
-        <span>热门：</span>
-        <button v-for="item in hotKeywords" :key="item.value" type="button" @click="pick(item.value)">
+      <div class="flex flex-wrap items-center gap-2" aria-label="热门搜索">
+        <span class="text-[12px] text-muted-foreground">热门：</span>
+        <Badge
+          v-for="item in hotKeywords"
+          :key="item.value"
+          variant="secondary"
+          class="cursor-pointer hover:bg-secondary/70"
+          @click="pick(item.value)"
+        >
           {{ item.label }}
-        </button>
+        </Badge>
       </div>
 
-      <div class="global-search-meta">
+      <div class="flex items-center justify-between text-[12px] font-medium text-muted-foreground">
         <span>{{ resultTitle }}</span>
         <span>{{ loading ? '搜索中…' : resultCount }}</span>
       </div>
 
-      <div class="global-search-results" aria-live="polite">
+      <div class="max-h-[360px] space-y-1 overflow-y-auto" aria-live="polite">
         <button
           v-for="tool in results"
           :key="tool.id"
-          class="global-search-result w-full text-left"
+          class="flex w-full items-center gap-3 rounded-lg p-2 text-left transition-colors hover:bg-accent"
           type="button"
           :aria-label="`查看 ${tool.name} 详情`"
           @click="openTool(tool)"
@@ -126,17 +125,17 @@ function openTool(tool: Tool) {
             :domain="tool.domain"
             :name="tool.name"
             :size="36"
-            img-class="global-search-result-logo"
-            fallback-class="global-search-result-logo"
+            img-class="size-9 shrink-0 rounded-lg"
+            fallback-class="size-9 shrink-0 rounded-lg"
           />
-          <span class="global-search-result-copy">
-            <strong>{{ tool.name }}</strong>
-            <span>{{ tool.category }} · {{ tool.desc }}</span>
+          <span class="min-w-0 flex-1">
+            <strong class="block truncate text-[13px] font-medium text-foreground">{{ tool.name }}</strong>
+            <span class="block truncate text-[11px] text-muted-foreground">{{ tool.category }} · {{ tool.desc }}</span>
           </span>
-          <img src="/assets/icon-external.png" width="14" height="14" alt="">
+          <AppIcon name="arrow-up-right" class="size-4 shrink-0 text-muted-foreground" />
         </button>
-        <p v-if="!loading && !results.length" class="global-search-empty">未找到匹配的工具</p>
+        <p v-if="!loading && !results.length" class="py-8 text-center text-[13px] text-muted-foreground">未找到匹配的工具</p>
       </div>
-    </div>
-  </BaseDialog>
+    </DialogContent>
+  </Dialog>
 </template>

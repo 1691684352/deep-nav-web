@@ -61,7 +61,7 @@ async function clearAll() {
       </div>
 
       <div class="result-search-form mt-4">
-        <AppIcon name="search" class="size-4 shrink-0 text-[#8792aa]" />
+        <AppIcon name="search" class="size-4 shrink-0 text-muted-foreground" />
         <label class="sr-only" for="favoriteSearch">搜索收藏</label>
         <input id="favoriteSearch" v-model="keyword" class="result-search-input" type="search" placeholder="搜索已收藏的工具...">
       </div>

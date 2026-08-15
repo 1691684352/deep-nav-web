@@ -47,11 +47,11 @@ function goPage(next: number) {
     <section class="min-w-0 space-y-4" aria-labelledby="topic-page-title">
       <section class="topic-hero p-7 sm:p-8">
         <div class="relative z-10 max-w-[680px]">
-          <p class="flex items-center gap-2 text-[12px] font-semibold text-brand">
-            <span class="h-px w-5 bg-brand" />场景化工具合集
+          <p class="flex items-center gap-2 text-[12px] font-semibold text-primary">
+            <span class="h-px w-5 bg-primary" />场景化工具合集
           </p>
-          <h1 id="topic-page-title" class="mt-2 font-display text-[29px] font-extrabold leading-tight text-ink">精选专题</h1>
-          <p class="mt-2 text-[13px] font-medium leading-6 text-copy">
+          <h1 id="topic-page-title" class="mt-2 font-display text-[29px] font-extrabold leading-tight text-foreground">精选专题</h1>
+          <p class="mt-2 text-[13px] font-medium leading-6 text-muted-foreground">
             围绕真实工作与创作场景，整理优质资源合集，帮助你更快找到适合的工具。
           </p>
           <form class="topic-search mt-5 flex items-center p-1" role="search" @submit.prevent="submitSearch">
@@ -60,13 +60,13 @@ function goPage(next: number) {
             <input
               id="topicSearch"
               v-model="searchInput"
-              class="flex-1 border-0 bg-transparent px-3 text-[13px] text-ink placeholder:text-[#99a3b6]"
+              class="flex-1 border-0 bg-transparent px-3 text-[13px] text-foreground placeholder:text-muted-foreground"
               type="search"
               autocomplete="off"
               placeholder="输入关键词，搜索专题合集..."
             >
             <button
-              class="flex h-9 items-center gap-1.5 rounded-lg bg-brand px-4 text-[12px] font-semibold text-white transition hover:bg-brand-deep"
+              class="flex h-9 items-center gap-1.5 rounded-lg bg-primary px-4 text-[12px] font-semibold text-primary-foreground transition hover:bg-primary/90"
               type="submit"
             >
               <AppIcon name="search" class="size-3.5" /><span>搜索</span>
@@ -84,7 +84,7 @@ function goPage(next: number) {
               {{ keyword ? `找到 ${result?.total ?? 0} 个相关专题` : `已收录 ${result?.total ?? 0} 个场景专题` }}
             </p>
           </div>
-          <span class="rounded-lg bg-brand-soft px-2.5 py-1.5 text-[11px] font-semibold text-brand">持续更新</span>
+          <span class="rounded-lg bg-secondary px-2.5 py-1.5 text-[11px] font-semibold text-primary">持续更新</span>
         </div>
 
         <div v-if="result?.list.length" class="topic-grid mt-5 grid gap-3 sm:grid-cols-2 xl:grid-cols-3">
@@ -95,7 +95,7 @@ function goPage(next: number) {
           <div>
             <AppIcon name="search-x" class="mx-auto size-7" />
             <p class="mt-3 text-[13px] font-semibold">没有找到匹配的专题</p>
-            <button class="mt-2 text-[12px] font-semibold text-brand" type="button" @click="clearSearch">清除搜索条件</button>
+            <button class="mt-2 text-[12px] font-semibold text-primary" type="button" @click="clearSearch">清除搜索条件</button>
           </div>
         </div>
 

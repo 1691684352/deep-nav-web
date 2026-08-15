@@ -66,10 +66,10 @@ function setPage(value: number) {
             <AppIcon name="chevron-right" class="size-3.5" />
             <span>{{ topic?.title }}</span>
           </nav>
-          <h1 id="topic-detail-title" class="mt-3 font-display text-[29px] font-extrabold leading-tight text-ink">
+          <h1 id="topic-detail-title" class="mt-3 font-display text-[29px] font-extrabold leading-tight text-foreground">
             {{ topic?.title }}
           </h1>
-          <p class="mt-2 text-[13px] font-medium leading-6 text-copy">{{ topic?.intro }}</p>
+          <p class="mt-2 text-[13px] font-medium leading-6 text-muted-foreground">{{ topic?.intro }}</p>
           <div class="mt-5 flex flex-wrap items-center gap-3">
             <div class="flex -space-x-1.5">
               <img
@@ -84,7 +84,7 @@ function setPage(value: number) {
               >
             </div>
             <p class="text-[12px] text-muted">
-              共 <strong class="number-font text-[14px] text-ink">{{ result?.total ?? 0 }}</strong> 个工具
+              共 <strong class="number-font text-[14px] text-foreground">{{ result?.total ?? 0 }}</strong> 个工具
             </p>
           </div>
         </div>
@@ -108,7 +108,7 @@ function setPage(value: number) {
           <label class="flex shrink-0 items-center gap-2 text-[12px] text-muted">
             <span class="sr-only">排序方式</span>
             <select
-              class="h-8 rounded-lg border border-line bg-transparent px-2 text-[12px] text-ink outline-none focus:border-brand"
+              class="h-8 rounded-lg border border-border bg-transparent px-2 text-[12px] text-foreground outline-none focus:border-brand"
               :value="sort"
               @change="updateQuery({ sort: ($event.target as HTMLSelectElement).value, page: undefined })"
             >
@@ -134,7 +134,7 @@ function setPage(value: number) {
       </section>
 
       <section v-if="topic?.related?.length" class="panel rounded-xl p-5" aria-labelledby="topic-related-title">
-        <h2 id="topic-related-title" class="font-display text-[17px] font-bold text-ink">相关专题</h2>
+        <h2 id="topic-related-title" class="font-display text-[17px] font-bold text-foreground">相关专题</h2>
         <div class="mt-4 grid gap-3 sm:grid-cols-2 xl:grid-cols-4">
           <TopicCard v-for="item in topic.related" :key="item.id" :topic="item" />
         </div>

@@ -10,9 +10,9 @@ const toneIcon = {
 } as const
 
 const toneColor = {
-  success: 'text-[#75e8ba]',
-  error: 'text-[#ff9aa4]',
-  info: 'text-[#9cc4ff]',
+  success: 'text-foreground',
+  error: 'text-destructive',
+  info: 'text-muted-foreground',
 } as const
 </script>
 
@@ -22,7 +22,7 @@ const toneColor = {
       <div
         v-for="item in ui.toasts"
         :key="item.id"
-        class="pointer-events-auto flex min-h-11 items-center gap-2 rounded-full bg-[#172038] px-5 py-2.5 text-[13px] font-medium text-white shadow-xl"
+        class="pointer-events-auto flex min-h-11 items-center gap-2.5 rounded-lg border bg-card px-4 py-2.5 text-[13px] font-medium text-card-foreground shadow-lg"
         role="status"
         aria-live="polite"
       >

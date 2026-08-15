@@ -57,13 +57,13 @@ function updateQuery(patch: Record<string, string | undefined>) {
       <section class="ranking-hero panel rounded-xl p-7 sm:p-8">
         <div class="ranking-hero__copy max-w-[620px]">
           <p class="ranking-hero__eyebrow">全站热度数据</p>
-          <h1 id="ranking-title" class="mt-2 font-display text-[30px] font-extrabold leading-tight text-ink">排行榜</h1>
-          <p class="mt-2 max-w-[520px] text-[13px] font-medium leading-6 text-copy">
+          <h1 id="ranking-title" class="mt-2 font-display text-[30px] font-extrabold leading-tight text-foreground">排行榜</h1>
+          <p class="mt-2 max-w-[520px] text-[13px] font-medium leading-6 text-muted-foreground">
             发现最受欢迎的优质工具和网站，排行基于站内访问、收藏与分享数据综合计算。
           </p>
           <div class="mt-4 flex flex-wrap gap-x-5 gap-y-2 text-[11px] text-muted">
             <span v-for="stat in data?.stats ?? []" :key="stat.label">
-              <strong class="number-font mr-1 text-[13px] text-ink">{{ stat.value }}</strong>{{ stat.label }}
+              <strong class="number-font mr-1 text-[13px] text-foreground">{{ stat.value }}</strong>{{ stat.label }}
             </span>
           </div>
         </div>
@@ -84,7 +84,7 @@ function updateQuery(patch: Record<string, string | undefined>) {
           >{{ item === '全部' ? '总榜' : item }}</button>
         </div>
         <div class="flex flex-wrap items-center justify-between gap-3 px-5 py-3">
-          <div class="flex items-center gap-1 rounded-lg bg-canvas p-1" aria-label="统计周期">
+          <div class="flex items-center gap-1 rounded-lg bg-muted p-1" aria-label="统计周期">
             <button
               v-for="item in data?.periodOptions ?? []"
               :key="item.value"
@@ -103,11 +103,11 @@ function updateQuery(patch: Record<string, string | undefined>) {
       <section class="panel rounded-xl p-5" aria-labelledby="ranking-list-title">
         <div class="flex items-start justify-between gap-4">
           <div>
-            <h2 id="ranking-list-title" class="font-display text-[18px] font-bold text-ink">全站热度排行</h2>
+            <h2 id="ranking-list-title" class="font-display text-[18px] font-bold text-foreground">全站热度排行</h2>
             <p class="mt-1 text-[12px] text-muted">{{ ranking?.summary }}</p>
           </div>
           <button
-            class="grid size-9 shrink-0 place-items-center rounded-lg text-muted transition hover:bg-canvas hover:text-brand"
+            class="grid size-9 shrink-0 place-items-center rounded-lg text-muted transition hover:bg-accent hover:text-foreground"
             type="button"
             aria-label="刷新排行榜"
             @click="refreshNuxtData('ranking')"
@@ -127,7 +127,7 @@ function updateQuery(patch: Record<string, string | undefined>) {
             <img class="podium-card__logo" :src="faviconUrl(entry.tool.domain)" width="42" height="42" :alt="`${entry.tool.name} 图标`">
             <strong class="podium-card__name">{{ entry.tool.name }}</strong>
             <span class="podium-card__meta">
-              <AppIcon name="flame" class="mr-0.5 inline size-3 text-[#ef5b59]" />{{ entry.heat }}
+              <AppIcon name="flame" class="mr-0.5 inline size-3 text-muted-foreground" />{{ entry.heat }}
             </span>
           </NuxtLink>
         </div>
@@ -169,10 +169,10 @@ function updateQuery(patch: Record<string, string | undefined>) {
       <section class="panel rounded-xl p-5" aria-labelledby="ranking-recommend-title">
         <div class="flex items-center justify-between gap-4">
           <div>
-            <h2 id="ranking-recommend-title" class="font-display text-[17px] font-bold text-ink">编辑推荐</h2>
+            <h2 id="ranking-recommend-title" class="font-display text-[17px] font-bold text-foreground">编辑推荐</h2>
             <p class="mt-1 text-[12px] text-muted">兼顾实用性与产品体验的优质工具</p>
           </div>
-          <NuxtLink to="/category/all" class="flex shrink-0 items-center gap-1 text-[12px] font-semibold text-brand">
+          <NuxtLink to="/category/all" class="flex shrink-0 items-center gap-1 text-[12px] font-semibold text-primary">
             查看更多 <AppIcon name="arrow-right" class="size-3.5" />
           </NuxtLink>
         </div>
@@ -194,23 +194,23 @@ function updateQuery(patch: Record<string, string | undefined>) {
     <aside class="ranking-right-rail right-rail space-y-4" aria-label="排行榜说明与分类榜单">
       <section class="panel rounded-xl p-5">
         <div class="flex items-center gap-2">
-          <AppIcon name="badge-info" class="size-4 text-brand" />
-          <h2 class="font-display text-[16px] font-bold text-ink">榜单说明</h2>
+          <AppIcon name="badge-info" class="size-4 text-primary" />
+          <h2 class="font-display text-[16px] font-bold text-foreground">榜单说明</h2>
         </div>
         <div class="ranking-info-list">
           <p><strong>数据来源</strong><br>站内访问、收藏、分享与停留时长。</p>
           <p><strong>更新频率</strong><br>每小时更新一次，异常流量自动过滤。</p>
           <p><strong>统计周期</strong><br>最近 7 天综合热度为默认榜单。</p>
         </div>
-        <NuxtLink to="/about/help" class="mt-4 flex items-center gap-1 text-[12px] font-semibold text-brand">
+        <NuxtLink to="/about/help" class="mt-4 flex items-center gap-1 text-[12px] font-semibold text-primary">
           了解计算规则 <AppIcon name="arrow-right" class="size-3.5" />
         </NuxtLink>
       </section>
 
       <section class="panel rounded-xl p-5" aria-labelledby="category-ranking-title">
         <div class="flex items-center justify-between gap-3">
-          <h2 id="category-ranking-title" class="font-display text-[16px] font-bold text-ink">分类榜单</h2>
-          <NuxtLink to="/category/all" class="text-[11px] font-semibold text-brand">查看全部</NuxtLink>
+          <h2 id="category-ranking-title" class="font-display text-[16px] font-bold text-foreground">分类榜单</h2>
+          <NuxtLink to="/category/all" class="text-[11px] font-semibold text-primary">查看全部</NuxtLink>
         </div>
         <div class="mt-3 space-y-1">
           <NuxtLink
@@ -219,16 +219,16 @@ function updateQuery(patch: Record<string, string | undefined>) {
             class="rank-row rank-data-row flex items-center gap-3 rounded-lg px-2 py-1.5"
             :to="`/ranking?category=${encodeURIComponent(item.category)}`"
           >
-            <span class="number-font w-4 text-center text-[11px] font-bold text-[#8792a8]">{{ index + 1 }}</span>
-            <span class="relative grid size-[26px] shrink-0 place-items-center overflow-hidden rounded-lg bg-brand-soft text-[10px] font-bold text-brand">
+            <span class="number-font w-4 text-center text-[11px] font-bold text-muted-foreground">{{ index + 1 }}</span>
+            <span class="relative grid size-[26px] shrink-0 place-items-center overflow-hidden rounded-lg bg-secondary text-[10px] font-bold text-primary">
               <span aria-hidden="true">{{ initialOf(item.topTool.name) }}</span>
               <img class="mini-logo absolute inset-0" :src="faviconUrl(item.topTool.domain)" width="26" height="26" :alt="`${item.topTool.name} 图标`">
             </span>
             <span class="min-w-0 flex-1">
-              <strong class="block truncate text-[12px] font-medium text-ink">{{ item.category }}榜</strong>
+              <strong class="block truncate text-[12px] font-medium text-foreground">{{ item.category }}榜</strong>
               <span class="mt-0.5 block truncate text-[10px] leading-4 text-muted">{{ item.topTool.name }} · {{ item.topTool.heat }}</span>
             </span>
-            <span class="number-font flex items-center justify-end gap-0.5 text-[11px] font-semibold text-[#ff534c]">
+            <span class="number-font flex items-center justify-end gap-0.5 text-[11px] font-semibold text-muted-foreground">
               <AppIcon name="flame" class="size-3" />{{ item.topTool.heat }}
             </span>
           </NuxtLink>
@@ -237,8 +237,8 @@ function updateQuery(patch: Record<string, string | undefined>) {
 
       <section class="panel rounded-xl p-5" aria-labelledby="rising-ranking-title">
         <div class="flex items-center justify-between gap-3">
-          <h2 id="rising-ranking-title" class="font-display text-[16px] font-bold text-ink">上升最快</h2>
-          <span class="rounded-md bg-[#fff0f2] px-1.5 py-1 text-[10px] font-bold text-[#ef5b67]">实时</span>
+          <h2 id="rising-ranking-title" class="font-display text-[16px] font-bold text-foreground">上升最快</h2>
+          <span class="rounded-md bg-secondary px-1.5 py-1 text-[10px] font-bold text-muted-foreground">实时</span>
         </div>
         <div class="mt-3">
           <NuxtLink
@@ -249,17 +249,17 @@ function updateQuery(patch: Record<string, string | undefined>) {
           >
             <span
               class="number-font w-4 text-center text-[11px] font-bold"
-              :class="item.rank <= 3 ? 'text-[#ff5145]' : 'text-[#8792a8]'"
+              :class="item.rank <= 3 ? 'text-foreground' : 'text-muted-foreground'"
             >{{ item.rank }}</span>
-            <span class="relative grid size-[26px] shrink-0 place-items-center overflow-hidden rounded-lg bg-brand-soft text-[10px] font-bold text-brand">
+            <span class="relative grid size-[26px] shrink-0 place-items-center overflow-hidden rounded-lg bg-secondary text-[10px] font-bold text-primary">
               <span aria-hidden="true">{{ initialOf(item.tool.name) }}</span>
               <img class="mini-logo absolute inset-0" :src="faviconUrl(item.tool.domain)" width="26" height="26" :alt="`${item.tool.name} 图标`">
             </span>
             <span class="min-w-0 flex-1">
-              <strong class="block truncate text-[12px] font-medium text-ink">{{ item.tool.name }}</strong>
+              <strong class="block truncate text-[12px] font-medium text-foreground">{{ item.tool.name }}</strong>
               <span class="mt-0.5 block truncate text-[10px] leading-4 text-muted">{{ item.tool.category }}</span>
             </span>
-            <span class="number-font flex items-center justify-end gap-0.5 text-[11px] font-semibold text-[#ff534c]">
+            <span class="number-font flex items-center justify-end gap-0.5 text-[11px] font-semibold text-muted-foreground">
               <AppIcon name="trending-up" class="size-3" />+{{ item.growth }}%
             </span>
           </NuxtLink>

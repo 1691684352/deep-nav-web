@@ -58,7 +58,7 @@ function setPage(value: number) {
     <LeftRail />
 
     <div class="min-w-0 space-y-6">
-      <section class="hero-panel category-hero rounded-xl border border-[#e6ecf8] p-7 sm:p-8" aria-labelledby="subcategory-title">
+      <section class="hero-panel category-hero rounded-xl border border-border p-7 sm:p-8" aria-labelledby="subcategory-title">
         <div class="hero-copy relative z-10">
           <nav class="category-breadcrumb flex items-center gap-1.5 text-[12px] font-medium" aria-label="面包屑">
             <NuxtLink to="/">工具导航</NuxtLink>
@@ -71,11 +71,11 @@ function setPage(value: number) {
             <span class="category-title-icon" aria-hidden="true">
               <AppIcon :name="nav?.icon ?? 'image'" class="size-5" />
             </span>
-            <h1 id="subcategory-title" class="font-display text-[32px] font-extrabold leading-tight text-[#121827]">
+            <h1 id="subcategory-title" class="font-display text-[32px] font-extrabold leading-tight text-foreground">
               {{ nav?.title }}
             </h1>
           </div>
-          <p class="mt-3 max-w-[650px] text-[14px] font-medium leading-6 text-copy">{{ nav?.description }}</p>
+          <p class="mt-3 max-w-[650px] text-[14px] font-medium leading-6 text-muted-foreground">{{ nav?.description }}</p>
           <div class="mt-5 flex flex-wrap gap-y-3">
             <div class="category-metric"><strong>{{ nav?.toolCount ?? 0 }}</strong><span>已收录工具</span></div>
             <div class="category-metric"><strong>多端可用</strong><span>网页与桌面端</span></div>

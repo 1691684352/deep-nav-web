@@ -35,10 +35,10 @@ const body = computed(() => renderMarkdown(data.value?.page.body ?? ''))
         <AppIcon name="chevron-right" class="size-3" />
         <span aria-current="page">{{ data?.page.title }}</span>
       </nav>
-      <h1 id="about-title" class="mt-4 font-display text-[26px] font-extrabold leading-tight text-ink">
+      <h1 id="about-title" class="mt-4 font-display text-[26px] font-extrabold leading-tight text-foreground">
         {{ data?.page.title }}
       </h1>
-      <p class="mt-2 text-[13px] leading-6 text-copy">{{ data?.page.description }}</p>
+      <p class="mt-2 text-[13px] leading-6 text-muted-foreground">{{ data?.page.description }}</p>
       <p class="mt-1 text-[11px] text-muted">最后更新于 {{ data?.page.updatedAt }}</p>
       <!-- eslint-disable-next-line vue/no-v-html -->
       <div class="detail-prose mt-6" v-html="body" />
@@ -46,7 +46,7 @@ const body = computed(() => renderMarkdown(data.value?.page.body ?? ''))
 
     <aside class="submit-aside space-y-4" aria-label="关于导航">
       <section class="panel rounded-xl p-5">
-        <h2 class="submit-aside-title"><AppIcon name="list" class="size-4 text-brand" />相关页面</h2>
+        <h2 class="submit-aside-title"><AppIcon name="list" class="size-4 text-primary" />相关页面</h2>
         <nav class="mt-3 space-y-1">
           <NuxtLink
             v-for="item in data?.nav ?? []"
@@ -61,7 +61,7 @@ const body = computed(() => renderMarkdown(data.value?.page.body ?? ''))
       </section>
 
       <section class="panel rounded-xl p-5">
-        <h2 class="submit-aside-title"><AppIcon name="send" class="size-4 text-brand" />推荐好工具</h2>
+        <h2 class="submit-aside-title"><AppIcon name="send" class="size-4 text-primary" />推荐好工具</h2>
         <p class="mt-3 text-[12px] leading-6 text-muted">发现了值得收录的网站？欢迎提交给我们，审核通过后即可展示在对应分类中。</p>
         <NuxtLink to="/submit" class="submit-action-button primary mt-4 w-full">
           提交收录 <AppIcon name="arrow-right" class="size-3.5" />
