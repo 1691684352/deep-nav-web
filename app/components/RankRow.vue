@@ -17,8 +17,8 @@ const props = defineProps<{ tool: Tool, rank: number }>()
         <span class="block truncate text-[13px] font-medium text-foreground">{{ props.tool.name }}</span>
         <span class="mt-0.5 block truncate text-[11px] leading-4 text-muted-foreground">{{ props.tool.desc }}</span>
       </span>
-      <span class="number-font flex items-center justify-end gap-0.5 text-[12px] font-semibold text-foreground">
-        <AppIcon name="flame" class="size-3.5 text-muted-foreground" />{{ props.tool.heat }}
+      <span class="number-font flex items-center justify-end gap-0.5 text-[12px] font-semibold text-heat">
+        <AppIcon name="flame" class="size-3.5" />{{ props.tool.heat }}
       </span>
     </NuxtLink>
   </li>
