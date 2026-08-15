@@ -14,6 +14,11 @@ export default defineNuxtConfig({
 
   css: ['~/assets/css/main.css'],
 
+  components: [
+    { path: '~/components/ui', pathPrefix: false },
+    '~/components',
+  ],
+
   vite: {
     plugins: [tailwindcss()],
   },

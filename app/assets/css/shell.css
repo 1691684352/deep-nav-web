@@ -146,7 +146,7 @@ header .page-shell { height: 64px !important; }
   place-items: center;
   border: 1px solid rgba(32, 41, 90, .10);
   border-radius: 8px;
-  background: #f5f7fb;
+  background: var(--muted);
   transition: border-color .18s ease, background-color .18s ease, box-shadow .18s ease;
 }
 
@@ -161,7 +161,7 @@ header .page-shell { height: 64px !important; }
 .header-search-button:hover,
 .header-search-button[aria-expanded="true"] {
   border-color: rgba(46, 98, 255, .28);
-  background: #edf2ff;
+  background: var(--accent);
   box-shadow: 0 4px 12px rgba(46, 98, 255, .08);
 }
 
@@ -231,14 +231,14 @@ header .page-shell { height: 64px !important; }
 .global-search-form > img { width: 18px; height: 18px; flex: 0 0 18px; object-fit: contain; opacity: .72; }
 .global-search-input { min-width: 0; height: 100%; flex: 1; border: 0; outline: 0; color: #20295a; background: transparent; font-size: 13px; }
 .global-search-input::placeholder { color: #98a0b5; }
-.global-search-submit { height: 42px; padding: 0 20px; border: 0; border-radius: 7px; color: #fff; background: #2e62ff; font-size: 12px; font-weight: 650; transition: background-color .18s ease; }
-.global-search-submit:hover { background: #1749e6; }
+.global-search-submit { height: 42px; padding: 0 20px; border: 0; border-radius: 7px; color: #fff; background: var(--primary); font-size: 12px; font-weight: 650; transition: background-color .18s ease; }
+.global-search-submit:hover { background: var(--primary); }
 
 .global-search-hot { display: flex; margin-top: 12px; align-items: center; gap: 7px; overflow-x: auto; color: #8a93a8; font-size: 11px; scrollbar-width: none; }
 .global-search-hot::-webkit-scrollbar { display: none; }
 .global-search-hot > span { flex: 0 0 auto; }
 .global-search-hot button { flex: 0 0 auto; padding: 4px 8px; border: 0; border-radius: 6px; color: #66718c; background: #f2f4f8; font-size: 11px; transition: color .18s ease, background-color .18s ease; }
-.global-search-hot button:hover { color: #2e62ff; background: #edf2ff; }
+.global-search-hot button:hover { color: var(--primary); background: var(--accent); }
 
 .global-search-meta { display: flex; margin-top: 18px; align-items: center; justify-content: space-between; color: #20295a; font-size: 12px; font-weight: 650; }
 .global-search-meta span:last-child { color: #8a93a8; font-size: 11px; font-weight: 500; }
@@ -260,8 +260,8 @@ header .page-shell { height: 64px !important; }
 .global-search-result:hover,
 .global-search-result:focus-visible { background: #f3f6fd; }
 .global-search-result-icon { position: relative; width: 36px; height: 36px; }
-.global-search-result-logo { width: 36px; height: 36px; object-fit: cover; border: 1px solid rgba(32, 41, 90, .08); border-radius: 8px; background: #f4f6fb; }
-.global-search-result-fallback { position: absolute; inset: 0; display: none; place-items: center; border: 1px solid rgba(32, 41, 90, .08); border-radius: 8px; color: #2e62ff; background: #edf2ff; font-size: 13px; font-weight: 700; }
+.global-search-result-logo { width: 36px; height: 36px; object-fit: cover; border: 1px solid rgba(32, 41, 90, .08); border-radius: 8px; background: var(--muted); }
+.global-search-result-fallback { position: absolute; inset: 0; display: none; place-items: center; border: 1px solid rgba(32, 41, 90, .08); border-radius: 8px; color: var(--primary); background: var(--accent); font-size: 13px; font-weight: 700; }
 .global-search-result-fallback.is-visible { display: grid; }
 .global-search-result-copy { min-width: 0; }
 .global-search-result-copy strong,
@@ -470,10 +470,10 @@ body.mobile-drawer-open { overflow: hidden; }
 
 .theme-toggle {
   display: grid; flex: 0 0 36px; width: 36px; height: 36px; padding: 0; place-items: center;
-  border: 1px solid rgba(32, 41, 90, .10); border-radius: 8px; color: #596282; background: #f5f7fb;
+  border: 1px solid rgba(32, 41, 90, .10); border-radius: 8px; color: #596282; background: var(--muted);
   transition: border-color .18s ease, background-color .18s ease, color .18s ease;
 }
-.theme-toggle:hover { border-color: rgba(46, 98, 255, .28); color: #2e62ff; background: #edf2ff; }
+.theme-toggle:hover { border-color: rgba(46, 98, 255, .28); color: var(--primary); background: var(--accent); }
 .theme-toggle__sun { display: none; }
 html[data-theme="dark"] .theme-toggle__sun { display: block; }
 html[data-theme="dark"] .theme-toggle__moon { display: none; }
