@@ -106,7 +106,9 @@ export function sortTools(list: Tool[], sort: SearchSort): Tool[] {
 }
 
 export function filterByTag(list: Tool[], tag: string): Tool[] {
-  if (!tag || tag === '全部') return list
+  // '全部' shows everything; '最新收录' is not a tag but a recency view — it keeps
+  // the full list and lets the caller apply a 'newest' sort.
+  if (!tag || tag === '全部' || tag === '最新收录') return list
   return list.filter(tool => tool.tags.includes(tag))
 }
 
