@@ -40,6 +40,7 @@ const rawTools: RawTool[] = [
   { slug: 'notion-ai', name: 'Notion AI', desc: '写作、总结与知识管理', category: '效率工具', navCategory: 'AI办公', domain: 'notion.so', url: 'https://www.notion.so/product/ai', heat: '41.7k', verified: true, tags: ['热门推荐', '会员专享', '在线工具'], createdAt: '2026-01-26' },
   { slug: 'figma', name: 'Figma', desc: '在线产品设计与团队协作', category: '设计创意', navCategory: 'AI创意', domain: 'figma.com', url: 'https://www.figma.com', heat: '39.6k', verified: true, tags: ['热门推荐', '免费使用', '在线工具'], createdAt: '2026-01-27' },
   { slug: 'dify', name: 'Dify', desc: '开源大模型应用开发平台', category: 'AI工具', navCategory: 'AI Agents', domain: 'dify.ai', url: 'https://dify.ai', heat: '36.9k', tags: ['免费使用', '在线工具'], createdAt: '2026-01-28' },
+  { slug: 'claude', name: 'Claude', desc: '擅长写作与代码的智能助手', category: 'AI工具', navCategory: 'AI助手', domain: 'claude.ai', url: 'https://claude.ai', heat: '71.4k', verified: true, tags: ['热门推荐', '会员专享', '在线工具'], createdAt: '2026-01-28' },
 ]
 
 /** Extra records the ranking board mixes into the catalog. */
