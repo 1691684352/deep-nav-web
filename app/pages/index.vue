@@ -50,7 +50,7 @@ const visibleTools = computed(() => {
 })
 
 const showMoreCard = computed(() =>
-  activeNav.value === 'hot' && visibleTools.value.length >= 20)
+  activeNav.value !== 'hot' && visibleTools.value.length > 0)
 
 const latestList = computed(() => {
   const list = data.value?.latestTools ?? []
@@ -158,7 +158,7 @@ function pickKeyword(value: string) {
           <ToolCard v-for="tool in visibleTools" :key="tool.id" :tool="tool" />
           <NuxtLink
             v-if="showMoreCard"
-            to="/category/all"
+            :to="`/category/subcategory/${activeNav}`"
             class="view-more-card tool-card flex min-h-[60px] items-center justify-center gap-2 rounded-xl border border-border bg-card text-[12px] font-medium text-muted-foreground transition hover:text-foreground"
           >
             查看更多 <AppIcon name="chevron-right" class="size-4" />
@@ -205,7 +205,7 @@ function pickKeyword(value: string) {
             <LatestRow v-for="tool in latestList" :key="tool.id" :tool="tool" />
           </div>
           <NuxtLink
-            to="/category/all"
+            to="/ranking"
             class="mt-3 flex h-10 items-center justify-center gap-1 rounded-lg text-[13px] font-semibold text-primary transition hover:bg-accent"
           >
             查看更多最新收录 <AppIcon name="arrow-right" class="size-3.5" />

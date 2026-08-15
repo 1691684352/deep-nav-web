@@ -172,7 +172,7 @@ function updateQuery(patch: Record<string, string | undefined>) {
             <h2 id="ranking-recommend-title" class="font-display text-[17px] font-bold text-foreground">编辑推荐</h2>
             <p class="mt-1 text-[12px] text-muted-foreground">兼顾实用性与产品体验的优质工具</p>
           </div>
-          <NuxtLink to="/category/all" class="flex shrink-0 items-center gap-1 text-[12px] font-semibold text-primary">
+          <NuxtLink to="/category/ai" class="flex shrink-0 items-center gap-1 text-[12px] font-semibold text-primary">
             查看更多 <AppIcon name="arrow-right" class="size-3.5" />
           </NuxtLink>
         </div>
@@ -210,7 +210,7 @@ function updateQuery(patch: Record<string, string | undefined>) {
       <section class="panel rounded-xl p-5" aria-labelledby="category-ranking-title">
         <div class="flex items-center justify-between gap-3">
           <h2 id="category-ranking-title" class="font-display text-[16px] font-bold text-foreground">分类榜单</h2>
-          <NuxtLink to="/category/all" class="text-[11px] font-semibold text-primary">查看全部</NuxtLink>
+          <NuxtLink to="/category/ai" class="text-[11px] font-semibold text-primary">查看全部</NuxtLink>
         </div>
         <div class="mt-3 space-y-1">
           <NuxtLink

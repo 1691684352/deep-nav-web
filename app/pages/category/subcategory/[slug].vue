@@ -63,7 +63,7 @@ function setPage(value: number) {
           <nav class="category-breadcrumb flex items-center gap-1.5 text-[12px] font-medium" aria-label="面包屑">
             <NuxtLink to="/">工具导航</NuxtLink>
             <AppIcon name="chevron-right" class="size-3.5" />
-            <NuxtLink to="/category/all">AI 导航</NuxtLink>
+            <NuxtLink to="/category/ai">AI 导航</NuxtLink>
             <AppIcon name="chevron-right" class="size-3.5" />
             <span>{{ nav?.title }}</span>
           </nav>

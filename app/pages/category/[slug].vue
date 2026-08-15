@@ -14,6 +14,12 @@ interface CategoryPayload {
 const route = useRoute()
 const slug = computed(() => String(route.params.slug))
 
+// `all` is an internal pseudo-category (used by topics/search only); it has no
+// browsable "发现首页" page — that role belongs to the home route `/`.
+if (slug.value === 'all') {
+  throw createError({ statusCode: 404, statusMessage: '分类不存在', fatal: true })
+}
+
 const { data, error } = await useAsyncData(
   () => `category-${slug.value}`,
   () => $api<CategoryPayload>(`/api/categories/${slug.value}`),
