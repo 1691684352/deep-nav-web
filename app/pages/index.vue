@@ -222,8 +222,8 @@ function pickKeyword(value: string) {
               <button
                 v-for="period in rankPeriods"
                 :key="period"
-                class="rank-period rounded-md px-2.5 py-1.5"
-                :class="rankPeriod === period ? 'bg-card text-primary shadow-sm' : 'text-muted-foreground'"
+                class="rank-period rounded-md px-2.5 py-1.5 transition-colors"
+                :class="rankPeriod === period ? 'bg-background text-foreground shadow-sm' : 'text-muted-foreground hover:text-foreground'"
                 type="button"
                 @click="rankPeriod = period"
               >{{ period }}</button>
