@@ -45,17 +45,12 @@ const rankPeriods = computed(() => Object.keys(data.value?.rankSets ?? {}))
 
 const visibleTools = computed(() => {
   const pool = data.value?.tools ?? []
-  const needle = keyword.value.trim().toLowerCase()
-  return pool.filter((tool) => {
-    const navMatch = activeNav.value === 'hot' || tool.navCategorySlug === activeNav.value
-    const keywordMatch = !needle
-      || `${tool.name}${tool.desc}${tool.category}${tool.navCategory}`.toLowerCase().includes(needle)
-    return navMatch && keywordMatch
-  })
+  return pool.filter((tool) =>
+    activeNav.value === 'hot' || tool.navCategorySlug === activeNav.value)
 })
 
 const showMoreCard = computed(() =>
-  activeNav.value === 'hot' && !keyword.value.trim() && visibleTools.value.length >= 20)
+  activeNav.value === 'hot' && visibleTools.value.length >= 20)
 
 const latestList = computed(() => {
   const list = data.value?.latestTools ?? []
@@ -172,9 +167,9 @@ function pickKeyword(value: string) {
 
         <EmptyState
           v-else
-          title="没有找到匹配的工具"
-          action-label="清除搜索条件"
-          @action="keyword = ''; activeNav = 'hot'"
+          title="该分类下暂无工具"
+          action-label="返回热门"
+          @action="activeNav = 'hot'"
         />
       </section>
 
