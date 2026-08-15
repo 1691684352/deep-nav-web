@@ -1,4 +1,5 @@
 import { defineStore } from 'pinia'
+import { toast as sonnerToast } from 'vue-sonner'
 
 export type ToastTone = 'success' | 'error' | 'info'
 
@@ -8,8 +9,6 @@ export interface ToastItem {
   tone: ToastTone
 }
 
-let toastSeed = 0
-
 export const useUiStore = defineStore('ui', () => {
   const toasts = ref<ToastItem[]>([])
   const loginOpen = ref(false)
@@ -18,11 +17,8 @@ export const useUiStore = defineStore('ui', () => {
   const drawerOpen = ref(false)
 
   function toast(message: string, tone: ToastTone = 'success', duration = 2600) {
-    toastSeed += 1
-    const item: ToastItem = { id: toastSeed, message, tone }
-    toasts.value = [...toasts.value, item]
     if (import.meta.client) {
-      window.setTimeout(() => dismiss(item.id), duration)
+      sonnerToast[tone](message, { duration })
     }
   }
 

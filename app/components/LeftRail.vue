@@ -6,7 +6,7 @@ const props = defineProps<{
 </script>
 
 <template>
-  <aside class="left-rail sticky space-y-4" aria-label="分类导航">
+  <aside class="sticky top-20 hidden lg:block" aria-label="分类导航">
     <SideNavPanel :active-category="props.activeCategory" :active-action="props.activeAction" />
   </aside>
 </template>

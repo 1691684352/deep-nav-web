@@ -1,10 +1,9 @@
-import { useUiStore } from '~/stores/ui'
+import { toast } from 'vue-sonner'
 
 export function useToast() {
-  const ui = useUiStore()
   return {
-    success: (message: string) => ui.toast(message, 'success'),
-    error: (message: string) => ui.toast(message, 'error'),
-    info: (message: string) => ui.toast(message, 'info'),
+    success: (message: string) => toast.success(message),
+    error: (message: string) => toast.error(message),
+    info: (message: string) => toast.info(message),
   }
 }

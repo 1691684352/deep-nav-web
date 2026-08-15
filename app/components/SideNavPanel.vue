@@ -1,4 +1,6 @@
 <script setup lang="ts">
+import { Separator } from '@/components/ui/separator'
+import { cn } from '@/lib/utils'
 import { useSiteStore } from '~/stores/site'
 import { useUiStore } from '~/stores/ui'
 
@@ -12,7 +14,6 @@ const ui = useUiStore()
 const toast = useToast()
 const route = useRoute()
 
-/** Falls back to the current route so every page highlights the right entry. */
 const currentCategory = computed(() => {
   if (props.activeCategory !== undefined) return props.activeCategory
   const match = /^\/category\/(?!subcategory)([^/]+)/.exec(route.path)
@@ -37,6 +38,12 @@ const secondaryLinks = [
   { key: 'submit', label: '提交网站', icon: 'square-pen', to: '/submit' },
 ]
 
+const itemBase = 'flex w-full items-center gap-3 rounded-md px-3 py-2.5 text-[13px] font-medium transition-colors'
+
+function navClass(active: boolean) {
+  return cn(itemBase, active ? 'bg-secondary text-secondary-foreground font-semibold' : 'text-muted-foreground hover:bg-accent hover:text-accent-foreground')
+}
+
 function openFeedback() {
   ui.toggleDrawer(false)
   toast.info('反馈通道已开启，欢迎在投稿页留言')
@@ -45,56 +52,40 @@ function openFeedback() {
 </script>
 
 <template>
-  <div class="panel rounded-xl p-2.5">
-    <nav class="space-y-1">
-      <NuxtLink
-        to="/"
-        class="side-nav-btn flex w-full items-center gap-3 rounded-lg px-3.5 text-[13px]"
-        :class="{ active: isHome }"
-        @click="ui.toggleDrawer(false)"
-      >
-        <AppIcon name="house" class="size-[16px]" />
-        发现首页
+  <nav class="rounded-xl border bg-card p-2 shadow-sm">
+    <div class="flex flex-col gap-0.5">
+      <NuxtLink to="/" :class="navClass(isHome)" @click="ui.toggleDrawer(false)">
+        <AppIcon name="house" class="size-4" />发现首页
       </NuxtLink>
       <NuxtLink
         v-for="category in categoryLinks"
         :key="category.slug"
         :to="`/category/${category.slug}`"
-        class="side-nav-btn flex w-full items-center gap-3 rounded-lg px-3.5 text-[13px]"
-        :class="{ active: currentCategory === category.slug }"
+        :class="navClass(currentCategory === category.slug)"
         @click="ui.toggleDrawer(false)"
       >
-        <AppIcon :name="category.icon" class="size-[16px]" />
-        {{ category.label }}
+        <AppIcon :name="category.icon" class="size-4" />{{ category.label }}
       </NuxtLink>
-      <NuxtLink
-        to="/ranking"
-        class="side-nav-btn flex w-full items-center gap-3 rounded-lg px-3.5 text-[13px]"
-        :class="{ active: currentAction === 'ranking' }"
-        @click="ui.toggleDrawer(false)"
-      >
-        <AppIcon name="flame" class="size-[16px]" />热门榜单
+      <NuxtLink to="/ranking" :class="navClass(currentAction === 'ranking')" @click="ui.toggleDrawer(false)">
+        <AppIcon name="flame" class="size-4" />热门榜单
       </NuxtLink>
-    </nav>
-    <div class="my-2 border-t border-line" />
-    <nav class="space-y-1 text-[#66718b]">
+    </div>
+
+    <Separator class="my-2" />
+
+    <div class="flex flex-col gap-0.5">
       <NuxtLink
         v-for="link in secondaryLinks"
         :key="link.key"
         :to="link.to"
-        class="side-nav-btn flex w-full items-center gap-3 rounded-lg px-3.5 text-[12px] font-medium"
-        :class="{ active: currentAction === link.key }"
+        :class="navClass(currentAction === link.key)"
         @click="ui.toggleDrawer(false)"
       >
         <AppIcon :name="link.icon" class="size-4" />{{ link.label }}
       </NuxtLink>
-      <button
-        class="side-nav-btn flex w-full items-center gap-3 rounded-lg px-3.5 text-[12px] font-medium"
-        type="button"
-        @click="openFeedback"
-      >
+      <button type="button" :class="navClass(false)" @click="openFeedback">
         <AppIcon name="message-square-more" class="size-4" />建议反馈
       </button>
-    </nav>
-  </div>
+    </div>
+  </nav>
 </template>

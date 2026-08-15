@@ -1,16 +1,14 @@
 <script setup lang="ts">
 import { faviconUrl, initialOf } from '#shared/utils'
+import { cn } from '@/lib/utils'
 
 const props = withDefaults(defineProps<{
   domain: string
   name: string
   size?: number
-  imgClass?: string
-  fallbackClass?: string
+  class?: string
 }>(), {
   size: 34,
-  imgClass: 'logo-img',
-  fallbackClass: 'logo-img',
 })
 
 const failed = ref(false)
@@ -21,10 +19,13 @@ watch(() => props.domain, () => {
 </script>
 
 <template>
-  <span class="relative shrink-0">
+  <span
+    :class="cn('relative block shrink-0 overflow-hidden rounded-lg border bg-muted', props.class)"
+    :style="{ width: `${size}px`, height: `${size}px` }"
+  >
     <img
       v-show="!failed"
-      :class="imgClass"
+      class="size-full object-cover"
       :src="faviconUrl(domain)"
       :width="size"
       :height="size"
@@ -34,8 +35,8 @@ watch(() => props.domain, () => {
     >
     <span
       v-if="failed"
-      :class="fallbackClass"
-      class="grid place-items-center bg-brand-soft text-[14px] font-bold text-brand"
+      class="grid size-full place-items-center bg-secondary font-bold text-secondary-foreground"
+      :style="{ fontSize: `${Math.round(size * 0.4)}px` }"
       aria-hidden="true"
     >{{ initialOf(name) }}</span>
   </span>

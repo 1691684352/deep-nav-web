@@ -1,59 +1,23 @@
 <script setup lang="ts">
-import { onClickOutside, useEventListener } from '@vueuse/core'
+import { Sheet, SheetContent, SheetHeader, SheetTitle } from '@/components/ui/sheet'
 import { useUiStore } from '~/stores/ui'
 
 const ui = useUiStore()
-const drawer = ref<HTMLElement | null>(null)
-
-onClickOutside(drawer, () => {
-  if (ui.drawerOpen) ui.toggleDrawer(false)
-})
-
-useEventListener('keydown', (event: KeyboardEvent) => {
-  if (event.key === 'Escape' && ui.drawerOpen) ui.toggleDrawer(false)
-})
-
-watch(() => ui.drawerOpen, (open) => {
-  if (!import.meta.client) return
-  document.body.classList.toggle('mobile-drawer-open', open)
-  if (open) nextTick(() => drawer.value?.focus())
-})
-
-onBeforeUnmount(() => {
-  if (import.meta.client) document.body.classList.remove('mobile-drawer-open')
-})
 </script>
 
 <template>
-  <div id="mobileMenu" class="mobile-drawer-shell" :class="{ 'is-open': ui.drawerOpen }" :aria-hidden="!ui.drawerOpen">
-    <button
-      class="mobile-drawer-backdrop"
-      type="button"
-      aria-label="关闭分类菜单"
-      tabindex="-1"
-      @click="ui.toggleDrawer(false)"
-    />
-    <aside
-      ref="drawer"
-      class="mobile-drawer"
-      role="dialog"
-      aria-modal="true"
-      aria-labelledby="mobileDrawerTitle"
-      tabindex="-1"
-    >
-      <div class="mobile-drawer__header">
-        <span class="logo-mark" aria-hidden="true" />
-        <strong id="mobileDrawerTitle" class="font-display text-[17px] font-bold text-ink">深度指引</strong>
-        <button class="mobile-drawer__close" type="button" aria-label="关闭分类菜单" @click="ui.toggleDrawer(false)">
-          <AppIcon name="x" class="size-5" />
-        </button>
-      </div>
-      <div class="mobile-nav-content">
+  <Sheet :open="ui.drawerOpen" @update:open="ui.toggleDrawer($event)">
+    <SheetContent id="mobileMenu" side="left" class="flex w-[min(82vw,320px)] flex-col gap-0 p-0">
+      <SheetHeader class="flex-row items-center gap-2.5 border-b p-4">
+        <AppLogo :size="28" />
+        <SheetTitle class="font-display text-[17px] font-bold">深度指引</SheetTitle>
+      </SheetHeader>
+      <div class="min-h-0 flex-1 overflow-y-auto p-3">
         <SideNavPanel />
       </div>
-      <div class="mobile-drawer__footer">
+      <div class="flex items-center gap-2 border-t p-4 text-[11px] text-muted-foreground">
         <AppIcon name="compass" class="size-4" /><span>发现优质网站和工具</span>
       </div>
-    </aside>
-  </div>
+    </SheetContent>
+  </Sheet>
 </template>

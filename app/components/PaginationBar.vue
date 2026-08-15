@@ -1,4 +1,7 @@
 <script setup lang="ts">
+import { buttonVariants } from '@/components/ui/button'
+import { cn } from '@/lib/utils'
+
 const props = withDefaults(defineProps<{
   page: number
   totalPages: number
@@ -32,12 +35,14 @@ function go(page: number) {
   if (page < 1 || page > props.totalPages || page === props.page) return
   emit('change', page)
 }
+
+const iconBtn = cn(buttonVariants({ variant: 'outline', size: 'icon' }), 'size-9')
 </script>
 
 <template>
-  <nav v-if="props.totalPages > 1" class="detail-pagination" :aria-label="props.label">
+  <nav v-if="props.totalPages > 1" class="flex items-center justify-center gap-1.5" :aria-label="props.label">
     <button
-      class="detail-pagination__button"
+      :class="iconBtn"
       type="button"
       :disabled="props.page === 1"
       aria-label="上一页"
@@ -46,18 +51,17 @@ function go(page: number) {
       <AppIcon name="chevron-left" class="size-4" />
     </button>
     <template v-for="(item, index) in pages" :key="`${item}-${index}`">
-      <span v-if="item === '...'" class="detail-pagination__button cursor-default">…</span>
+      <span v-if="item === '...'" class="grid size-9 place-items-center text-sm text-muted-foreground">…</span>
       <button
         v-else
-        class="detail-pagination__button"
-        :class="{ active: item === props.page }"
+        :class="cn(buttonVariants({ variant: item === props.page ? 'default' : 'outline', size: 'icon' }), 'size-9')"
         type="button"
-        :aria-current="item === props.page ? 'page' : 'false'"
+        :aria-current="item === props.page ? 'page' : undefined"
         @click="go(item)"
       >{{ item }}</button>
     </template>
     <button
-      class="detail-pagination__button"
+      :class="iconBtn"
       type="button"
       :disabled="props.page === props.totalPages"
       aria-label="下一页"

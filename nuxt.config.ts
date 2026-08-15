@@ -10,7 +10,13 @@ export default defineNuxtConfig({
     '@vueuse/nuxt',
     '@nuxtjs/robots',
     '@nuxtjs/sitemap',
+    'shadcn-nuxt',
   ],
+
+  shadcn: {
+    prefix: '',
+    componentDir: '~/components/ui',
+  },
 
   css: ['~/assets/css/main.css'],
 
