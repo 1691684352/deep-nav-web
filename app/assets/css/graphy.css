@@ -32,9 +32,10 @@ header {
 .logo-mark::before { content: ""; position: absolute; inset: 8px; border-radius: 3px; background: var(--primary-foreground); }
 
 /* Primary header/side nav */
-.nav-link { position: relative; color: var(--muted-foreground); transition: color .2s var(--ease-fluid); }
-.nav-link:hover, .nav-link.active { color: var(--foreground); }
-.nav-link.active::after { content: ""; position: absolute; left: 50%; bottom: -21px; width: 22px; height: 2px; border-radius: 999px; background: var(--foreground); transform: translateX(-50%); }
+.nav-link { position: relative; display: inline-flex; align-items: center; height: 36px; padding: 0 .75rem; border-radius: var(--radius-sm); color: var(--muted-foreground); transition: color .2s var(--ease-fluid), background-color .2s var(--ease-fluid); }
+.nav-link:hover { color: var(--foreground); background: var(--accent); }
+.nav-link.active { color: var(--foreground); }
+.nav-link.active::after { content: ""; position: absolute; left: 50%; bottom: -14px; width: 22px; height: 2px; border-radius: 999px; background: var(--foreground); transform: translateX(-50%); }
 .nav-link > span { background: transparent !important; color: inherit !important; }
 
 .side-nav-btn { min-height: 44px; border-radius: var(--radius-md); font-weight: 500; line-height: 1.35; color: var(--muted-foreground); transition: background-color .2s var(--ease-fluid), color .2s var(--ease-fluid); }
