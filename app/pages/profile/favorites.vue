@@ -55,7 +55,7 @@ async function clearAll() {
       <div class="profile-section-header">
         <div>
           <h2 id="favorites-title">我的收藏</h2>
-          <p class="mt-1 text-[12px] text-muted">共收藏 {{ source.length }} 个工具</p>
+          <p class="mt-1 text-[12px] text-muted-foreground">共收藏 {{ source.length }} 个工具</p>
         </div>
         <button type="button" @click="clearAll">清空收藏 <AppIcon name="trash-2" class="size-3.5" /></button>
       </div>

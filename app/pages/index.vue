@@ -190,10 +190,10 @@ function pickKeyword(value: string) {
           <div class="flex min-h-[52px] items-start justify-between">
             <div>
               <h2 class="font-display text-[18px] font-bold">最新收录</h2>
-              <p class="mt-1 text-[12px] text-muted">发现刚刚收录的新鲜工具</p>
+              <p class="mt-1 text-[12px] text-muted-foreground">发现刚刚收录的新鲜工具</p>
             </div>
             <button
-              class="grid size-9 place-items-center rounded-lg text-muted transition hover:bg-accent hover:text-foreground"
+              class="grid size-9 place-items-center rounded-lg text-muted-foreground transition hover:bg-accent hover:text-foreground"
               type="button"
               aria-label="刷新最新收录"
               @click="latestReversed = !latestReversed"
@@ -216,14 +216,14 @@ function pickKeyword(value: string) {
           <div class="flex min-h-[52px] items-start justify-between">
             <div>
               <h2 class="font-display text-[18px] font-bold">人气榜单</h2>
-              <p class="mt-1 text-[12px] text-muted">全站实时热度排行</p>
+              <p class="mt-1 text-[12px] text-muted-foreground">全站实时热度排行</p>
             </div>
             <div class="flex rounded-lg bg-muted p-0.5 text-[12px] font-semibold">
               <button
                 v-for="period in rankPeriods"
                 :key="period"
                 class="rank-period rounded-md px-2.5 py-1.5"
-                :class="rankPeriod === period ? 'bg-card text-primary shadow-sm' : 'text-muted'"
+                :class="rankPeriod === period ? 'bg-card text-primary shadow-sm' : 'text-muted-foreground'"
                 type="button"
                 @click="rankPeriod = period"
               >{{ period }}</button>

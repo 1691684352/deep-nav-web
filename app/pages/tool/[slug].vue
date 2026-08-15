@@ -294,7 +294,7 @@ async function submitReview() {
               >
                 <AppIcon name="newspaper" class="size-4 shrink-0 text-primary" />
                 <span class="min-w-0 flex-1 truncate text-[13px] font-medium text-foreground">{{ item.title }}</span>
-                <span class="shrink-0 text-[11px] text-muted">{{ item.source }} · {{ item.publishedAt }}</span>
+                <span class="shrink-0 text-[11px] text-muted-foreground">{{ item.source }} · {{ item.publishedAt }}</span>
               </a>
             </li>
           </ul>
@@ -308,7 +308,7 @@ async function submitReview() {
       <section class="panel rounded-xl p-5" aria-labelledby="reviews-title">
         <div class="flex items-center justify-between gap-4">
           <h2 id="reviews-title" class="font-display text-[17px] font-bold">
-            用户评价 <span class="ml-1 text-[13px] text-muted">({{ reviewCount }})</span>
+            用户评价 <span class="ml-1 text-[13px] text-muted-foreground">({{ reviewCount }})</span>
           </h2>
           <button class="site-primary-action h-9 px-4 text-[12px]" type="button" @click="openReview">写评价</button>
         </div>
@@ -327,7 +327,7 @@ async function submitReview() {
               <p class="mt-2 text-[13px] leading-6 text-muted-foreground">{{ review.content }}</p>
               <div class="mt-2 flex items-center justify-between">
                 <span class="review-meta">{{ review.createdAt }}</span>
-                <div class="flex gap-3 text-[11px] text-muted">
+                <div class="flex gap-3 text-[11px] text-muted-foreground">
                   <button class="hover:text-foreground" type="button" @click="like(review)">
                     <AppIcon name="thumbs-up" class="mr-1 inline size-3" />{{ review.likes }}
                   </button>
@@ -376,7 +376,7 @@ async function submitReview() {
       <template #before>
         <section class="panel rounded-xl p-5" aria-labelledby="rating-title">
           <h2 id="rating-title" class="rating-card__question">这个产品有用吗？</h2>
-          <p class="mt-1 text-[12px] leading-5 text-muted">选择感受，帮助更多人发现优质工具</p>
+          <p class="mt-1 text-[12px] leading-5 text-muted-foreground">选择感受，帮助更多人发现优质工具</p>
           <div class="rating-card__moods" role="group" :aria-label="`为 ${detail.name} 评分`">
             <button
               v-for="mood in moods"
@@ -419,7 +419,7 @@ async function submitReview() {
         <div class="flex items-center justify-between">
           <h2 class="font-display text-[18px] font-bold">{{ detail.name }} 截图</h2>
           <button
-            class="grid size-10 place-items-center rounded-full text-muted transition hover:bg-accent hover:text-foreground"
+            class="grid size-10 place-items-center rounded-full text-muted-foreground transition hover:bg-accent hover:text-foreground"
             type="button"
             aria-label="关闭截图预览"
             @click="galleryOpen = false"
@@ -450,7 +450,7 @@ async function submitReview() {
         <div class="flex items-center justify-between">
           <h2 class="font-display text-[18px] font-bold">写评价</h2>
           <button
-            class="grid size-10 place-items-center rounded-full text-muted transition hover:bg-accent hover:text-foreground"
+            class="grid size-10 place-items-center rounded-full text-muted-foreground transition hover:bg-accent hover:text-foreground"
             type="button"
             aria-label="关闭评价弹窗"
             @click="reviewOpen = false"
@@ -458,7 +458,7 @@ async function submitReview() {
             <AppIcon name="x" class="size-5" />
           </button>
         </div>
-        <p class="mt-1 text-[12px] text-muted">分享你的使用体验，帮助更多人做出选择</p>
+        <p class="mt-1 text-[12px] text-muted-foreground">分享你的使用体验，帮助更多人做出选择</p>
 
         <div class="mt-5 flex items-center gap-1" role="group" aria-label="选择评分">
           <button
@@ -472,7 +472,7 @@ async function submitReview() {
           >
             <AppIcon name="star" class="size-5" :fill="score <= reviewRating" />
           </button>
-          <span class="ml-2 text-[12px] text-muted">{{ reviewRating ? `${reviewRating}.0` : '请选择评分' }}</span>
+          <span class="ml-2 text-[12px] text-muted-foreground">{{ reviewRating ? `${reviewRating}.0` : '请选择评分' }}</span>
         </div>
 
         <label for="reviewContent" class="mt-4 block text-[12px] font-semibold">评价内容</label>
@@ -483,7 +483,7 @@ async function submitReview() {
           maxlength="500"
           placeholder="说说这个工具好在哪里，或者哪里还可以改进…"
         />
-        <p class="mt-1 text-right text-[11px] text-muted">{{ reviewContent.length }} / 500</p>
+        <p class="mt-1 text-right text-[11px] text-muted-foreground">{{ reviewContent.length }} / 500</p>
 
         <p v-if="reviewError" class="mt-2 text-[12px] font-medium text-destructive">{{ reviewError }}</p>
 

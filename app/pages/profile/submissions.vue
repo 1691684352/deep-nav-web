@@ -43,7 +43,7 @@ async function withdraw(item: Submission) {
       <div class="profile-section-header">
         <div>
           <h2 id="submissions-title">我的投稿</h2>
-          <p class="mt-1 text-[12px] text-muted">共提交 {{ source.length }} 个网站，审核周期 1-3 个工作日</p>
+          <p class="mt-1 text-[12px] text-muted-foreground">共提交 {{ source.length }} 个网站，审核周期 1-3 个工作日</p>
         </div>
         <NuxtLink to="/submit">提交新网站 <AppIcon name="plus" class="size-3.5" /></NuxtLink>
       </div>
@@ -92,15 +92,15 @@ async function withdraw(item: Submission) {
           </button>
         </div>
         <dl v-if="active" class="grid gap-3 p-5 text-[13px] text-muted-foreground sm:grid-cols-2">
-          <div><dt class="text-[11px] text-muted">网站名称</dt><dd class="mt-1 font-semibold text-foreground">{{ active.name }}</dd></div>
-          <div><dt class="text-[11px] text-muted">网站地址</dt><dd class="mt-1 truncate font-semibold text-foreground">{{ active.url }}</dd></div>
-          <div><dt class="text-[11px] text-muted">分类</dt><dd class="mt-1 font-semibold text-foreground">{{ active.category }}</dd></div>
-          <div><dt class="text-[11px] text-muted">状态</dt><dd class="mt-1"><span class="profile-status" :class="active.status">{{ active.statusLabel }}</span></dd></div>
-          <div><dt class="text-[11px] text-muted">提交时间</dt><dd class="mt-1 font-semibold text-foreground">{{ active.submittedAt }}</dd></div>
-          <div><dt class="text-[11px] text-muted">更新时间</dt><dd class="mt-1 font-semibold text-foreground">{{ active.updatedAt }}</dd></div>
-          <div class="sm:col-span-2"><dt class="text-[11px] text-muted">一句话描述</dt><dd class="mt-1 text-foreground">{{ active.slogan }}</dd></div>
-          <div class="sm:col-span-2"><dt class="text-[11px] text-muted">网站描述</dt><dd class="mt-1 leading-6">{{ active.description }}</dd></div>
-          <div class="sm:col-span-2"><dt class="text-[11px] text-muted">标签</dt><dd class="mt-1 flex flex-wrap gap-1.5">
+          <div><dt class="text-[11px] text-muted-foreground">网站名称</dt><dd class="mt-1 font-semibold text-foreground">{{ active.name }}</dd></div>
+          <div><dt class="text-[11px] text-muted-foreground">网站地址</dt><dd class="mt-1 truncate font-semibold text-foreground">{{ active.url }}</dd></div>
+          <div><dt class="text-[11px] text-muted-foreground">分类</dt><dd class="mt-1 font-semibold text-foreground">{{ active.category }}</dd></div>
+          <div><dt class="text-[11px] text-muted-foreground">状态</dt><dd class="mt-1"><span class="profile-status" :class="active.status">{{ active.statusLabel }}</span></dd></div>
+          <div><dt class="text-[11px] text-muted-foreground">提交时间</dt><dd class="mt-1 font-semibold text-foreground">{{ active.submittedAt }}</dd></div>
+          <div><dt class="text-[11px] text-muted-foreground">更新时间</dt><dd class="mt-1 font-semibold text-foreground">{{ active.updatedAt }}</dd></div>
+          <div class="sm:col-span-2"><dt class="text-[11px] text-muted-foreground">一句话描述</dt><dd class="mt-1 text-foreground">{{ active.slogan }}</dd></div>
+          <div class="sm:col-span-2"><dt class="text-[11px] text-muted-foreground">网站描述</dt><dd class="mt-1 leading-6">{{ active.description }}</dd></div>
+          <div class="sm:col-span-2"><dt class="text-[11px] text-muted-foreground">标签</dt><dd class="mt-1 flex flex-wrap gap-1.5">
             <span v-for="tag in active.tags" :key="tag" class="submit-tag">{{ tag }}</span>
           </dd></div>
         </dl>

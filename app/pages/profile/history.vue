@@ -56,7 +56,7 @@ async function clearAll() {
       <div class="profile-section-header">
         <div>
           <h2 id="history-title">最近使用</h2>
-          <p class="mt-1 text-[12px] text-muted">共 {{ source.length }} 条浏览记录，仅保存在本机</p>
+          <p class="mt-1 text-[12px] text-muted-foreground">共 {{ source.length }} 条浏览记录，仅保存在本机</p>
         </div>
         <button type="button" @click="clearAll">清空历史 <AppIcon name="trash-2" class="size-3.5" /></button>
       </div>

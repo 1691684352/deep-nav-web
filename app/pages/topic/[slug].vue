@@ -83,7 +83,7 @@ function setPage(value: number) {
                 alt=""
               >
             </div>
-            <p class="text-[12px] text-muted">
+            <p class="text-[12px] text-muted-foreground">
               共 <strong class="number-font text-[14px] text-foreground">{{ result?.total ?? 0 }}</strong> 个工具
             </p>
           </div>
@@ -105,7 +105,7 @@ function setPage(value: number) {
               @click="setFilter(item)"
             >{{ item }}</button>
           </div>
-          <label class="flex shrink-0 items-center gap-2 text-[12px] text-muted">
+          <label class="flex shrink-0 items-center gap-2 text-[12px] text-muted-foreground">
             <span class="sr-only">排序方式</span>
             <select
               class="h-8 rounded-lg border border-border bg-transparent px-2 text-[12px] text-foreground outline-none focus:border-brand"

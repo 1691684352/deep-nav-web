@@ -68,7 +68,7 @@ async function submit() {
             maxlength="1000"
             :placeholder="data?.contentPlaceholder"
           />
-          <p class="mt-1 text-right text-[11px] text-muted">{{ form.content.length }} / 1000</p>
+          <p class="mt-1 text-right text-[11px] text-muted-foreground">{{ form.content.length }} / 1000</p>
         </div>
 
         <div>

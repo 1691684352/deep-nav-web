@@ -19,7 +19,7 @@ useSeoMeta({
       <div class="profile-section-header">
         <div>
         <h2 id="feedback-title">我的点评</h2>
-          <p class="mt-1 text-[12px] text-muted">共发表 {{ account.myReviews.length }} 条点评</p>
+          <p class="mt-1 text-[12px] text-muted-foreground">共发表 {{ account.myReviews.length }} 条点评</p>
         </div>
         <NuxtLink to="/feedback">提交建议 <AppIcon name="arrow-right" class="size-3.5" /></NuxtLink>
       </div>
@@ -35,7 +35,7 @@ useSeoMeta({
             </span>
           </div>
           <p class="mt-2 text-[12px] leading-6 text-muted-foreground">{{ review.content }}</p>
-          <p class="mt-2 text-[11px] text-muted">{{ relativeTime(review.createdAt) }}</p>
+          <p class="mt-2 text-[11px] text-muted-foreground">{{ relativeTime(review.createdAt) }}</p>
         </article>
       </div>
       <EmptyState

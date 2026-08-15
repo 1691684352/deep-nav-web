@@ -61,7 +61,7 @@ function updateQuery(patch: Record<string, string | undefined>) {
           <p class="mt-2 max-w-[520px] text-[13px] font-medium leading-6 text-muted-foreground">
             发现最受欢迎的优质工具和网站，排行基于站内访问、收藏与分享数据综合计算。
           </p>
-          <div class="mt-4 flex flex-wrap gap-x-5 gap-y-2 text-[11px] text-muted">
+          <div class="mt-4 flex flex-wrap gap-x-5 gap-y-2 text-[11px] text-muted-foreground">
             <span v-for="stat in data?.stats ?? []" :key="stat.label">
               <strong class="number-font mr-1 text-[13px] text-foreground">{{ stat.value }}</strong>{{ stat.label }}
             </span>
@@ -94,7 +94,7 @@ function updateQuery(patch: Record<string, string | undefined>) {
               @click="updateQuery({ period: item.value === '周榜' ? undefined : item.value })"
             >{{ item.label }}</button>
           </div>
-          <p class="flex items-center gap-1.5 text-[11px] text-muted">
+          <p class="flex items-center gap-1.5 text-[11px] text-muted-foreground">
             <AppIcon name="clock-3" class="size-3.5" /><span>数据更新于 {{ ranking?.updatedAt }}</span>
           </p>
         </div>
@@ -104,10 +104,10 @@ function updateQuery(patch: Record<string, string | undefined>) {
         <div class="flex items-start justify-between gap-4">
           <div>
             <h2 id="ranking-list-title" class="font-display text-[18px] font-bold text-foreground">全站热度排行</h2>
-            <p class="mt-1 text-[12px] text-muted">{{ ranking?.summary }}</p>
+            <p class="mt-1 text-[12px] text-muted-foreground">{{ ranking?.summary }}</p>
           </div>
           <button
-            class="grid size-9 shrink-0 place-items-center rounded-lg text-muted transition hover:bg-accent hover:text-foreground"
+            class="grid size-9 shrink-0 place-items-center rounded-lg text-muted-foreground transition hover:bg-accent hover:text-foreground"
             type="button"
             aria-label="刷新排行榜"
             @click="refreshNuxtData('ranking')"
@@ -152,7 +152,7 @@ function updateQuery(patch: Record<string, string | undefined>) {
                   <span class="ranking-row__desc">{{ entry.tool.desc }}</span>
                 </span>
               </span>
-              <span class="truncate text-[11px] text-muted">{{ entry.tool.category }}</span>
+              <span class="truncate text-[11px] text-muted-foreground">{{ entry.tool.category }}</span>
               <span class="ranking-heat">
                 <span class="ranking-heat__value"><AppIcon name="flame" class="mr-0.5 inline size-3" />{{ entry.heat }}</span>
                 <span class="ranking-heat__bar"><span :style="{ width: `${entry.heatPercent}%` }" /></span>
@@ -161,7 +161,7 @@ function updateQuery(patch: Record<string, string | undefined>) {
                 <AppIcon :name="entry.trend === 'down' ? 'trending-down' : 'trending-up'" class="size-3" />{{ entry.changePercent }}%
               </span>
             </NuxtLink>
-            <p v-if="!ranking?.entries.length" class="py-10 text-center text-[13px] text-muted">该分类暂未收录足够数据</p>
+            <p v-if="!ranking?.entries.length" class="py-10 text-center text-[13px] text-muted-foreground">该分类暂未收录足够数据</p>
           </div>
         </div>
       </section>
@@ -170,7 +170,7 @@ function updateQuery(patch: Record<string, string | undefined>) {
         <div class="flex items-center justify-between gap-4">
           <div>
             <h2 id="ranking-recommend-title" class="font-display text-[17px] font-bold text-foreground">编辑推荐</h2>
-            <p class="mt-1 text-[12px] text-muted">兼顾实用性与产品体验的优质工具</p>
+            <p class="mt-1 text-[12px] text-muted-foreground">兼顾实用性与产品体验的优质工具</p>
           </div>
           <NuxtLink to="/category/all" class="flex shrink-0 items-center gap-1 text-[12px] font-semibold text-primary">
             查看更多 <AppIcon name="arrow-right" class="size-3.5" />
@@ -226,7 +226,7 @@ function updateQuery(patch: Record<string, string | undefined>) {
             </span>
             <span class="min-w-0 flex-1">
               <strong class="block truncate text-[12px] font-medium text-foreground">{{ item.category }}榜</strong>
-              <span class="mt-0.5 block truncate text-[10px] leading-4 text-muted">{{ item.topTool.name }} · {{ item.topTool.heat }}</span>
+              <span class="mt-0.5 block truncate text-[10px] leading-4 text-muted-foreground">{{ item.topTool.name }} · {{ item.topTool.heat }}</span>
             </span>
             <span class="number-font flex items-center justify-end gap-0.5 text-[11px] font-semibold text-muted-foreground">
               <AppIcon name="flame" class="size-3" />{{ item.topTool.heat }}
@@ -257,7 +257,7 @@ function updateQuery(patch: Record<string, string | undefined>) {
             </span>
             <span class="min-w-0 flex-1">
               <strong class="block truncate text-[12px] font-medium text-foreground">{{ item.tool.name }}</strong>
-              <span class="mt-0.5 block truncate text-[10px] leading-4 text-muted">{{ item.tool.category }}</span>
+              <span class="mt-0.5 block truncate text-[10px] leading-4 text-muted-foreground">{{ item.tool.category }}</span>
             </span>
             <span class="number-font flex items-center justify-end gap-0.5 text-[11px] font-semibold text-muted-foreground">
               <AppIcon name="trending-up" class="size-3" />+{{ item.growth }}%

@@ -215,7 +215,7 @@ async function handleNext() {
       <form class="panel submit-form-panel rounded-xl" novalidate @submit.prevent="handleNext">
         <div class="submit-intro">
           <h1 id="submit-page-title" class="font-display font-extrabold text-foreground">提交收录</h1>
-          <p class="mt-2 text-[13px] text-muted">分享优质网站，让更多人发现它的价值</p>
+          <p class="mt-2 text-[13px] text-muted-foreground">分享优质网站，让更多人发现它的价值</p>
         </div>
 
         <ol class="submit-steps" aria-label="投稿步骤">
@@ -232,7 +232,7 @@ async function handleNext() {
 
         <div class="submit-section-title">
           <span>{{ currentStep?.title }}</span>
-          <span class="text-[11px] font-medium text-muted">第 {{ step }} 步，共 3 步</span>
+          <span class="text-[11px] font-medium text-muted-foreground">第 {{ step }} 步，共 3 步</span>
         </div>
 
         <!-- Step 1: basics -->
@@ -340,7 +340,7 @@ async function handleNext() {
         <!-- Step 2: details -->
         <div v-show="step === 2" class="submit-field-grid">
           <div class="submit-field submit-field--full">
-            <label for="submitDescription">网站描述 <span class="text-muted">（支持 Markdown 格式）</span> <span class="required-mark">*</span></label>
+            <label for="submitDescription">网站描述 <span class="text-muted-foreground">（支持 Markdown 格式）</span> <span class="required-mark">*</span></label>
             <div class="submit-editor" :class="{ 'is-previewing': previewing, 'is-invalid': fieldError('description') }">
               <div class="submit-editor__toolbar" aria-label="Markdown 工具栏">
                 <button type="button" aria-label="加粗" @click="insertMarkdown('**')">B</button>
@@ -376,7 +376,7 @@ async function handleNext() {
           </div>
 
           <div class="submit-field submit-field--full">
-            <span class="submit-field__label">标签 <span class="text-muted">（最多 10 个）</span> <span class="required-mark">*</span></span>
+            <span class="submit-field__label">标签 <span class="text-muted-foreground">（最多 10 个）</span> <span class="required-mark">*</span></span>
             <div class="submit-tags" :class="{ 'is-invalid': fieldError('tags') }">
               <span v-for="tag in form.tags" :key="tag" class="submit-tag">
                 {{ tag }}
@@ -453,11 +453,11 @@ async function handleNext() {
           <div class="submit-field submit-field--full">
             <span class="submit-field__label">信息确认</span>
             <dl class="grid gap-2 rounded-lg border border-border p-4 text-[12px] text-muted-foreground sm:grid-cols-2">
-              <div class="flex gap-2"><dt class="shrink-0 text-muted">网站名称</dt><dd class="truncate font-semibold text-foreground">{{ previewName }}</dd></div>
-              <div class="flex gap-2"><dt class="shrink-0 text-muted">网站地址</dt><dd class="truncate font-semibold text-foreground">{{ previewHost }}</dd></div>
-              <div class="flex gap-2"><dt class="shrink-0 text-muted">分类</dt><dd class="truncate font-semibold text-foreground">{{ options?.categories.find(item => item.slug === form.categorySlug)?.name ?? '未选择' }}</dd></div>
-              <div class="flex gap-2"><dt class="shrink-0 text-muted">语言</dt><dd class="truncate font-semibold text-foreground">{{ form.language }}</dd></div>
-              <div class="flex gap-2 sm:col-span-2"><dt class="shrink-0 text-muted">标签</dt><dd class="truncate font-semibold text-foreground">{{ form.tags.join('、') || '未填写' }}</dd></div>
+              <div class="flex gap-2"><dt class="shrink-0 text-muted-foreground">网站名称</dt><dd class="truncate font-semibold text-foreground">{{ previewName }}</dd></div>
+              <div class="flex gap-2"><dt class="shrink-0 text-muted-foreground">网站地址</dt><dd class="truncate font-semibold text-foreground">{{ previewHost }}</dd></div>
+              <div class="flex gap-2"><dt class="shrink-0 text-muted-foreground">分类</dt><dd class="truncate font-semibold text-foreground">{{ options?.categories.find(item => item.slug === form.categorySlug)?.name ?? '未选择' }}</dd></div>
+              <div class="flex gap-2"><dt class="shrink-0 text-muted-foreground">语言</dt><dd class="truncate font-semibold text-foreground">{{ form.language }}</dd></div>
+              <div class="flex gap-2 sm:col-span-2"><dt class="shrink-0 text-muted-foreground">标签</dt><dd class="truncate font-semibold text-foreground">{{ form.tags.join('、') || '未填写' }}</dd></div>
             </dl>
           </div>
 

@@ -55,7 +55,7 @@ function goPage(next: number) {
             围绕真实工作与创作场景，整理优质资源合集，帮助你更快找到适合的工具。
           </p>
           <form class="topic-search mt-5 flex items-center p-1" role="search" @submit.prevent="submitSearch">
-            <AppIcon name="search" class="ml-3 size-4 shrink-0 text-muted" />
+            <AppIcon name="search" class="ml-3 size-4 shrink-0 text-muted-foreground" />
             <label class="sr-only" for="topicSearch">搜索专题</label>
             <input
               id="topicSearch"
@@ -80,7 +80,7 @@ function goPage(next: number) {
         <div class="flex items-center justify-between gap-4">
           <div>
             <h2 id="topic-grid-title" class="font-display text-[18px] font-bold">全部专题</h2>
-            <p class="mt-1 text-[12px] text-muted">
+            <p class="mt-1 text-[12px] text-muted-foreground">
               {{ keyword ? `找到 ${result?.total ?? 0} 个相关专题` : `已收录 ${result?.total ?? 0} 个场景专题` }}
             </p>
           </div>
