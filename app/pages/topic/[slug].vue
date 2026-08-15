@@ -92,7 +92,7 @@ function setPage(value: number) {
       </section>
 
       <section class="panel detail-filter rounded-xl px-4 py-3 sm:px-5" aria-label="专题筛选">
-        <div class="flex flex-wrap items-center justify-between gap-3">
+        <div class="flex flex-wrap items-center gap-3">
           <div class="detail-filter__tabs" role="tablist" aria-label="专题筛选">
             <button
               v-for="item in data?.filters ?? []"
@@ -105,16 +105,6 @@ function setPage(value: number) {
               @click="setFilter(item)"
             >{{ item }}</button>
           </div>
-          <label class="flex shrink-0 items-center gap-2 text-[12px] text-muted-foreground">
-            <span class="sr-only">排序方式</span>
-            <select
-              class="h-8 rounded-lg border border-border bg-transparent px-2 text-[12px] text-foreground outline-none focus:border-brand"
-              :value="sort"
-              @change="updateQuery({ sort: ($event.target as HTMLSelectElement).value, page: undefined })"
-            >
-              <option v-for="option in data?.sortOptions ?? []" :key="option.value" :value="option.value">{{ option.label }}</option>
-            </select>
-          </label>
         </div>
       </section>
 
