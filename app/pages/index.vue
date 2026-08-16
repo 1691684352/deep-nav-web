@@ -17,6 +17,7 @@ interface HomePayload {
   site: SiteConfig
   featureCards: FeatureCard[]
   recommendedTools: Tool[]
+  editorPicks: Tool[]
   categories: Category[]
   navCategories: NavCategory[]
   greeting: HomeGreeting
@@ -42,7 +43,7 @@ const rankPeriod = ref('日榜')
 
 const navTabs = computed(() => data.value?.navCategories ?? [])
 const rankPeriods = computed(() => Object.keys(data.value?.rankSets ?? {}))
-const editorPicks = computed(() => data.value?.recommendedTools ?? [])
+const editorPicks = computed(() => data.value?.editorPicks ?? [])
 
 // Horizontal scroll controls for the editor picks rail.
 const picksRail = ref<HTMLElement | null>(null)
@@ -190,7 +191,7 @@ function pickKeyword(value: string) {
             <span class="grid size-6 place-items-center rounded-md bg-primary/10 text-primary">
               <AppIcon name="thumbs-up" class="size-3.5" />
             </span>
-            精选推荐
+            小编精选
           </h2>
           <div class="hidden gap-1.5 sm:flex">
             <button

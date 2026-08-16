@@ -135,6 +135,12 @@ export const recommendedTools: Tool[] = [
   tools[2]!,
 ]
 
+/** Home "小编精选" horizontal rail — a curated set distinct from the sidebar 推荐工具. */
+export const editorPicks: Tool[] = [
+  tools[8]!, tools[9]!, tools[10]!, tools[11]!, tools[12]!, tools[13]!, tools[14]!, tools[15]!,
+  tools[16]!, tools[17]!, tools[18]!, tools[19]!, tools[20]!, tools[21]!, tools[22]!,
+].filter(Boolean)
+
 /** Home "人气榜单" period sets, mirroring the prototype ordering. */
 export const rankSets: Record<string, Tool[]> = {
   日榜: tools.slice(0, 10),
