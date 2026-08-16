@@ -59,5 +59,20 @@ const qrFailed = ref(false)
       </div>
       <p class="mt-3 text-center text-[12px] text-muted-foreground">{{ rail.wechat.caption }}</p>
     </section>
+
+    <section v-if="rail?.tagCloud.tags.length" class="panel rounded-xl p-5" aria-labelledby="rail-tag-cloud-title">
+      <div class="flex items-center gap-2.5">
+        <span class="h-4 w-1 rounded-full bg-primary" aria-hidden="true" />
+        <h2 id="rail-tag-cloud-title" class="font-display text-[16px] font-semibold text-foreground">{{ rail.tagCloud.title }}</h2>
+      </div>
+      <div class="mt-3.5 flex flex-wrap gap-2">
+        <NuxtLink
+          v-for="tag in rail.tagCloud.tags"
+          :key="tag.id"
+          :to="tag.to"
+          class="inline-flex items-center rounded-full border bg-muted/40 px-3 py-1.5 text-[12px] font-medium text-muted-foreground transition-colors hover:border-primary/40 hover:bg-primary/10 hover:text-foreground"
+        >{{ tag.label }}</NuxtLink>
+      </div>
+    </section>
   </aside>
 </template>
