@@ -504,7 +504,7 @@ html[data-theme="dark"] .topic-card > div p strong { color: var(--muted) !import
 .profile-rail { position: sticky; top: 88px; }
 .profile-nav-panel { display: flex; min-height: 620px; flex-direction: column; padding: 10px; }
 .profile-nav-panel .side-nav-btn { text-align: left; }
-.profile-nav-panel .side-nav-btn.active { background: var(--primary) !important; color: #fff !important; }
+.profile-nav-panel .side-nav-btn.active { background: var(--primary) !important; color: var(--primary-foreground) !important; }
 .profile-nav-panel__divider { margin: 10px 2px; border-top: 1px solid var(--border); }
 .profile-nav-panel__logout { margin-top: auto; }
 .profile-nav-panel__logout .side-nav-btn { color: var(--muted-foreground); }
