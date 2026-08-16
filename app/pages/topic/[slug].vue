@@ -36,6 +36,55 @@ useSeoFromApi(() => data.value?.seo)
 const topic = computed(() => data.value?.topic)
 const result = computed(() => data.value?.result)
 
+// Structured data: breadcrumb + a collection page listing the topic's tools.
+const abs = useAbsoluteUrl()
+useJsonLd('topic', () => {
+  const t = data.value?.topic
+  if (!t) return null
+  const crumbs = t.breadcrumbs?.length
+    ? t.breadcrumbs.map(crumb => ({ name: crumb.label, item: crumb.to }))
+    : [
+        { name: '首页', item: '/' },
+        { name: '精选专题', item: '/topic' },
+        { name: t.title, item: `/topic/${t.slug}` },
+      ]
+  const tools = data.value?.result?.list ?? []
+  return {
+    '@context': 'https://schema.org',
+    '@graph': [
+      {
+        '@type': 'BreadcrumbList',
+        'itemListElement': crumbs.map((crumb, index) => ({
+          '@type': 'ListItem',
+          'position': index + 1,
+          'name': crumb.name,
+          ...(crumb.item ? { item: abs(crumb.item) } : {}),
+        })),
+      },
+      {
+        '@type': 'CollectionPage',
+        'name': t.title,
+        'description': t.description,
+        'url': abs(`/topic/${t.slug}`),
+        ...(tools.length
+          ? {
+              mainEntity: {
+                '@type': 'ItemList',
+                'numberOfItems': t.toolCount,
+                'itemListElement': tools.map((tool, index) => ({
+                  '@type': 'ListItem',
+                  'position': index + 1,
+                  'name': tool.name,
+                  'url': abs(`/tool/${tool.slug}`),
+                })),
+              },
+            }
+          : {}),
+      },
+    ],
+  }
+})
+
 function updateQuery(patch: Record<string, string | number | undefined>) {
   router.push({ query: { ...route.query, ...patch } })
 }

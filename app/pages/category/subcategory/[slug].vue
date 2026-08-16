@@ -38,6 +38,52 @@ useSeoFromApi(() => data.value?.seo)
 
 const nav = computed(() => data.value?.nav)
 
+// Structured data: breadcrumb (home > parent category > subcategory) + tool list.
+const abs = useAbsoluteUrl()
+useJsonLd('subcategory', () => {
+  const n = data.value?.nav
+  if (!n) return null
+  const crumbs: Array<{ name: string, item: string }> = [{ name: '首页', item: abs('/') }]
+  if (n.parentSlug && n.parentLabel) {
+    crumbs.push({ name: n.parentLabel, item: abs(`/category/${n.parentSlug}`) })
+  }
+  crumbs.push({ name: n.label, item: abs(`/category/subcategory/${n.slug}`) })
+  const tools = data.value?.result?.list ?? []
+  return {
+    '@context': 'https://schema.org',
+    '@graph': [
+      {
+        '@type': 'BreadcrumbList',
+        'itemListElement': crumbs.map((crumb, index) => ({
+          '@type': 'ListItem',
+          'position': index + 1,
+          'name': crumb.name,
+          'item': crumb.item,
+        })),
+      },
+      {
+        '@type': 'CollectionPage',
+        'name': n.label,
+        'description': n.description ?? '',
+        'url': abs(`/category/subcategory/${n.slug}`),
+        ...(tools.length
+          ? {
+              mainEntity: {
+                '@type': 'ItemList',
+                'itemListElement': tools.map((tool, index) => ({
+                  '@type': 'ListItem',
+                  'position': index + 1,
+                  'name': tool.name,
+                  'url': abs(`/tool/${tool.slug}`),
+                })),
+              },
+            }
+          : {}),
+      },
+    ],
+  }
+})
+
 // Accumulated tool list for infinite scroll.
 const items = ref<Tool[]>([])
 const currentPage = ref(1)
