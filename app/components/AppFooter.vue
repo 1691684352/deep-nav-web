@@ -3,6 +3,7 @@ import { useSiteStore } from '~/stores/site'
 
 const site = useSiteStore()
 
+const rail = computed(() => site.site?.rail)
 const brokenQrCodes = ref(new Set<string>())
 </script>
 
@@ -80,8 +81,61 @@ const brokenQrCodes = ref(new Set<string>())
           <span v-for="qr in site.site.footerFollow.qrCodes" :key="qr.id">{{ qr.label }}</span>
         </div>
       </div>
+    </div>
 
-      <p class="text-[11px] text-muted-foreground lg:col-span-3 lg:text-center">{{ site.site.copyright }}</p>
+    <section
+      v-if="rail?.friendLinks.links.length"
+      class="page-shell border-t py-6"
+      aria-labelledby="footer-friend-links-title"
+    >
+      <div class="flex items-center justify-between gap-3">
+        <h2 id="footer-friend-links-title" class="text-[14px] font-semibold text-foreground">{{ rail.friendLinks.title }}</h2>
+        <NuxtLink
+          v-if="rail.friendLinks.actionTo"
+          :to="rail.friendLinks.actionTo"
+          class="flex shrink-0 items-center gap-1 text-[12px] font-medium text-muted-foreground transition-colors hover:text-foreground"
+        >
+          <AppIcon name="plus" class="size-3.5" />{{ rail.friendLinks.actionLabel }}
+        </NuxtLink>
+      </div>
+      <div class="mt-3 flex flex-wrap gap-x-5 gap-y-2 text-[13px] leading-6 text-muted-foreground">
+        <template v-for="link in rail.friendLinks.links" :key="link.id">
+          <a
+            v-if="link.kind === 'external'"
+            :href="link.to"
+            :target="link.target"
+            :rel="link.rel"
+            class="transition-colors hover:text-foreground"
+          >{{ link.label }}</a>
+          <NuxtLink v-else :to="link.to" class="transition-colors hover:text-foreground">{{ link.label }}</NuxtLink>
+        </template>
+      </div>
+    </section>
+
+    <div class="page-shell flex flex-col gap-4 border-t py-6 text-[12px] leading-5 text-muted-foreground lg:flex-row lg:items-center lg:justify-between">
+      <div class="flex flex-col gap-2">
+        <nav v-if="rail?.meta.serviceLinks.length" class="flex flex-wrap items-center gap-x-4 gap-y-1" aria-label="服务条款">
+          <NuxtLink
+            v-for="link in rail.meta.serviceLinks"
+            :key="link.id"
+            :to="link.to"
+            class="transition-colors hover:text-foreground"
+          >{{ link.label }}</NuxtLink>
+          <template v-if="rail?.meta.email">
+            <span aria-hidden="true" class="text-border">·</span>
+            <a :href="`mailto:${rail.meta.email}`" class="transition-colors hover:text-foreground">{{ rail.meta.contactLabel }} {{ rail.meta.email }}</a>
+          </template>
+        </nav>
+        <nav v-if="rail?.meta.beianLinks.length" class="flex flex-wrap items-center gap-x-4 gap-y-1" aria-label="备案信息">
+          <NuxtLink
+            v-for="link in rail.meta.beianLinks"
+            :key="link.id"
+            :to="link.to"
+            class="transition-colors hover:text-foreground"
+          >{{ link.label }}</NuxtLink>
+        </nav>
+      </div>
+      <p class="shrink-0 text-[11px] lg:text-right">{{ site.site.copyright }}</p>
     </div>
   </footer>
 </template>
