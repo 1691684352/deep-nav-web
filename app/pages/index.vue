@@ -42,6 +42,13 @@ const rankPeriod = ref('日榜')
 
 const navTabs = computed(() => data.value?.navCategories ?? [])
 const rankPeriods = computed(() => Object.keys(data.value?.rankSets ?? {}))
+const editorPicks = computed(() => data.value?.recommendedTools ?? [])
+
+// Horizontal scroll controls for the editor picks rail.
+const picksRail = ref<HTMLElement | null>(null)
+function scrollPicks(direction: number) {
+  picksRail.value?.scrollBy({ left: direction * 320, behavior: 'smooth' })
+}
 
 const visibleTools = computed(() => {
   const pool = data.value?.tools ?? []
@@ -171,6 +178,57 @@ function pickKeyword(value: string) {
           action-label="返回热门"
           @action="activeNav = 'hot'"
         />
+      </section>
+
+      <section
+        v-if="editorPicks.length"
+        class="panel rounded-xl p-5"
+        aria-labelledby="editor-picks-title"
+      >
+        <div class="flex items-center justify-between">
+          <h2 id="editor-picks-title" class="flex items-center gap-2 font-display text-[17px] font-bold">
+            <span class="grid size-6 place-items-center rounded-md bg-primary/10 text-primary">
+              <AppIcon name="thumbs-up" class="size-3.5" />
+            </span>
+            精选推荐
+          </h2>
+          <div class="hidden gap-1.5 sm:flex">
+            <button
+              class="grid size-8 place-items-center rounded-full border text-muted-foreground transition hover:border-foreground/20 hover:bg-accent hover:text-foreground"
+              type="button"
+              aria-label="向左滚动"
+              @click="scrollPicks(-1)"
+            >
+              <AppIcon name="chevron-left" class="size-4" />
+            </button>
+            <button
+              class="grid size-8 place-items-center rounded-full border text-muted-foreground transition hover:border-foreground/20 hover:bg-accent hover:text-foreground"
+              type="button"
+              aria-label="向右滚动"
+              @click="scrollPicks(1)"
+            >
+              <AppIcon name="chevron-right" class="size-4" />
+            </button>
+          </div>
+        </div>
+        <div ref="picksRail" class="picks-rail mt-4 flex gap-1 overflow-x-auto pb-1">
+          <NuxtLink
+            v-for="tool in editorPicks"
+            :key="tool.id"
+            :to="`/tool/${tool.slug}`"
+            class="group flex w-[84px] shrink-0 flex-col items-center gap-2 rounded-xl px-1 py-2.5 text-center transition-colors hover:bg-accent"
+            :title="tool.name"
+          >
+            <ToolLogo
+              :domain="tool.domain"
+              :name="tool.name"
+              :size="52"
+              img-class="size-[52px] rounded-2xl border border-border object-cover transition-transform group-hover:scale-105"
+              fallback-class="size-[52px] rounded-2xl border border-border text-[18px] transition-transform group-hover:scale-105"
+            />
+            <span class="block w-full truncate text-[12px] font-medium text-foreground">{{ tool.name }}</span>
+          </NuxtLink>
+        </div>
       </section>
 
       <section id="topics" class="panel rounded-xl p-5" aria-labelledby="topic-title">
