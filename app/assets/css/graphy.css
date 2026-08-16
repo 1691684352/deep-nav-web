@@ -38,7 +38,7 @@ header {
 .nav-link.active::after { content: ""; position: absolute; left: 50%; bottom: -14px; width: 22px; height: 2px; border-radius: 999px; background: var(--foreground); transform: translateX(-50%); }
 .nav-link > span { background: transparent !important; color: inherit !important; }
 
-.side-nav-btn { min-height: 44px; border-radius: var(--radius-md); font-weight: 500; line-height: 1.35; color: var(--muted-foreground); transition: background-color .2s var(--ease-fluid), color .2s var(--ease-fluid); }
+.side-nav-btn { min-height: 38px; border-radius: var(--radius-md); font-weight: 500; line-height: 1.35; color: var(--muted-foreground); transition: background-color .2s var(--ease-fluid), color .2s var(--ease-fluid); }
 .side-nav-btn:hover { background: var(--accent); color: var(--accent-foreground); }
 .side-nav-btn.active { color: var(--primary-foreground); font-weight: 600; background: var(--primary); }
 

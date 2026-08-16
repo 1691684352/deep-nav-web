@@ -39,31 +39,31 @@ const secondaryLinks = computed(() => sideNav.value?.secondary ?? [])
     <nav class="space-y-1">
       <NuxtLink
         :to="sideNav?.home.to ?? '/'"
-        class="side-nav-btn flex w-full items-center gap-3 rounded-lg px-3.5 text-[13px]"
+        class="side-nav-btn flex w-full items-center gap-2.5 rounded-lg px-3 text-[13px]"
         :class="{ active: isHome }"
         @click="ui.toggleDrawer(false)"
       >
-        <AppIcon :name="sideNav?.home.icon ?? 'house'" class="size-[16px]" />
+        <AppIcon :name="sideNav?.home.icon ?? 'house'" class="size-4" />
         {{ sideNav?.home.label ?? '发现首页' }}
       </NuxtLink>
       <NuxtLink
         v-for="category in categoryLinks"
         :key="category.slug"
         :to="`/category/${category.slug}`"
-        class="side-nav-btn flex w-full items-center gap-3 rounded-lg px-3.5 text-[13px]"
+        class="side-nav-btn flex w-full items-center gap-2.5 rounded-lg px-3 text-[13px]"
         :class="{ active: currentCategory === category.slug }"
         @click="ui.toggleDrawer(false)"
       >
-        <AppIcon :name="category.icon" class="size-[16px]" />
+        <AppIcon :name="category.icon" class="size-4" />
         {{ category.label }}
       </NuxtLink>
       <NuxtLink
         :to="sideNav?.ranking.to ?? '/ranking'"
-        class="side-nav-btn flex w-full items-center gap-3 rounded-lg px-3.5 text-[13px]"
+        class="side-nav-btn flex w-full items-center gap-2.5 rounded-lg px-3 text-[13px]"
         :class="{ active: currentAction === 'ranking' }"
         @click="ui.toggleDrawer(false)"
       >
-        <AppIcon :name="sideNav?.ranking.icon ?? 'flame'" class="size-[16px]" />{{ sideNav?.ranking.label ?? '热门榜单' }}
+        <AppIcon :name="sideNav?.ranking.icon ?? 'flame'" class="size-4" />{{ sideNav?.ranking.label ?? '热门榜单' }}
       </NuxtLink>
     </nav>
     <div class="my-2 border-t" />
@@ -72,7 +72,7 @@ const secondaryLinks = computed(() => sideNav.value?.secondary ?? [])
         v-for="link in secondaryLinks"
         :key="link.id"
         :to="link.to"
-        class="side-nav-btn flex w-full items-center gap-3 rounded-lg px-3.5 text-[12px] font-medium"
+        class="side-nav-btn flex w-full items-center gap-2.5 rounded-lg px-3 text-[13px]"
         :class="{ active: currentAction === link.id.replace('side-', '') }"
         @click="ui.toggleDrawer(false)"
       >
@@ -81,7 +81,7 @@ const secondaryLinks = computed(() => sideNav.value?.secondary ?? [])
       <NuxtLink
         v-if="sideNav?.feedback"
         :to="sideNav.feedback.to"
-        class="side-nav-btn flex w-full items-center gap-3 rounded-lg px-3.5 text-[12px] font-medium"
+        class="side-nav-btn flex w-full items-center gap-2.5 rounded-lg px-3 text-[13px]"
         @click="ui.toggleDrawer(false)"
       >
         <AppIcon :name="sideNav.feedback.icon ?? 'message-square-more'" class="size-4" />{{ sideNav.feedback.label }}
