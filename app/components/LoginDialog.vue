@@ -13,7 +13,8 @@ const error = ref('')
 const sending = ref(false)
 const submitting = ref(false)
 const countdown = ref(0)
-const phoneInput = ref<HTMLInputElement | null>(null)
+// `Input` is a component wrapper; its root is the native <input>, exposed via $el.
+const phoneInput = ref<{ $el?: HTMLElement } | null>(null)
 
 let timer: ReturnType<typeof setInterval> | undefined
 
@@ -23,7 +24,8 @@ watch(() => ui.loginOpen, async (open) => {
     return
   }
   await nextTick()
-  phoneInput.value?.focus({ preventScroll: true })
+  const el = (phoneInput.value?.$el ?? phoneInput.value) as HTMLElement | undefined
+  el?.focus?.({ preventScroll: true })
 })
 
 onBeforeUnmount(() => clearInterval(timer))

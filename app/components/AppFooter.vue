@@ -22,7 +22,7 @@ const brokenQrCodes = ref(new Set<string>())
           </NuxtLink>
           <p class="mt-4 max-w-[280px] text-[13px] leading-6 text-muted-foreground">{{ site.site.slogan }}</p>
 
-          <div v-if="site.site.footerSocials.length" class="mt-6 flex gap-2">
+          <div v-if="site.site.footerSocials?.length" class="mt-6 flex gap-2">
             <template v-for="social in site.site.footerSocials" :key="social.id">
               <a
                 v-if="social.kind === 'external'"
@@ -66,7 +66,7 @@ const brokenQrCodes = ref(new Set<string>())
         </div>
 
         <!-- Follow / QR codes -->
-        <div v-if="site.site.footerFollow.qrCodes.length" class="min-w-0">
+        <div v-if="site.site.footerFollow?.qrCodes?.length" class="min-w-0">
           <h3 class="text-[13px] font-semibold text-foreground">关注我们</h3>
           <div class="mt-4 flex gap-4">
             <div v-for="qr in site.site.footerFollow.qrCodes" :key="qr.id" class="text-center">
@@ -91,7 +91,7 @@ const brokenQrCodes = ref(new Set<string>())
 
       <!-- Friend links, quiet single line -->
       <div
-        v-if="rail?.friendLinks.links.length"
+        v-if="rail?.friendLinks?.links?.length"
         class="mt-10 flex flex-wrap items-center gap-x-3.5 gap-y-1.5 border-t pt-6 text-[12px] text-muted-foreground/80"
       >
         <span class="font-medium text-foreground/70">{{ rail.friendLinks.title }}</span>
