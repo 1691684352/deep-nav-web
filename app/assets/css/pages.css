@@ -556,8 +556,8 @@ html[data-theme="dark"] .topic-card > div p strong { color: var(--muted) !import
 .profile-row-link { border: 0; color: var(--primary); background: transparent; font-size: 11px; font-weight: 700; text-align: right; }
 html[data-theme="dark"] .profile-nav-panel__divider, html[data-theme="dark"] .profile-submission-row { border-color: rgba(255,255,255,.10); }
 html[data-theme="dark"] .profile-nav-panel__logout .side-nav-btn:hover { color: var(--destructive); background: var(--muted); }
-html[data-theme="dark"] .profile-hero::before { border-color: rgba(167,191,141,.18); background: var(--foreground); }
-html[data-theme="dark"] .profile-hero::after { border-color: rgba(167,191,141,.22); background: var(--accent); }
+html[data-theme="dark"] .profile-hero::before { border-color: var(--border); background: var(--muted); }
+html[data-theme="dark"] .profile-hero::after { border-color: var(--border); background: var(--secondary); }
 html[data-theme="dark"] .profile-hero__avatar { border-color: var(--muted); background: var(--muted); box-shadow: none; }
 html[data-theme="dark"] .profile-level { color: var(--muted); background: var(--muted-foreground); }
 html[data-theme="dark"] .profile-stat__icon { color: var(--primary); background: var(--accent); }
