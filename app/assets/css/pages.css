@@ -349,10 +349,10 @@ html[data-theme="dark"] .ranking-hero::after { border-color: rgba(167, 191, 141,
 html[data-theme="dark"] .ranking-hero__trophy { border-color: rgba(167, 191, 141, .28); color: var(--primary); background: var(--accent); box-shadow: none; }
 html[data-theme="dark"] .ranking-filter { border-color: rgba(255,255,255,.10); }
 html[data-theme="dark"] .ranking-period.is-active { border-color: rgba(167,191,141,.35); color: var(--primary); background: var(--muted); box-shadow: none; }
-html[data-theme="dark"] .podium-card { border-color: rgba(255,255,255,.10); background: var(--foreground); }
-html[data-theme="dark"] .podium-card[data-rank="1"] { border-color: rgba(215,173,77,.28); background: var(--muted); }
-html[data-theme="dark"] .podium-card[data-rank="2"] { background: var(--foreground); }
-html[data-theme="dark"] .podium-card[data-rank="3"] { background: var(--foreground); }
+  html[data-theme="dark"] .podium-card { border-color: rgba(255,255,255,.10); background: var(--muted); }
+  html[data-theme="dark"] .podium-card[data-rank="1"] { border-color: rgba(215,173,77,.28); background: var(--secondary); }
+  html[data-theme="dark"] .podium-card[data-rank="2"] { background: var(--muted); }
+  html[data-theme="dark"] .podium-card[data-rank="3"] { background: var(--muted); }
 html[data-theme="dark"] .podium-card__logo, html[data-theme="dark"] .ranking-row__logo, html[data-theme="dark"] .ranking-recommend__item img { border-color: rgba(255,255,255,.10); background: var(--muted); }
 html[data-theme="dark"] .ranking-row { border-color: rgba(255,255,255,.09); }
 html[data-theme="dark"] .ranking-row:hover { background: var(--muted); }
