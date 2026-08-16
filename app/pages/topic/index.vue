@@ -24,6 +24,43 @@ const { data } = await useAsyncData(
 
 useSeoFromApi(() => data.value?.seo)
 
+// Structured data: breadcrumb + a collection listing the featured topics.
+const abs = useAbsoluteUrl()
+useJsonLd('topic-list', () => {
+  const topics = data.value?.result?.list ?? []
+  return {
+    '@context': 'https://schema.org',
+    '@graph': [
+      {
+        '@type': 'BreadcrumbList',
+        'itemListElement': [
+          { '@type': 'ListItem', 'position': 1, 'name': '首页', 'item': abs('/') },
+          { '@type': 'ListItem', 'position': 2, 'name': '精选专题', 'item': abs('/topic') },
+        ],
+      },
+      {
+        '@type': 'CollectionPage',
+        'name': '精选专题',
+        'url': abs('/topic'),
+        ...(topics.length
+          ? {
+              mainEntity: {
+                '@type': 'ItemList',
+                'numberOfItems': data.value?.result?.total ?? topics.length,
+                'itemListElement': topics.map((topic, index) => ({
+                  '@type': 'ListItem',
+                  'position': index + 1,
+                  'name': topic.title,
+                  'url': abs(`/topic/${topic.slug}`),
+                })),
+              },
+            }
+          : {}),
+      },
+    ],
+  }
+})
+
 const result = computed(() => data.value?.result)
 
 function submitSearch() {

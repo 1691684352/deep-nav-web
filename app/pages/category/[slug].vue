@@ -32,6 +32,46 @@ if (error.value) {
 
 useSeoFromApi(() => data.value?.seo)
 
+// Structured data: breadcrumb (home > category) + a list of the category's tools.
+const abs = useAbsoluteUrl()
+useJsonLd('category', () => {
+  const c = data.value?.category
+  if (!c) return null
+  const tools = data.value?.hotTools ?? []
+  return {
+    '@context': 'https://schema.org',
+    '@graph': [
+      {
+        '@type': 'BreadcrumbList',
+        'itemListElement': [
+          { '@type': 'ListItem', 'position': 1, 'name': '首页', 'item': abs('/') },
+          { '@type': 'ListItem', 'position': 2, 'name': c.name, 'item': abs(`/category/${c.slug}`) },
+        ],
+      },
+      {
+        '@type': 'CollectionPage',
+        'name': c.name,
+        'description': c.description ?? '',
+        'url': abs(`/category/${c.slug}`),
+        ...(tools.length
+          ? {
+              mainEntity: {
+                '@type': 'ItemList',
+                'numberOfItems': data.value?.total ?? tools.length,
+                'itemListElement': tools.map((tool, index) => ({
+                  '@type': 'ListItem',
+                  'position': index + 1,
+                  'name': tool.name,
+                  'url': abs(`/tool/${tool.slug}`),
+                })),
+              },
+            }
+          : {}),
+      },
+    ],
+  }
+})
+
 const activeFilter = ref('全部')
 
 const category = computed(() => data.value?.category)

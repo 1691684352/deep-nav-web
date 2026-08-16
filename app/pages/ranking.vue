@@ -36,6 +36,46 @@ const { data } = await useAsyncData(
 
 useSeoFromApi(() => data.value?.seo)
 
+// Structured data: breadcrumb + an ordered ItemList of the ranked tools.
+const abs = useAbsoluteUrl()
+useJsonLd('ranking', () => {
+  const r = data.value?.ranking
+  if (!r) return null
+  const entries = r.entries ?? []
+  return {
+    '@context': 'https://schema.org',
+    '@graph': [
+      {
+        '@type': 'BreadcrumbList',
+        'itemListElement': [
+          { '@type': 'ListItem', 'position': 1, 'name': '首页', 'item': abs('/') },
+          { '@type': 'ListItem', 'position': 2, 'name': '排行榜', 'item': abs('/ranking') },
+        ],
+      },
+      {
+        '@type': 'CollectionPage',
+        'name': `工具排行榜 · ${r.periodLabel}`,
+        'description': r.summary,
+        'url': abs('/ranking'),
+        ...(entries.length
+          ? {
+              mainEntity: {
+                '@type': 'ItemList',
+                'numberOfItems': r.total,
+                'itemListElement': entries.map(entry => ({
+                  '@type': 'ListItem',
+                  'position': entry.rank,
+                  'name': entry.tool.name,
+                  'url': abs(`/tool/${entry.tool.slug}`),
+                })),
+              },
+            }
+          : {}),
+      },
+    ],
+  }
+})
+
 const ranking = computed(() => data.value?.ranking)
 
 /** The podium renders 2nd, 1st, 3rd so the winner sits in the middle. */
