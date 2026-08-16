@@ -5,6 +5,19 @@
 --------------------------------------------------------------------------- */
 [data-theme="dark"] .wechat-qr { background: #fff; }
 
+/* Promo card: keep it a dark, elevated feature card instead of inverting to a
+   glaring light block. The bright CTA pill remains the accent. */
+[data-theme="dark"] .promo-card {
+  background: linear-gradient(160deg, var(--secondary), var(--card));
+  color: var(--foreground);
+  border-color: var(--border);
+}
+[data-theme="dark"] .promo-card .promo-card-sub { color: var(--muted-foreground); }
+[data-theme="dark"] .promo-card .promo-card-cta {
+  background: var(--primary);
+  color: var(--primary-foreground);
+}
+
 /* Legacy arbitrary text colors -> neutral foreground / muted-foreground */
 [data-theme="dark"] [class~="text-[#202633]"],
 [data-theme="dark"] [class~="text-[#252b38]"],

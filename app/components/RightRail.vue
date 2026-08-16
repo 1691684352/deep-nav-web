@@ -11,10 +11,10 @@ const qrFailed = ref(false)
   <aside class="right-rail space-y-4" aria-label="导航与推荐">
     <slot name="before" />
 
-    <NuxtLink v-if="rail" :to="rail.promo.to" class="relative block min-h-[154px] rounded-xl border bg-primary p-5 text-primary-foreground shadow-sm transition-transform hover:-translate-y-0.5">
+    <NuxtLink v-if="rail" :to="rail.promo.to" class="promo-card relative block min-h-[154px] rounded-xl border bg-primary p-5 text-primary-foreground shadow-sm transition-transform hover:-translate-y-0.5">
       <p class="text-[20px] font-semibold">{{ rail.promo.title }}</p>
-      <p class="mt-1 text-[12px] text-primary-foreground/70">{{ rail.promo.subtitle }}</p>
-      <span class="mt-5 inline-flex h-8 items-center gap-1 rounded-full bg-background px-3 text-[11px] font-bold text-foreground">
+      <p class="promo-card-sub mt-1 text-[12px] text-primary-foreground/70">{{ rail.promo.subtitle }}</p>
+      <span class="promo-card-cta mt-5 inline-flex h-8 items-center gap-1 rounded-full bg-background px-3 text-[11px] font-bold text-foreground">
         {{ rail.promo.ctaLabel }} <AppIcon name="arrow-right" class="size-3" />
       </span>
     </NuxtLink>
