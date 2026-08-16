@@ -83,6 +83,9 @@ html[data-theme="dark"] .detail-filter__tab.active { color: var(--primary-foregr
 html[data-theme="dark"] .detail-pagination__button { color: var(--muted-foreground); }
 html[data-theme="dark"] .detail-pagination__button:hover { color: var(--primary); border-color: rgba(173, 201, 152, .26); background: var(--accent); }
 html[data-theme="dark"] .detail-pagination__button.active { color: var(--primary-foreground); background: var(--primary); }
+.detail-scroll-status { display: flex; min-height: 44px; align-items: center; justify-content: center; margin-top: 16px; }
+.detail-scroll-spinner { display: inline-flex; align-items: center; gap: 7px; color: var(--muted-foreground); font-size: 12px; font-weight: 600; }
+.detail-scroll-end { color: var(--muted-foreground); font-size: 12px; }
 
 @media (min-width: 1100px) { .category-tools-grid { grid-template-columns: repeat(4, minmax(0, 1fr)); } }
 @media (max-width: 820px) {

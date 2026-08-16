@@ -13,19 +13,21 @@ interface SubcategoryPayload {
   hotTools: Tool[]
 }
 
+const PAGE_SIZE = 24
+
 const route = useRoute()
 const router = useRouter()
 const slug = computed(() => String(route.params.slug))
 const filter = computed(() => String(route.query.filter ?? '全部'))
 const sort = computed(() => String(route.query.sort ?? 'heat') as SearchSort)
-const page = computed(() => Number(route.query.page ?? 1))
 
+// Initial page is fetched on the server; further pages are appended client-side.
 const { data, error } = await useAsyncData(
   () => `subcategory-${slug.value}`,
   () => $api<SubcategoryPayload>(`/api/subcategories/${slug.value}`, {
-    query: { filter: filter.value, sort: sort.value, page: page.value, pageSize: 24 },
+    query: { filter: filter.value, sort: sort.value, page: 1, pageSize: PAGE_SIZE },
   }),
-  { watch: [slug, filter, sort, page] },
+  { watch: [slug, filter, sort] },
 )
 
 if (error.value) {
@@ -35,21 +37,57 @@ if (error.value) {
 useSeoFromApi(() => data.value?.seo)
 
 const nav = computed(() => data.value?.nav)
-const result = computed(() => data.value?.result)
+
+// Accumulated tool list for infinite scroll.
+const items = ref<Tool[]>([])
+const currentPage = ref(1)
+const totalPages = ref(1)
+const loadingMore = ref(false)
+
+watch(data, (payload) => {
+  if (!payload) return
+  items.value = [...payload.result.list]
+  currentPage.value = payload.result.page
+  totalPages.value = payload.result.totalPages
+}, { immediate: true })
+
+const hasMore = computed(() => currentPage.value < totalPages.value)
+
+async function loadMore() {
+  if (loadingMore.value || !hasMore.value) return
+  loadingMore.value = true
+  try {
+    const next = currentPage.value + 1
+    const payload = await $api<SubcategoryPayload>(`/api/subcategories/${slug.value}`, {
+      query: { filter: filter.value, sort: sort.value, page: next, pageSize: PAGE_SIZE },
+    })
+    items.value.push(...payload.result.list)
+    currentPage.value = payload.result.page
+    totalPages.value = payload.result.totalPages
+  } finally {
+    loadingMore.value = false
+  }
+}
+
+// Observe a bottom sentinel and load the next page as it approaches the viewport.
+const sentinel = ref<HTMLElement | null>(null)
+let observer: IntersectionObserver | null = null
+
+onMounted(() => {
+  observer = new IntersectionObserver((entries) => {
+    if (entries[0]?.isIntersecting) loadMore()
+  }, { rootMargin: '400px 0px' })
+  if (sentinel.value) observer.observe(sentinel.value)
+})
+
+onBeforeUnmount(() => observer?.disconnect())
 
 function updateQuery(patch: Record<string, string | number | undefined>) {
   router.push({ query: { ...route.query, ...patch } })
 }
 
 function setFilter(value: string) {
-  updateQuery({ filter: value === '全部' ? undefined : value, page: undefined })
-}
-
-function setPage(value: number) {
-  updateQuery({ page: value === 1 ? undefined : value })
-  if (import.meta.client) {
-    document.getElementById('popular-tools')?.scrollIntoView({ behavior: 'smooth', block: 'start' })
-  }
+  updateQuery({ filter: value === '全部' ? undefined : value })
 }
 </script>
 
@@ -107,8 +145,8 @@ function setPage(value: number) {
 
       <section id="popular-tools" class="panel rounded-xl p-4" aria-labelledby="detail-tools-title">
         <h2 id="detail-tools-title" class="sr-only">{{ nav?.title }}列表</h2>
-        <div v-if="result?.list.length" class="grid grid-cols-2 gap-3 lg:grid-cols-5" aria-live="polite">
-          <ToolCard v-for="tool in result.list" :key="tool.id" :tool="tool" />
+        <div v-if="items.length" class="grid grid-cols-2 gap-3 lg:grid-cols-5" aria-live="polite">
+          <ToolCard v-for="tool in items" :key="tool.id" :tool="tool" />
         </div>
         <EmptyState
           v-else
@@ -116,13 +154,13 @@ function setPage(value: number) {
           action-label="清除筛选条件"
           @action="setFilter('全部')"
         />
-        <PaginationBar
-          v-if="result"
-          :page="result.page"
-          :total-pages="result.totalPages"
-          label="工具列表分页"
-          @change="setPage"
-        />
+
+        <div ref="sentinel" class="detail-scroll-status" aria-hidden="true">
+          <span v-if="loadingMore" class="detail-scroll-spinner">
+            <AppIcon name="loader-circle" class="size-4 animate-spin" />加载更多…
+          </span>
+          <span v-else-if="items.length && !hasMore" class="detail-scroll-end">已经到底了</span>
+        </div>
       </section>
     </div>
 
