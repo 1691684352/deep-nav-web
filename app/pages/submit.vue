@@ -214,6 +214,7 @@ async function handleNext() {
     <div class="submit-layout mt-5">
       <form class="panel submit-form-panel rounded-xl" novalidate @submit.prevent="handleNext">
         <div class="submit-intro">
+          <span class="submit-eyebrow">投稿 / 收录</span>
           <h1 id="submit-page-title" class="font-display font-extrabold text-foreground">提交收录</h1>
           <p class="mt-2 text-[13px] text-muted-foreground">分享优质网站，让更多人发现它的价值</p>
         </div>
@@ -223,10 +224,15 @@ async function handleNext() {
             v-for="item in options?.steps ?? []"
             :key="item.step"
             class="submit-step"
-            :class="{ 'is-active': item.step <= step }"
+            :class="{ 'is-current': item.step === step, 'is-done': item.step < step }"
           >
-            <span class="submit-step__number">{{ item.step }}</span>
-            <span class="submit-step__copy"><strong>{{ item.title }}</strong><span>{{ item.hint }}</span></span>
+            <button type="button" class="submit-step__btn" @click="goStep(item.step)">
+              <span class="submit-step__number">
+                <AppIcon v-if="item.step < step" name="check" class="size-[15px]" />
+                <template v-else>{{ item.step }}</template>
+              </span>
+              <span class="submit-step__copy"><strong>{{ item.title }}</strong><span>{{ item.hint }}</span></span>
+            </button>
           </li>
         </ol>
 
