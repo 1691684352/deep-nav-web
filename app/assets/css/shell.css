@@ -434,6 +434,9 @@ body.mobile-drawer-open { overflow: hidden; }
 
   .hero-panel::after { display: none; }
 
+  /* Decorative beacon overlaps the heading on narrow screens — hide it. */
+  .beacon { display: none !important; }
+
   .search-wrap {
     width: 100%;
     height: 48px !important;

@@ -373,6 +373,11 @@ html[data-theme="dark"] .ranking-recommend__item:hover { border-color: rgba(167,
   .podium-card[data-rank="1"] { min-height: 140px; }
   .ranking-recommend { grid-template-columns: repeat(2, minmax(0, 1fr)); }
 }
+@media (max-width: 600px) {
+  /* Decorative trophy/circle overlaps the copy on narrow screens — hide them. */
+  .ranking-hero::after, .ranking-hero__trophy { display: none; }
+  .profile-hero::before { display: none; }
+}
 
 /* ---------------------------------------------------------------------------
    Topic list / topic detail
