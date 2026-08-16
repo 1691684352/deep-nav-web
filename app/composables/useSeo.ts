@@ -46,3 +46,30 @@ export function useSeoFromApi(meta: MaybeRefOrGetter<SeoMeta | null | undefined>
     link: [{ rel: 'canonical', href: canonical }],
   })
 }
+
+/** Resolves a path/URL to an absolute URL using the configured site origin. */
+export function useAbsoluteUrl() {
+  const config = useRuntimeConfig()
+  const origin = (config.public.siteUrl as string).replace(/\/$/, '')
+  return (path?: string) => {
+    if (!path) return origin
+    return path.startsWith('http') ? path : `${origin}${path.startsWith('/') ? '' : '/'}${path}`
+  }
+}
+
+/**
+ * Injects a reactive JSON-LD (schema.org) block into the document head.
+ * `id` keeps the script deduped/replaceable across navigations.
+ */
+export function useJsonLd(id: string, data: MaybeRefOrGetter<Record<string, unknown> | null | undefined>) {
+  useHead({
+    script: [{
+      key: `ld-${id}`,
+      type: 'application/ld+json',
+      innerHTML: () => {
+        const value = toValue(data)
+        return value ? JSON.stringify(value) : ''
+      },
+    }],
+  })
+}

@@ -25,6 +25,45 @@ if (error.value) {
 
 useSeoFromApi(() => data.value?.seo)
 
+// Structured data: breadcrumbs + a rated SoftwareApplication for rich results.
+const abs = useAbsoluteUrl()
+useJsonLd('tool', () => {
+  const d = data.value?.detail
+  if (!d) return null
+  const graph: Record<string, unknown>[] = [{
+    '@type': 'SoftwareApplication',
+    'name': d.name,
+    'description': d.desc,
+    'url': abs(`/tool/${d.slug}`),
+    'applicationCategory': d.category,
+    'operatingSystem': 'Web',
+    'image': abs(d.gallery?.main.src ?? '/assets/deepseek-site-preview.png'),
+    ...(d.ratingCount > 0
+      ? {
+          aggregateRating: {
+            '@type': 'AggregateRating',
+            'ratingValue': d.rating,
+            'ratingCount': d.ratingCount,
+            'bestRating': 5,
+            'worstRating': 1,
+          },
+        }
+      : {}),
+  }]
+  if (d.breadcrumbs?.length) {
+    graph.push({
+      '@type': 'BreadcrumbList',
+      'itemListElement': d.breadcrumbs.map((crumb, index) => ({
+        '@type': 'ListItem',
+        'position': index + 1,
+        'name': crumb.label,
+        ...(crumb.to ? { item: abs(crumb.to) } : {}),
+      })),
+    })
+  }
+  return { '@context': 'https://schema.org', '@graph': graph }
+})
+
 const account = useAccountStore()
 const ui = useUiStore()
 const toast = useToast()
