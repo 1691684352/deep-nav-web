@@ -89,7 +89,7 @@ const brokenQrCodes = ref(new Set<string>())
       <!-- Friend links, quiet single line -->
       <div
         v-if="rail?.friendLinks.links.length"
-        class="mt-7 flex flex-wrap items-center gap-x-3.5 gap-y-1.5 border-t pt-5 text-[12px] text-muted-foreground/80"
+        class="mt-6 flex flex-wrap items-center gap-x-3.5 gap-y-1.5 text-[12px] text-muted-foreground/80"
       >
         <span class="font-medium text-foreground/70">{{ rail.friendLinks.title }}</span>
         <template v-for="link in rail.friendLinks.links" :key="link.id">
@@ -113,8 +113,8 @@ const brokenQrCodes = ref(new Set<string>())
     </div>
 
     <!-- Bottom bar -->
-    <div class="border-t bg-background/40">
-      <div class="page-shell flex flex-col gap-2 py-4 text-[12px] leading-5 text-muted-foreground sm:flex-row sm:items-center sm:justify-between">
+    <div>
+      <div class="page-shell flex flex-col gap-2 pb-8 text-[12px] leading-5 text-muted-foreground sm:flex-row sm:items-center sm:justify-between">
         <div class="flex flex-wrap items-center gap-x-4 gap-y-1">
           <span class="text-foreground/80">{{ site.site.copyright }}</span>
           <NuxtLink
