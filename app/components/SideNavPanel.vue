@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import { useAccountStore } from '~/stores/account'
 import { useSiteStore } from '~/stores/site'
 import { useUiStore } from '~/stores/ui'
 
@@ -9,7 +10,22 @@ const props = defineProps<{
 
 const site = useSiteStore()
 const ui = useUiStore()
+const account = useAccountStore()
 const route = useRoute()
+
+/**
+ * Entries under `/profile` require a session. When logged out we stop the
+ * navigation and surface the login dialog instead of silently redirecting.
+ */
+function handleNavClick(event: MouseEvent, to: string) {
+  if (to.startsWith('/profile') && !account.isLoggedIn) {
+    event.preventDefault()
+    ui.openLogin()
+    ui.toast('请先登录', 'info')
+    return
+  }
+  ui.toggleDrawer(false)
+}
 
 /** Falls back to the current route so every page highlights the right entry. */
 const currentCategory = computed(() => {
@@ -74,7 +90,7 @@ const secondaryLinks = computed(() => sideNav.value?.secondary ?? [])
         :to="link.to"
         class="side-nav-btn flex w-full items-center gap-2.5 rounded-lg px-3 text-[13px]"
         :class="{ active: currentAction === link.id.replace('side-', '') }"
-        @click="ui.toggleDrawer(false)"
+        @click="handleNavClick($event, link.to)"
       >
         <AppIcon :name="link.icon ?? 'link'" class="size-4" />{{ link.label }}
       </NuxtLink>
