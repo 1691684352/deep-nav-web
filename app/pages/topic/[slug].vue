@@ -36,6 +36,55 @@ useSeoFromApi(() => data.value?.seo)
 const topic = computed(() => data.value?.topic)
 const result = computed(() => data.value?.result)
 
+// Structured data: breadcrumb + a collection page listing the topic's tools.
+const abs = useAbsoluteUrl()
+useJsonLd('topic', () => {
+  const t = data.value?.topic
+  if (!t) return null
+  const crumbs = t.breadcrumbs?.length
+    ? t.breadcrumbs.map(crumb => ({ name: crumb.label, item: crumb.to }))
+    : [
+        { name: '首页', item: '/' },
+        { name: '精选专题', item: '/topic' },
+        { name: t.title, item: `/topic/${t.slug}` },
+      ]
+  const tools = data.value?.result?.list ?? []
+  return {
+    '@context': 'https://schema.org',
+    '@graph': [
+      {
+        '@type': 'BreadcrumbList',
+        'itemListElement': crumbs.map((crumb, index) => ({
+          '@type': 'ListItem',
+          'position': index + 1,
+          'name': crumb.name,
+          ...(crumb.item ? { item: abs(crumb.item) } : {}),
+        })),
+      },
+      {
+        '@type': 'CollectionPage',
+        'name': t.title,
+        'description': t.description,
+        'url': abs(`/topic/${t.slug}`),
+        ...(tools.length
+          ? {
+              mainEntity: {
+                '@type': 'ItemList',
+                'numberOfItems': t.toolCount,
+                'itemListElement': tools.map((tool, index) => ({
+                  '@type': 'ListItem',
+                  'position': index + 1,
+                  'name': tool.name,
+                  'url': abs(`/tool/${tool.slug}`),
+                })),
+              },
+            }
+          : {}),
+      },
+    ],
+  }
+})
+
 function updateQuery(patch: Record<string, string | number | undefined>) {
   router.push({ query: { ...route.query, ...patch } })
 }
@@ -66,10 +115,10 @@ function setPage(value: number) {
             <AppIcon name="chevron-right" class="size-3.5" />
             <span>{{ topic?.title }}</span>
           </nav>
-          <h1 id="topic-detail-title" class="mt-3 font-display text-[29px] font-extrabold leading-tight text-ink">
+          <h1 id="topic-detail-title" class="mt-3 font-display text-[29px] font-extrabold leading-tight text-foreground">
             {{ topic?.title }}
           </h1>
-          <p class="mt-2 text-[13px] font-medium leading-6 text-copy">{{ topic?.intro }}</p>
+          <p class="mt-2 text-[13px] font-medium leading-6 text-muted-foreground">{{ topic?.intro }}</p>
           <div class="mt-5 flex flex-wrap items-center gap-3">
             <div class="flex -space-x-1.5">
               <img
@@ -83,8 +132,8 @@ function setPage(value: number) {
                 alt=""
               >
             </div>
-            <p class="text-[12px] text-muted">
-              共 <strong class="number-font text-[14px] text-ink">{{ result?.total ?? 0 }}</strong> 个工具
+            <p class="text-[12px] text-muted-foreground">
+              共 <strong class="number-font text-[14px] text-foreground">{{ result?.total ?? 0 }}</strong> 个工具
             </p>
           </div>
         </div>
@@ -92,7 +141,7 @@ function setPage(value: number) {
       </section>
 
       <section class="panel detail-filter rounded-xl px-4 py-3 sm:px-5" aria-label="专题筛选">
-        <div class="flex flex-wrap items-center justify-between gap-3">
+        <div class="flex flex-wrap items-center gap-3">
           <div class="detail-filter__tabs" role="tablist" aria-label="专题筛选">
             <button
               v-for="item in data?.filters ?? []"
@@ -105,16 +154,6 @@ function setPage(value: number) {
               @click="setFilter(item)"
             >{{ item }}</button>
           </div>
-          <label class="flex shrink-0 items-center gap-2 text-[12px] text-muted">
-            <span class="sr-only">排序方式</span>
-            <select
-              class="h-8 rounded-lg border border-line bg-transparent px-2 text-[12px] text-ink outline-none focus:border-brand"
-              :value="sort"
-              @change="updateQuery({ sort: ($event.target as HTMLSelectElement).value, page: undefined })"
-            >
-              <option v-for="option in data?.sortOptions ?? []" :key="option.value" :value="option.value">{{ option.label }}</option>
-            </select>
-          </label>
         </div>
       </section>
 
@@ -134,7 +173,7 @@ function setPage(value: number) {
       </section>
 
       <section v-if="topic?.related?.length" class="panel rounded-xl p-5" aria-labelledby="topic-related-title">
-        <h2 id="topic-related-title" class="font-display text-[17px] font-bold text-ink">相关专题</h2>
+        <h2 id="topic-related-title" class="font-display text-[17px] font-bold text-foreground">相关专题</h2>
         <div class="mt-4 grid gap-3 sm:grid-cols-2 xl:grid-cols-4">
           <TopicCard v-for="item in topic.related" :key="item.id" :topic="item" />
         </div>

@@ -13,19 +13,21 @@ interface SubcategoryPayload {
   hotTools: Tool[]
 }
 
+const PAGE_SIZE = 24
+
 const route = useRoute()
 const router = useRouter()
 const slug = computed(() => String(route.params.slug))
 const filter = computed(() => String(route.query.filter ?? '全部'))
 const sort = computed(() => String(route.query.sort ?? 'heat') as SearchSort)
-const page = computed(() => Number(route.query.page ?? 1))
 
+// Initial page is fetched on the server; further pages are appended client-side.
 const { data, error } = await useAsyncData(
   () => `subcategory-${slug.value}`,
   () => $api<SubcategoryPayload>(`/api/subcategories/${slug.value}`, {
-    query: { filter: filter.value, sort: sort.value, page: page.value, pageSize: 24 },
+    query: { filter: filter.value, sort: sort.value, page: 1, pageSize: PAGE_SIZE },
   }),
-  { watch: [slug, filter, sort, page] },
+  { watch: [slug, filter, sort] },
 )
 
 if (error.value) {
@@ -35,21 +37,103 @@ if (error.value) {
 useSeoFromApi(() => data.value?.seo)
 
 const nav = computed(() => data.value?.nav)
-const result = computed(() => data.value?.result)
+
+// Structured data: breadcrumb (home > parent category > subcategory) + tool list.
+const abs = useAbsoluteUrl()
+useJsonLd('subcategory', () => {
+  const n = data.value?.nav
+  if (!n) return null
+  const crumbs: Array<{ name: string, item: string }> = [{ name: '首页', item: abs('/') }]
+  if (n.parentSlug && n.parentLabel) {
+    crumbs.push({ name: n.parentLabel, item: abs(`/category/${n.parentSlug}`) })
+  }
+  crumbs.push({ name: n.label, item: abs(`/category/subcategory/${n.slug}`) })
+  const tools = data.value?.result?.list ?? []
+  return {
+    '@context': 'https://schema.org',
+    '@graph': [
+      {
+        '@type': 'BreadcrumbList',
+        'itemListElement': crumbs.map((crumb, index) => ({
+          '@type': 'ListItem',
+          'position': index + 1,
+          'name': crumb.name,
+          'item': crumb.item,
+        })),
+      },
+      {
+        '@type': 'CollectionPage',
+        'name': n.label,
+        'description': n.description ?? '',
+        'url': abs(`/category/subcategory/${n.slug}`),
+        ...(tools.length
+          ? {
+              mainEntity: {
+                '@type': 'ItemList',
+                'itemListElement': tools.map((tool, index) => ({
+                  '@type': 'ListItem',
+                  'position': index + 1,
+                  'name': tool.name,
+                  'url': abs(`/tool/${tool.slug}`),
+                })),
+              },
+            }
+          : {}),
+      },
+    ],
+  }
+})
+
+// Accumulated tool list for infinite scroll.
+const items = ref<Tool[]>([])
+const currentPage = ref(1)
+const totalPages = ref(1)
+const loadingMore = ref(false)
+
+watch(data, (payload) => {
+  if (!payload) return
+  items.value = [...payload.result.list]
+  currentPage.value = payload.result.page
+  totalPages.value = payload.result.totalPages
+}, { immediate: true })
+
+const hasMore = computed(() => currentPage.value < totalPages.value)
+
+async function loadMore() {
+  if (loadingMore.value || !hasMore.value) return
+  loadingMore.value = true
+  try {
+    const next = currentPage.value + 1
+    const payload = await $api<SubcategoryPayload>(`/api/subcategories/${slug.value}`, {
+      query: { filter: filter.value, sort: sort.value, page: next, pageSize: PAGE_SIZE },
+    })
+    items.value.push(...payload.result.list)
+    currentPage.value = payload.result.page
+    totalPages.value = payload.result.totalPages
+  } finally {
+    loadingMore.value = false
+  }
+}
+
+// Observe a bottom sentinel and load the next page as it approaches the viewport.
+const sentinel = ref<HTMLElement | null>(null)
+let observer: IntersectionObserver | null = null
+
+onMounted(() => {
+  observer = new IntersectionObserver((entries) => {
+    if (entries[0]?.isIntersecting) loadMore()
+  }, { rootMargin: '400px 0px' })
+  if (sentinel.value) observer.observe(sentinel.value)
+})
+
+onBeforeUnmount(() => observer?.disconnect())
 
 function updateQuery(patch: Record<string, string | number | undefined>) {
   router.push({ query: { ...route.query, ...patch } })
 }
 
 function setFilter(value: string) {
-  updateQuery({ filter: value === '全部' ? undefined : value, page: undefined })
-}
-
-function setPage(value: number) {
-  updateQuery({ page: value === 1 ? undefined : value })
-  if (import.meta.client) {
-    document.getElementById('popular-tools')?.scrollIntoView({ behavior: 'smooth', block: 'start' })
-  }
+  updateQuery({ filter: value === '全部' ? undefined : value })
 }
 </script>
 
@@ -58,12 +142,12 @@ function setPage(value: number) {
     <LeftRail />
 
     <div class="min-w-0 space-y-6">
-      <section class="hero-panel category-hero rounded-xl border border-[#e6ecf8] p-7 sm:p-8" aria-labelledby="subcategory-title">
+      <section class="hero-panel category-hero rounded-xl border border-border p-7 sm:p-8" aria-labelledby="subcategory-title">
         <div class="hero-copy relative z-10">
           <nav class="category-breadcrumb flex items-center gap-1.5 text-[12px] font-medium" aria-label="面包屑">
             <NuxtLink to="/">工具导航</NuxtLink>
             <AppIcon name="chevron-right" class="size-3.5" />
-            <NuxtLink to="/category/all">AI 导航</NuxtLink>
+            <NuxtLink to="/category/ai">AI 导航</NuxtLink>
             <AppIcon name="chevron-right" class="size-3.5" />
             <span>{{ nav?.title }}</span>
           </nav>
@@ -71,11 +155,11 @@ function setPage(value: number) {
             <span class="category-title-icon" aria-hidden="true">
               <AppIcon :name="nav?.icon ?? 'image'" class="size-5" />
             </span>
-            <h1 id="subcategory-title" class="font-display text-[32px] font-extrabold leading-tight text-[#121827]">
+            <h1 id="subcategory-title" class="font-display text-[32px] font-extrabold leading-tight text-foreground">
               {{ nav?.title }}
             </h1>
           </div>
-          <p class="mt-3 max-w-[650px] text-[14px] font-medium leading-6 text-copy">{{ nav?.description }}</p>
+          <p class="mt-3 max-w-[650px] text-[14px] font-medium leading-6 text-muted-foreground">{{ nav?.description }}</p>
           <div class="mt-5 flex flex-wrap gap-y-3">
             <div class="category-metric"><strong>{{ nav?.toolCount ?? 0 }}</strong><span>已收录工具</span></div>
             <div class="category-metric"><strong>多端可用</strong><span>网页与桌面端</span></div>
@@ -107,8 +191,8 @@ function setPage(value: number) {
 
       <section id="popular-tools" class="panel rounded-xl p-4" aria-labelledby="detail-tools-title">
         <h2 id="detail-tools-title" class="sr-only">{{ nav?.title }}列表</h2>
-        <div v-if="result?.list.length" class="grid grid-cols-2 gap-3 lg:grid-cols-5" aria-live="polite">
-          <ToolCard v-for="tool in result.list" :key="tool.id" :tool="tool" />
+        <div v-if="items.length" class="grid grid-cols-2 gap-3 lg:grid-cols-5" aria-live="polite">
+          <ToolCard v-for="tool in items" :key="tool.id" :tool="tool" />
         </div>
         <EmptyState
           v-else
@@ -116,13 +200,13 @@ function setPage(value: number) {
           action-label="清除筛选条件"
           @action="setFilter('全部')"
         />
-        <PaginationBar
-          v-if="result"
-          :page="result.page"
-          :total-pages="result.totalPages"
-          label="工具列表分页"
-          @change="setPage"
-        />
+
+        <div ref="sentinel" class="detail-scroll-status" aria-hidden="true">
+          <span v-if="loadingMore" class="detail-scroll-spinner">
+            <AppIcon name="loader-circle" class="size-4 animate-spin" />加载更多…
+          </span>
+          <span v-else-if="items.length && !hasMore" class="detail-scroll-end">已经到底了</span>
+        </div>
       </section>
     </div>
 

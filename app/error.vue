@@ -35,7 +35,7 @@ function search() {
       <p class="mx-auto mt-3 max-w-[460px] text-[13px] leading-6 text-copy">{{ description }}</p>
 
       <form class="topic-search mx-auto mt-6 flex max-w-[460px] items-center p-1" role="search" @submit.prevent="search">
-        <AppIcon name="search" class="ml-3 size-4 shrink-0 text-muted" />
+        <AppIcon name="search" class="ml-3 size-4 shrink-0 text-muted-foreground" />
         <label class="sr-only" for="errorSearch">搜索工具或网站</label>
         <input
           id="errorSearch"

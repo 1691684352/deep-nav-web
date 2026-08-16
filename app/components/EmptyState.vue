@@ -15,17 +15,21 @@ defineEmits<{ action: [] }>()
 </script>
 
 <template>
-  <div class="py-10 text-center">
-    <AppIcon :name="icon" class="mx-auto size-7 text-[#a5aec0]" />
-    <p class="mt-3 text-[13px] font-semibold">{{ title }}</p>
-    <p v-if="description" class="mt-1 text-[12px] text-muted">{{ description }}</p>
-    <button
+  <div class="flex flex-col items-center py-10 text-center">
+    <div class="grid size-12 place-items-center rounded-full border bg-muted">
+      <AppIcon :name="icon" class="size-6 text-muted-foreground" />
+    </div>
+    <p class="mt-3 text-[13px] font-semibold text-foreground">{{ title }}</p>
+    <p v-if="description" class="mt-1 text-[12px] text-muted-foreground">{{ description }}</p>
+    <Button
       v-if="actionLabel"
-      class="mt-2 text-[12px] font-semibold text-brand"
+      variant="link"
+      size="sm"
+      class="mt-1"
       type="button"
       @click="$emit('action')"
     >
       {{ actionLabel }}
-    </button>
+    </Button>
   </div>
 </template>

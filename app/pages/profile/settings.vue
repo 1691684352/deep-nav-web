@@ -54,7 +54,7 @@ async function clearLocalData() {
       <div class="profile-section-header">
         <div>
           <h2 id="settings-title">账号设置</h2>
-          <p class="mt-1 text-[12px] text-muted">资料仅保存在当前浏览器，用于演示完整交互</p>
+          <p class="mt-1 text-[12px] text-muted-foreground">资料仅保存在当前浏览器，用于演示完整交互</p>
         </div>
       </div>
 
@@ -76,7 +76,7 @@ async function clearLocalData() {
         </div>
         <div class="submit-field submit-field--full">
           <span class="submit-field__label">手机号</span>
-          <p class="text-[13px] font-semibold text-ink">{{ account.user?.phone ?? '未登录' }}</p>
+          <p class="text-[13px] font-semibold text-foreground">{{ account.user?.phone ?? '未登录' }}</p>
           <p class="submit-field__help">演示环境不支持修改绑定手机号</p>
         </div>
       </div>
@@ -89,19 +89,19 @@ async function clearLocalData() {
     <section class="panel rounded-xl p-5" aria-labelledby="preference-title">
       <div class="profile-section-header"><h2 id="preference-title">偏好设置</h2></div>
       <div class="mt-4 space-y-3">
-        <div class="flex items-center justify-between gap-4 rounded-lg border border-line p-4">
+        <div class="flex items-center justify-between gap-4 rounded-lg border border-border p-4">
           <div>
-            <p class="text-[13px] font-bold text-ink">深色模式</p>
-            <p class="mt-1 text-[12px] text-muted">当前为{{ isDark ? '深色' : '浅色' }}主题，设置会保存在本机</p>
+            <p class="text-[13px] font-bold text-foreground">深色模式</p>
+            <p class="mt-1 text-[12px] text-muted-foreground">当前为{{ isDark ? '深色' : '浅色' }}主题，设置会保存在本机</p>
           </div>
           <button class="submit-action-button ghost" type="button" @click="toggle">
             <AppIcon :name="isDark ? 'sun' : 'moon'" class="size-3.5" />切换主题
           </button>
         </div>
-        <div class="flex items-center justify-between gap-4 rounded-lg border border-line p-4">
+        <div class="flex items-center justify-between gap-4 rounded-lg border border-border p-4">
           <div>
-            <p class="text-[13px] font-bold text-ink">清除本机数据</p>
-            <p class="mt-1 text-[12px] text-muted">清空收藏、浏览历史与投稿草稿，操作不可撤销</p>
+            <p class="text-[13px] font-bold text-foreground">清除本机数据</p>
+            <p class="mt-1 text-[12px] text-muted-foreground">清空收藏、浏览历史与投稿草稿，操作不可撤销</p>
           </div>
           <button class="submit-action-button secondary" type="button" @click="clearLocalData">
             <AppIcon name="trash-2" class="size-3.5" />立即清除

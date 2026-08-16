@@ -19,10 +19,10 @@ const props = defineProps<{ tool: Tool, recommended?: boolean }>()
     />
     <span class="min-w-0 flex-1">
       <span class="flex items-center gap-2">
-        <strong class="truncate text-[13px] font-medium text-[#252b38]">{{ props.tool.name }}</strong>
-        <span v-if="props.recommended" class="shrink-0 rounded bg-[#fff0f3] px-1 py-0.5 text-[10px] font-semibold text-[#ff4164]">推荐</span>
+        <strong class="truncate text-[13px] font-medium text-foreground">{{ props.tool.name }}</strong>
+        <span v-if="props.recommended" class="shrink-0 rounded bg-secondary px-1 py-0.5 text-[10px] font-semibold text-secondary-foreground">推荐</span>
       </span>
-      <span class="mt-0.5 block truncate text-[11px] leading-4 text-[#7b8597]">{{ props.tool.desc }}</span>
+      <span class="mt-0.5 block truncate text-[11px] leading-4 text-muted-foreground">{{ props.tool.desc }}</span>
     </span>
   </NuxtLink>
 </template>

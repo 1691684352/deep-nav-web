@@ -7,6 +7,7 @@ import {
   railBeianLinks,
   railFriendLinks,
   railServiceLinks,
+  railTagCloud,
   railWechatQr,
 } from './navigation'
 
@@ -35,6 +36,10 @@ export const siteConfig: SiteConfig = {
       descriptions: ['最新AI工具、AI资讯', '独家AI资源、AI项目落地'],
       qr: railWechatQr,
       caption: '微信扫一扫关注公众号',
+    },
+    tagCloud: {
+      title: '热门标签',
+      tags: railTagCloud,
     },
     friendLinks: {
       title: '友情链接',

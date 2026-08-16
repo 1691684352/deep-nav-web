@@ -17,7 +17,8 @@ export default defineEventHandler((event) => {
   const pageSize = toNumber(query.pageSize, 24)
 
   const pool = subcategoryTools(slug)
-  const filtered = sortTools(filterByTag(pool, filter), sort)
+  const effectiveSort = filter === '最新收录' ? 'newest' : sort
+  const filtered = sortTools(filterByTag(pool, filter), effectiveSort)
 
   return ok({
     seo: {

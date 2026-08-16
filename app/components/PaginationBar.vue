@@ -35,35 +35,37 @@ function go(page: number) {
 </script>
 
 <template>
-  <nav v-if="props.totalPages > 1" class="detail-pagination" :aria-label="props.label">
-    <button
-      class="detail-pagination__button"
+  <nav v-if="props.totalPages > 1" class="flex flex-wrap items-center justify-center gap-1.5" :aria-label="props.label">
+    <Button
+      variant="outline"
+      size="icon"
       type="button"
       :disabled="props.page === 1"
       aria-label="上一页"
       @click="go(props.page - 1)"
     >
       <AppIcon name="chevron-left" class="size-4" />
-    </button>
+    </Button>
     <template v-for="(item, index) in pages" :key="`${item}-${index}`">
-      <span v-if="item === '...'" class="detail-pagination__button cursor-default">…</span>
-      <button
+      <span v-if="item === '...'" class="grid size-9 place-items-center text-muted-foreground">…</span>
+      <Button
         v-else
-        class="detail-pagination__button"
-        :class="{ active: item === props.page }"
+        :variant="item === props.page ? 'default' : 'outline'"
+        size="icon"
         type="button"
         :aria-current="item === props.page ? 'page' : 'false'"
         @click="go(item)"
-      >{{ item }}</button>
+      >{{ item }}</Button>
     </template>
-    <button
-      class="detail-pagination__button"
+    <Button
+      variant="outline"
+      size="icon"
       type="button"
       :disabled="props.page === props.totalPages"
       aria-label="下一页"
       @click="go(props.page + 1)"
     >
       <AppIcon name="chevron-right" class="size-4" />
-    </button>
+    </Button>
   </nav>
 </template>

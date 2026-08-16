@@ -55,13 +55,13 @@ async function clearAll() {
       <div class="profile-section-header">
         <div>
           <h2 id="favorites-title">我的收藏</h2>
-          <p class="mt-1 text-[12px] text-muted">共收藏 {{ source.length }} 个工具</p>
+          <p class="mt-1 text-[12px] text-muted-foreground">共收藏 {{ source.length }} 个工具</p>
         </div>
         <button type="button" @click="clearAll">清空收藏 <AppIcon name="trash-2" class="size-3.5" /></button>
       </div>
 
       <div class="result-search-form mt-4">
-        <AppIcon name="search" class="size-4 shrink-0 text-[#8792aa]" />
+        <AppIcon name="search" class="size-4 shrink-0 text-muted-foreground" />
         <label class="sr-only" for="favoriteSearch">搜索收藏</label>
         <input id="favoriteSearch" v-model="keyword" class="result-search-input" type="search" placeholder="搜索已收藏的工具...">
       </div>

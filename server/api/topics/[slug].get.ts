@@ -27,6 +27,6 @@ export default defineEventHandler((event) => {
     sortOptions: searchSortOptions,
     filter,
     sort,
-    result: paginate(sortTools(filterByTag(detail.tools, filter), sort), page, pageSize),
+    result: paginate(sortTools(filterByTag(detail.tools, filter), filter === '最新收录' ? 'newest' : sort), page, pageSize),
   })
 })

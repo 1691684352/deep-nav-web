@@ -8,13 +8,13 @@ const props = defineProps<{ tool: LatestTool }>()
 <template>
   <NuxtLink
     :to="`/tool/${props.tool.slug}`"
-    class="rank-row rank-data-row grid grid-cols-[28px_76px_minmax(0,1fr)_64px_52px] items-center gap-2.5 rounded-lg px-2 text-[12px] text-muted"
+    class="rank-row rank-data-row grid grid-cols-[28px_76px_minmax(0,1fr)_64px_52px] items-center gap-2.5 rounded-lg px-2 text-[12px] text-muted-foreground"
   >
     <img class="mini-logo" :src="faviconUrl(props.tool.domain)" width="26" height="26" loading="lazy" alt="">
-    <strong class="truncate text-[13px] font-medium text-ink">{{ props.tool.name }}</strong>
-    <span class="truncate"><span class="mr-2 text-[#6675a2]">{{ props.tool.category }}</span>{{ props.tool.desc }}</span>
+    <strong class="truncate text-[13px] font-medium text-foreground">{{ props.tool.name }}</strong>
+    <span class="truncate"><span class="mr-2 text-foreground/70">{{ props.tool.category }}</span>{{ props.tool.desc }}</span>
     <span class="text-right">{{ props.tool.time }}</span>
-    <span class="number-font flex items-center justify-end gap-0.5 font-semibold text-[#ff534c]">
+    <span class="number-font flex items-center justify-end gap-0.5 font-semibold text-heat">
       <AppIcon name="flame" class="size-3.5" />{{ props.tool.gain }}
     </span>
   </NuxtLink>

@@ -151,3 +151,25 @@ export const railFriendLinks = resolveNavLinks(friendLinkSource)
 export const railServiceLinks = resolveNavLinks(serviceLinkSource)
 export const railBeianLinks = resolveNavLinks(beianLinkSource)
 export const railWechatQr = qrImage('deep-nav-wechat')
+
+/** Popular content tags surfaced in the rail; each opens a keyword search. */
+export const railTagCloud = [
+  'AI 对话',
+  'AI 绘画',
+  'AI 写作',
+  'AI 编程',
+  'AI 视频',
+  'AI 音频',
+  '智能体',
+  '效率工具',
+  '知识管理',
+  'PPT 制作',
+  '图像处理',
+  '提示词',
+  '数据分析',
+  '在线协作',
+].map((label, index) => ({
+  id: `tag-${index + 1}`,
+  label,
+  to: `/search?keyword=${encodeURIComponent(label)}`,
+}))

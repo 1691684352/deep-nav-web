@@ -19,23 +19,23 @@ useSeoMeta({
       <div class="profile-section-header">
         <div>
         <h2 id="feedback-title">我的点评</h2>
-          <p class="mt-1 text-[12px] text-muted">共发表 {{ account.myReviews.length }} 条点评</p>
+          <p class="mt-1 text-[12px] text-muted-foreground">共发表 {{ account.myReviews.length }} 条点评</p>
         </div>
         <NuxtLink to="/feedback">提交建议 <AppIcon name="arrow-right" class="size-3.5" /></NuxtLink>
       </div>
 
       <div v-if="account.myReviews.length" class="mt-4 space-y-3">
-        <article v-for="review in account.myReviews" :key="review.id" class="rounded-lg border border-line p-4">
+        <article v-for="review in account.myReviews" :key="review.id" class="rounded-lg border border-border p-4">
           <div class="flex items-center justify-between gap-3">
-            <NuxtLink :to="`/tool/${review.toolSlug}`" class="text-[13px] font-bold text-ink hover:text-brand">
+            <NuxtLink :to="`/tool/${review.toolSlug}`" class="text-[13px] font-bold text-foreground hover:text-foreground">
               {{ review.toolSlug }}
             </NuxtLink>
-            <span class="flex items-center gap-0.5 text-[#f5a524]">
+            <span class="flex items-center gap-0.5 text-foreground">
               <AppIcon v-for="star in review.rating" :key="star" name="star" class="size-3.5" fill />
             </span>
           </div>
-          <p class="mt-2 text-[12px] leading-6 text-copy">{{ review.content }}</p>
-          <p class="mt-2 text-[11px] text-muted">{{ relativeTime(review.createdAt) }}</p>
+          <p class="mt-2 text-[12px] leading-6 text-muted-foreground">{{ review.content }}</p>
+          <p class="mt-2 text-[11px] text-muted-foreground">{{ relativeTime(review.createdAt) }}</p>
         </article>
       </div>
       <EmptyState

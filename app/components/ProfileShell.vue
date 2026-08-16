@@ -47,20 +47,20 @@ onMounted(requireLogin)
               v-for="item in props.navItems"
               :key="item.key"
               :to="item.to"
-              class="side-nav-btn flex w-full items-center gap-3 rounded-lg px-3.5 text-[13px]"
+              class="side-nav-btn flex w-full items-center gap-2.5 rounded-lg px-3 text-[13px]"
               :class="{ active: activeKey === item.key }"
             >
-              <AppIcon :name="item.icon" class="size-[16px]" />{{ item.label }}
+              <AppIcon :name="item.icon" class="size-4" />{{ item.label }}
             </NuxtLink>
           </nav>
           <div class="profile-nav-panel__logout">
             <div class="profile-nav-panel__divider" />
             <button
-              class="side-nav-btn flex w-full items-center gap-3 rounded-lg px-3.5 text-[13px]"
+              class="side-nav-btn flex w-full items-center gap-2.5 rounded-lg px-3 text-[13px]"
               type="button"
               @click="logout"
             >
-              <AppIcon name="log-out" class="size-[16px]" />退出登录
+              <AppIcon name="log-out" class="size-4" />退出登录
             </button>
           </div>
         </div>

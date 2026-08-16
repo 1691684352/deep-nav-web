@@ -1,6 +1,6 @@
 import { greetingFor } from '#shared/utils'
 import { featureCards, seoPresets, siteConfig } from '../data/site'
-import { latestTools, rankSets, recommendedTools, tools } from '../data/tools'
+import { editorPicks, latestTools, rankSets, recommendedTools, tools } from '../data/tools'
 
 export default defineEventHandler(() => {
   const hour = new Date().getHours()
@@ -10,6 +10,7 @@ export default defineEventHandler(() => {
     site: siteConfig,
     featureCards,
     recommendedTools,
+    editorPicks,
     categories: categoriesWithCounts(),
     navCategories: navCategoriesWithCounts(),
     greeting: {

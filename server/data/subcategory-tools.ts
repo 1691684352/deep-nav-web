@@ -12,7 +12,7 @@ interface RawSubTool {
 }
 
 /** Filter chips rendered above a subcategory listing. */
-export const subcategoryFilters = ['全部', '热门推荐', '最新收录', '免费使用', '会员专享', '在线工具', '移动应用']
+export const subcategoryFilters = ['全部', '热门推荐', '最新收录']
 
 const rawImageTools: RawSubTool[] = [
   { slug: 'midjourney', name: 'Midjourney', desc: '高质量 AI 图像生成工具', domain: 'midjourney.com', url: 'https://www.midjourney.com', tags: ['热门推荐', '会员专享', '在线工具'], heat: '65.7k' },

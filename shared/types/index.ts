@@ -507,6 +507,7 @@ export interface SiteRail {
   recommend: { title: string, badge?: string }
   promo: PromoBanner
   wechat: WechatCard
+  tagCloud: { title: string, tags: Array<{ id: string, label: string, to: string }> }
   friendLinks: LinkSection
   meta: SiteMetaCard
 }

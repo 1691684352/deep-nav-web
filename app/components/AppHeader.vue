@@ -3,6 +3,17 @@ import type { NavLink } from '#shared/types'
 import { useAccountStore } from '~/stores/account'
 import { useSiteStore } from '~/stores/site'
 import { useUiStore } from '~/stores/ui'
+import { Button } from '~/components/ui/button'
+import { Avatar, AvatarImage, AvatarFallback } from '~/components/ui/avatar'
+import { Separator } from '~/components/ui/separator'
+import {
+  DropdownMenu,
+  DropdownMenuTrigger,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuLabel,
+  DropdownMenuSeparator,
+} from '~/components/ui/dropdown-menu'
 
 const site = useSiteStore()
 const ui = useUiStore()
@@ -20,24 +31,22 @@ function isActive(link: NavLink) {
   })
 }
 
-function handleAvatar() {
-  if (account.isLoggedIn) {
-    navigateTo('/profile')
-    return
-  }
-  ui.openLogin()
+const userInitial = computed(() => account.user?.nickname?.slice(0, 1)?.toUpperCase() ?? 'U')
+
+function onLogout() {
+  account.logout?.()
 }
 </script>
 
 <template>
-  <header class="sticky top-0 z-50 border-b border-line/80 bg-white/90 backdrop-blur-xl">
+  <header class="sticky top-0 z-50 border-b bg-background/85 backdrop-blur-xl">
     <div class="page-shell flex h-16 items-center gap-7">
-      <NuxtLink to="/" class="flex shrink-0 items-center gap-3 rounded-md" aria-label="深度指引首页">
+      <NuxtLink to="/" class="flex shrink-0 items-center gap-2.5 rounded-md" aria-label="深度指引首页">
         <span class="logo-mark" aria-hidden="true" />
-        <span class="font-display text-[20px] font-extrabold text-ink">深度指引</span>
+        <span class="font-display text-[19px] font-bold tracking-tight text-foreground">深度指引</span>
       </NuxtLink>
 
-      <nav class="hidden h-full items-center gap-8 text-[14px] font-semibold lg:flex" aria-label="主导航">
+      <nav class="hidden h-full items-center gap-1 text-sm font-medium lg:flex" aria-label="主导航">
         <template v-for="link in navLinks" :key="link.id">
           <a
             v-if="link.kind === 'external'"
@@ -48,75 +57,112 @@ function handleAvatar() {
           >
             <span class="flex items-center gap-1.5">
               {{ link.label }}
-              <span v-if="link.badge" class="rounded-full bg-red-500 px-1.5 py-0.5 text-[9px] font-extrabold text-white">{{ link.badge }}</span>
+              <span v-if="link.badge" class="inline-flex items-center rounded-full bg-destructive px-1.5 py-0.5 text-[9px] font-bold text-white">{{ link.badge }}</span>
               <AppIcon name="arrow-up-right" class="size-3" />
             </span>
           </a>
           <NuxtLink v-else :to="link.to" class="nav-link" :class="{ active: isActive(link) }">
             <span class="flex items-center gap-1.5">
               {{ link.label }}
-              <span v-if="link.badge" class="rounded-full bg-red-500 px-1.5 py-0.5 text-[9px] font-extrabold text-white">{{ link.badge }}</span>
+              <span v-if="link.badge" class="inline-flex items-center rounded-full bg-destructive px-1.5 py-0.5 text-[9px] font-bold text-white">{{ link.badge }}</span>
             </span>
           </NuxtLink>
         </template>
       </nav>
 
-      <div class="ml-auto flex items-center gap-2.5">
-        <button
-          class="header-search-button"
-          type="button"
+      <div class="ml-auto flex items-center gap-1.5">
+        <Button
+          variant="ghost"
+          size="icon"
           aria-label="打开全站搜索"
           :aria-expanded="ui.searchOpen"
           title="全站搜索"
           @click="ui.openSearch()"
         >
-          <img src="/assets/icon-search.png" width="18" height="18" alt="">
-        </button>
-        <button
-          class="theme-toggle"
-          type="button"
+          <AppIcon name="search" class="size-[18px]" />
+        </Button>
+        <Button
+          variant="ghost"
+          size="icon"
           :aria-label="isDark ? '切换为亮色主题' : '切换为暗色主题'"
           :aria-pressed="isDark"
           :title="isDark ? '切换为亮色主题' : '切换为暗色主题'"
           @click="toggle"
         >
-          <AppIcon name="moon" class="theme-toggle__moon size-4" />
-          <AppIcon name="sun" class="theme-toggle__sun size-4" />
-        </button>
-        <NuxtLink
+          <AppIcon v-if="isDark" name="sun" class="size-[18px]" />
+          <AppIcon v-else name="moon" class="size-[18px]" />
+        </Button>
+
+        <Button
           id="submitTop"
-          to="/submit"
-          class="hidden h-9 items-center gap-1.5 rounded-lg bg-brand px-4 text-[12px] font-semibold text-white shadow-[0_4px_10px_rgba(36,87,245,.14)] transition hover:bg-brand-deep active:scale-[.98] sm:flex"
+          as-child
+          size="sm"
+          class="hidden gap-1.5 sm:inline-flex"
         >
-          <AppIcon name="send" class="size-3.5" /><span>提交收录</span>
-        </NuxtLink>
-        <div class="ml-1 flex items-center gap-1.5 border-l border-line pl-3">
-          <button
-            id="avatarButton"
-            class="grid size-8 overflow-hidden rounded-full border border-line bg-[#e7eef8] p-0 transition hover:border-brand/30 hover:shadow-sm"
-            type="button"
-            :aria-label="account.isLoggedIn ? '进入个人中心' : '登录或注册'"
-            @click="handleAvatar"
-          >
-            <img
-              :src="account.user?.avatar || '/assets/avatar-default.png'"
-              width="32"
-              height="32"
-              class="size-full object-cover"
-              :alt="account.user ? `${account.user.nickname}头像` : '用户头像'"
-            >
-          </button>
-        </div>
-        <button
-          class="mobile-menu-button"
-          type="button"
+          <NuxtLink to="/submit">
+            <AppIcon name="send" class="size-3.5" /><span>提交收录</span>
+          </NuxtLink>
+        </Button>
+
+        <Separator orientation="vertical" class="mx-1 !h-6" />
+
+        <template v-if="account.isLoggedIn">
+          <DropdownMenu>
+            <DropdownMenuTrigger as-child>
+              <button
+                id="avatarButton"
+                class="rounded-full outline-none ring-offset-background focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2"
+                type="button"
+                aria-label="账户菜单"
+              >
+                <Avatar size="sm" class="border">
+                  <AvatarImage :src="account.user?.avatar || '/assets/avatar-default.png'" :alt="`${account.user?.nickname}头像`" />
+                  <AvatarFallback>{{ userInitial }}</AvatarFallback>
+                </Avatar>
+              </button>
+            </DropdownMenuTrigger>
+            <DropdownMenuContent align="end" class="w-52">
+              <DropdownMenuLabel>
+                <div class="flex flex-col gap-0.5">
+                  <span class="text-sm font-medium">{{ account.user?.nickname }}</span>
+                  <span class="text-xs font-normal text-muted-foreground">{{ account.user?.location ?? '已登录' }}</span>
+                </div>
+              </DropdownMenuLabel>
+              <DropdownMenuSeparator />
+              <DropdownMenuItem as-child>
+                <NuxtLink to="/profile">
+                  <AppIcon name="user-round" class="size-4" /><span>个人中心</span>
+                </NuxtLink>
+              </DropdownMenuItem>
+              <DropdownMenuItem as-child>
+                <NuxtLink to="/submit">
+                  <AppIcon name="send" class="size-4" /><span>提交收录</span>
+                </NuxtLink>
+              </DropdownMenuItem>
+              <DropdownMenuSeparator />
+              <DropdownMenuItem variant="destructive" @select="onLogout">
+                <AppIcon name="log-out" class="size-4" /><span>退出登录</span>
+              </DropdownMenuItem>
+            </DropdownMenuContent>
+          </DropdownMenu>
+        </template>
+        <template v-else>
+          <Button variant="outline" size="sm" aria-label="登录或注册" @click="ui.openLogin()">
+            登录
+          </Button>
+        </template>
+
+        <Button
+          variant="ghost"
+          size="icon"
+          class="lg:hidden"
           aria-label="打开分类菜单"
           aria-controls="mobileMenu"
           :aria-expanded="ui.drawerOpen"
           @click="ui.toggleDrawer(true)"
         >
           <AppIcon name="menu" class="size-5" />
-        </button>
+        </Button>
       </div>
     </div>
   </header>
