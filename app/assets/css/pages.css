@@ -484,7 +484,7 @@ html[data-theme="dark"] .submit-step:not(:last-child)::after { background: var(-
 html[data-theme="dark"] .submit-step.is-active:not(:last-child)::after { background: linear-gradient(90deg, var(--primary), var(--muted) 65%); }
 html[data-theme="dark"] .submit-step__number { color: var(--muted-foreground); background: var(--muted); }
 html[data-theme="dark"] .submit-step.is-active .submit-step__number { color: var(--muted); background: var(--muted); box-shadow: none; }
-html[data-theme="dark"] .submit-input, html[data-theme="dark"] .submit-select, html[data-theme="dark"] .submit-textarea, html[data-theme="dark"] .submit-editor, html[data-theme="dark"] .submit-tags, html[data-theme="dark"] .submit-preview-card { border-color: rgba(255,255,255,.11); color: var(--foreground); background: var(--foreground); }
+  html[data-theme="dark"] .submit-input, html[data-theme="dark"] .submit-select, html[data-theme="dark"] .submit-textarea, html[data-theme="dark"] .submit-editor, html[data-theme="dark"] .submit-tags, html[data-theme="dark"] .submit-preview-card { border-color: rgba(255,255,255,.11); color: var(--foreground); background: var(--card); }
 html[data-theme="dark"] .submit-input:focus, html[data-theme="dark"] .submit-select:focus, html[data-theme="dark"] .submit-textarea:focus { border-color: var(--primary); box-shadow: 0 0 0 3px rgba(167,191,141,.14); }
 html[data-theme="dark"] .submit-select { background-image: linear-gradient(45deg, transparent 50%, var(--muted-foreground) 50%), linear-gradient(135deg, var(--muted-foreground) 50%, transparent 50%); }
 html[data-theme="dark"] .submit-icon-preview, html[data-theme="dark"] .submit-preview-card__icon { border-color: rgba(167,191,141,.22); color: var(--primary); background: var(--accent); }
