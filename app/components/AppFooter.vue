@@ -11,9 +11,9 @@ const brokenQrCodes = ref(new Set<string>())
 
 <template>
   <footer v-if="site.site" class="mt-4 border-t bg-muted/30">
-    <div class="page-shell py-12">
+    <div class="page-shell py-8 sm:py-12">
       <!-- Structured grid: brand · link columns · follow -->
-      <div class="grid gap-10 lg:grid-cols-[minmax(0,1.4fr)_minmax(0,2fr)_auto]">
+      <div class="grid gap-8 lg:gap-10 lg:grid-cols-[minmax(0,1.4fr)_minmax(0,2fr)_auto]">
         <!-- Brand -->
         <div class="min-w-0">
           <NuxtLink to="/" class="inline-flex items-center gap-2.5">
@@ -47,10 +47,10 @@ const brokenQrCodes = ref(new Set<string>())
         </div>
 
         <!-- Titled link columns -->
-        <div class="grid grid-cols-2 gap-8 sm:grid-cols-3">
+        <div class="grid grid-cols-3 gap-4 sm:gap-8">
           <nav v-for="column in footerColumns" :key="column.title" aria-label="页脚导航">
             <h3 class="text-[13px] font-semibold text-foreground">{{ column.title }}</h3>
-            <ul class="mt-4 flex flex-col gap-3 text-[13px] text-muted-foreground">
+            <ul class="mt-3 flex flex-col gap-2.5 text-[13px] text-muted-foreground sm:mt-4 sm:gap-3">
               <li v-for="link in column.links" :key="link.id">
                 <a
                   v-if="link.kind === 'external'"
