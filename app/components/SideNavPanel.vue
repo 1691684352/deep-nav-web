@@ -13,18 +13,15 @@ const ui = useUiStore()
 const account = useAccountStore()
 const route = useRoute()
 
-/**
- * Entries under `/profile` require a session. When logged out we stop the
- * navigation and surface the login dialog instead of silently redirecting.
- */
-function handleNavClick(event: MouseEvent, to: string) {
-  if (to.startsWith('/profile') && !account.isLoggedIn) {
-    event.preventDefault()
-    ui.openLogin()
-    ui.toast('请先登录', 'info')
-    return
-  }
-  ui.toggleDrawer(false)
+/** Entries under `/profile` require an authenticated session. */
+function requiresAuth(to: string) {
+  return to.startsWith('/profile')
+}
+
+/** Opens the login dialog with a hint; used for guarded entries when logged out. */
+function promptLogin() {
+  ui.openLogin()
+  ui.toast('请先登录', 'info')
 }
 
 /** Falls back to the current route so every page highlights the right entry. */
@@ -84,16 +81,25 @@ const secondaryLinks = computed(() => sideNav.value?.secondary ?? [])
     </nav>
     <div class="my-2 border-t" />
     <nav class="space-y-1 text-muted-foreground">
-      <NuxtLink
-        v-for="link in secondaryLinks"
-        :key="link.id"
-        :to="link.to"
-        class="side-nav-btn flex w-full items-center gap-2.5 rounded-lg px-3 text-[13px]"
-        :class="{ active: currentAction === link.id.replace('side-', '') }"
-        @click="handleNavClick($event, link.to)"
-      >
-        <AppIcon :name="link.icon ?? 'link'" class="size-4" />{{ link.label }}
-      </NuxtLink>
+      <template v-for="link in secondaryLinks" :key="link.id">
+        <button
+          v-if="requiresAuth(link.to) && !account.isLoggedIn"
+          type="button"
+          class="side-nav-btn flex w-full items-center gap-2.5 rounded-lg px-3 text-left text-[13px]"
+          @click="promptLogin"
+        >
+          <AppIcon :name="link.icon ?? 'link'" class="size-4" />{{ link.label }}
+        </button>
+        <NuxtLink
+          v-else
+          :to="link.to"
+          class="side-nav-btn flex w-full items-center gap-2.5 rounded-lg px-3 text-[13px]"
+          :class="{ active: currentAction === link.id.replace('side-', '') }"
+          @click="ui.toggleDrawer(false)"
+        >
+          <AppIcon :name="link.icon ?? 'link'" class="size-4" />{{ link.label }}
+        </NuxtLink>
+      </template>
       <NuxtLink
         v-if="sideNav?.feedback"
         :to="sideNav.feedback.to"
