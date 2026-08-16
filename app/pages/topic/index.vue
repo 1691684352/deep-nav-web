@@ -10,7 +10,6 @@ interface TopicListPayload {
 const route = useRoute()
 const router = useRouter()
 
-const page = computed(() => Number(route.query.page ?? 1))
 const keyword = computed(() => String(route.query.keyword ?? ''))
 const searchInput = ref(keyword.value)
 
@@ -18,8 +17,9 @@ watch(keyword, value => (searchInput.value = value))
 
 const { data } = await useAsyncData(
   'topic-list',
-  () => $api<TopicListPayload>('/api/topics', { query: { keyword: keyword.value, page: page.value, pageSize: 12 } }),
-  { watch: [page, keyword] },
+  // Fetch every topic in one go — the catalogue is small enough not to need pagination.
+  () => $api<TopicListPayload>('/api/topics', { query: { keyword: keyword.value, page: 1, pageSize: 100 } }),
+  { watch: [keyword] },
 )
 
 useSeoFromApi(() => data.value?.seo)
@@ -33,10 +33,6 @@ function submitSearch() {
 function clearSearch() {
   searchInput.value = ''
   router.push({ query: {} })
-}
-
-function goPage(next: number) {
-  router.push({ query: { ...route.query, page: next === 1 ? undefined : next } })
 }
 </script>
 
@@ -98,14 +94,6 @@ function goPage(next: number) {
             <button class="mt-2 text-[12px] font-semibold text-primary" type="button" @click="clearSearch">清除搜索条件</button>
           </div>
         </div>
-
-        <PaginationBar
-          v-if="result"
-          :page="result.page"
-          :total-pages="result.totalPages"
-          label="专题分页"
-          @change="goPage"
-        />
       </section>
     </section>
 
