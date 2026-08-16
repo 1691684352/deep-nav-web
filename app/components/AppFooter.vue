@@ -4,49 +4,29 @@ import { useSiteStore } from '~/stores/site'
 const site = useSiteStore()
 
 const rail = computed(() => site.site?.rail)
-// Merge the three footer groups into one flat list for a single centered nav row.
-const navLinks = computed(() => (site.site?.footerColumns ?? []).flatMap(column => column.links))
+// Keep the titled columns (导航 / 服务 / 关于) for a structured multi-column footer.
+const footerColumns = computed(() => site.site?.footerColumns ?? [])
 const brokenQrCodes = ref(new Set<string>())
 </script>
 
 <template>
   <footer v-if="site.site" class="mt-4 border-t bg-muted/30">
-    <div class="page-shell py-8">
-      <!-- Main: brand + nav on the left, QR codes on the right -->
-      <div class="flex flex-col gap-8 md:flex-row md:items-start md:justify-between">
+    <div class="page-shell py-12">
+      <!-- Structured grid: brand · link columns · follow -->
+      <div class="grid gap-10 lg:grid-cols-[minmax(0,1.4fr)_minmax(0,2fr)_auto]">
+        <!-- Brand -->
         <div class="min-w-0">
-          <div class="flex items-center gap-4">
-            <NuxtLink to="/" class="inline-flex shrink-0 items-center gap-2.5">
-              <span class="logo-mark scale-75" aria-hidden="true" />
-              <span class="font-display text-[18px] font-bold text-foreground">{{ site.site.name }}</span>
-            </NuxtLink>
-            <p class="truncate text-[13px] text-muted-foreground">{{ site.site.slogan }}</p>
-          </div>
+          <NuxtLink to="/" class="inline-flex items-center gap-2.5">
+            <span class="logo-mark scale-75" aria-hidden="true" />
+            <span class="font-display text-[18px] font-bold text-foreground">{{ site.site.name }}</span>
+          </NuxtLink>
+          <p class="mt-4 max-w-[280px] text-[13px] leading-6 text-muted-foreground">{{ site.site.slogan }}</p>
 
-          <!-- Primary nav merged into one row -->
-          <nav
-            v-if="navLinks.length"
-            class="mt-5 flex flex-wrap items-center gap-x-1 gap-y-2 text-[13px] text-muted-foreground"
-            aria-label="页脚导航"
-          >
-            <template v-for="(link, index) in navLinks" :key="link.id">
-              <span v-if="index > 0" class="select-none text-border" aria-hidden="true">·</span>
-              <a
-                v-if="link.kind === 'external'"
-                class="px-1.5 transition-colors hover:text-foreground"
-                :href="link.to"
-                :target="link.target"
-                :rel="link.rel"
-              >{{ link.label }}</a>
-              <NuxtLink v-else class="px-1.5 transition-colors hover:text-foreground" :to="link.to">{{ link.label }}</NuxtLink>
-            </template>
-          </nav>
-
-          <div v-if="site.site.footerSocials.length" class="mt-5 flex gap-2">
+          <div v-if="site.site.footerSocials.length" class="mt-6 flex gap-2">
             <template v-for="social in site.site.footerSocials" :key="social.id">
               <a
                 v-if="social.kind === 'external'"
-                class="grid size-8 place-items-center rounded-full border text-muted-foreground transition-colors hover:border-foreground/20 hover:bg-accent hover:text-foreground"
+                class="grid size-9 place-items-center rounded-full border text-muted-foreground transition-colors hover:border-foreground/20 hover:bg-accent hover:text-foreground"
                 :href="social.to"
                 :target="social.target"
                 :rel="social.rel"
@@ -56,7 +36,7 @@ const brokenQrCodes = ref(new Set<string>())
               </a>
               <NuxtLink
                 v-else
-                class="grid size-8 place-items-center rounded-full border text-muted-foreground transition-colors hover:border-foreground/20 hover:bg-accent hover:text-foreground"
+                class="grid size-9 place-items-center rounded-full border text-muted-foreground transition-colors hover:border-foreground/20 hover:bg-accent hover:text-foreground"
                 :to="social.to"
                 :aria-label="social.label"
               >
@@ -66,22 +46,45 @@ const brokenQrCodes = ref(new Set<string>())
           </div>
         </div>
 
-        <div v-if="site.site.footerFollow.qrCodes.length" class="flex shrink-0 gap-4">
-          <div v-for="qr in site.site.footerFollow.qrCodes" :key="qr.id" class="text-center">
-            <div class="grid size-[72px] place-items-center overflow-hidden rounded-xl border bg-card p-1.5">
-              <img
-                v-if="!brokenQrCodes.has(qr.id)"
-                :src="qr.image"
-                width="72"
-                height="72"
-                loading="lazy"
-                class="size-full rounded-md object-contain"
-                :alt="`${qr.label}二维码`"
-                @error="brokenQrCodes.add(qr.id)"
-              >
-              <AppIcon v-else name="qr-code" class="size-10 text-foreground" />
+        <!-- Titled link columns -->
+        <div class="grid grid-cols-2 gap-8 sm:grid-cols-3">
+          <nav v-for="column in footerColumns" :key="column.title" aria-label="页脚导航">
+            <h3 class="text-[13px] font-semibold text-foreground">{{ column.title }}</h3>
+            <ul class="mt-4 flex flex-col gap-3 text-[13px] text-muted-foreground">
+              <li v-for="link in column.links" :key="link.id">
+                <a
+                  v-if="link.kind === 'external'"
+                  class="transition-colors hover:text-foreground"
+                  :href="link.to"
+                  :target="link.target"
+                  :rel="link.rel"
+                >{{ link.label }}</a>
+                <NuxtLink v-else class="transition-colors hover:text-foreground" :to="link.to">{{ link.label }}</NuxtLink>
+              </li>
+            </ul>
+          </nav>
+        </div>
+
+        <!-- Follow / QR codes -->
+        <div v-if="site.site.footerFollow.qrCodes.length" class="min-w-0">
+          <h3 class="text-[13px] font-semibold text-foreground">关注我们</h3>
+          <div class="mt-4 flex gap-4">
+            <div v-for="qr in site.site.footerFollow.qrCodes" :key="qr.id" class="text-center">
+              <div class="grid size-[76px] place-items-center overflow-hidden rounded-xl border bg-card p-1.5">
+                <img
+                  v-if="!brokenQrCodes.has(qr.id)"
+                  :src="qr.image"
+                  width="76"
+                  height="76"
+                  loading="lazy"
+                  class="size-full rounded-md object-contain"
+                  :alt="`${qr.label}二维码`"
+                  @error="brokenQrCodes.add(qr.id)"
+                >
+                <AppIcon v-else name="qr-code" class="size-10 text-foreground" />
+              </div>
+              <span class="mt-2 block text-[11px] text-muted-foreground">{{ qr.label }}</span>
             </div>
-            <span class="mt-1.5 block text-[11px] text-muted-foreground">{{ qr.label }}</span>
           </div>
         </div>
       </div>
@@ -89,7 +92,7 @@ const brokenQrCodes = ref(new Set<string>())
       <!-- Friend links, quiet single line -->
       <div
         v-if="rail?.friendLinks.links.length"
-        class="mt-6 flex flex-wrap items-center gap-x-3.5 gap-y-1.5 text-[12px] text-muted-foreground/80"
+        class="mt-10 flex flex-wrap items-center gap-x-3.5 gap-y-1.5 border-t pt-6 text-[12px] text-muted-foreground/80"
       >
         <span class="font-medium text-foreground/70">{{ rail.friendLinks.title }}</span>
         <template v-for="link in rail.friendLinks.links" :key="link.id">
